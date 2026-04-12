@@ -4,11 +4,12 @@ Command line interface for DaVinci Resolve MCP Server.
 
 import asyncio
 import logging
-import sys
 import os
+import sys
 
 import click
-from colorama import init as init_colorama, Fore, Style
+from colorama import Fore, Style
+from colorama import init as init_colorama
 
 # Set UTF-8 encoding for Windows console only for direct output, not for stdio
 if os.name == "nt":  # Windows
@@ -25,8 +26,7 @@ if os.name == "nt":  # Windows
 
 from . import __version__
 from .server import DaVinciMCPServer
-from .utils import check_resolve_running, check_resolve_installation
-
+from .utils import check_resolve_installation, check_resolve_running
 
 # Initialize colorama for cross-platform colored output
 init_colorama()
@@ -99,7 +99,9 @@ def main(debug: bool = False, skip_checks: bool = False) -> None:
 
     # Print banner
     click.echo(f"\n{Fore.MAGENTA}{'=' * 60}{Style.RESET_ALL}")
-    click.echo(f"{Fore.MAGENTA}  DaVinci MCP Professional v{__version__}{Style.RESET_ALL}")
+    click.echo(
+        f"{Fore.MAGENTA}  DaVinci MCP Professional v{__version__}{Style.RESET_ALL}"
+    )
     click.echo(f"{Fore.MAGENTA}{'=' * 60}{Style.RESET_ALL}\n")
 
     # Check prerequisites unless skipped

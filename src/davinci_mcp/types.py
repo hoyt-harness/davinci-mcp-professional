@@ -5,7 +5,7 @@ This module provides Protocol definitions for the DaVinci Resolve API
 to improve type safety while working with the external scripting interface.
 """
 
-from typing import Any, Dict, List, Optional, Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 
 @runtime_checkable
@@ -16,15 +16,15 @@ class DaVinciProject(Protocol):
         """Get the project name."""
         ...
 
-    def GetTimelines(self) -> List[Any]:
+    def GetTimelines(self) -> list[Any]:
         """Get all timelines in the project."""
         ...
 
-    def GetCurrentTimeline(self) -> Optional[Any]:
+    def GetCurrentTimeline(self) -> Any | None:
         """Get the currently active timeline."""
         ...
 
-    def AddTimeline(self, name: str) -> Optional[Any]:
+    def AddTimeline(self, name: str) -> Any | None:
         """Add a new timeline with the given name."""
         ...
 
@@ -50,7 +50,7 @@ class DaVinciTimeline(Protocol):
 class DaVinciMediaPool(Protocol):
     """Protocol for DaVinci Resolve MediaPool objects."""
 
-    def GetClips(self) -> List[Any]:
+    def GetClips(self) -> list[Any]:
         """Get all clips in the media pool."""
         ...
 
@@ -63,23 +63,23 @@ class DaVinciMediaPool(Protocol):
 class DaVinciProjectManager(Protocol):
     """Protocol for DaVinci Resolve ProjectManager objects."""
 
-    def GetCurrentProject(self) -> Optional[DaVinciProject]:
+    def GetCurrentProject(self) -> DaVinciProject | None:
         """Get the currently open project."""
         ...
 
-    def GetProjectsInDatabase(self) -> List[Dict[str, Any]]:
+    def GetProjectsInDatabase(self) -> list[dict[str, Any]]:
         """Get all projects in the current database."""
         ...
 
-    def GetProjectListInCurrentFolder(self) -> List[str]:
+    def GetProjectListInCurrentFolder(self) -> list[str]:
         """Get project list in current folder."""
         ...
 
-    def CreateProject(self, name: str) -> Optional[DaVinciProject]:
+    def CreateProject(self, name: str) -> DaVinciProject | None:
         """Create a new project with the given name."""
         ...
 
-    def LoadProject(self, name: str) -> Optional[DaVinciProject]:
+    def LoadProject(self, name: str) -> DaVinciProject | None:
         """Load an existing project by name."""
         ...
 
@@ -88,7 +88,7 @@ class DaVinciProjectManager(Protocol):
 class DaVinciResolveApp(Protocol):
     """Protocol for the main DaVinci Resolve application object."""
 
-    def GetVersion(self) -> List[str]:
+    def GetVersion(self) -> list[str]:
         """Get the DaVinci Resolve version information."""
         ...
 
@@ -112,14 +112,14 @@ class DaVinciResolveApp(Protocol):
         """Open a specific page."""
         ...
 
-    def GetCurrentProject(self) -> Optional[DaVinciProject]:
+    def GetCurrentProject(self) -> DaVinciProject | None:
         """Get the currently active project."""
         ...
 
 
 # Type aliases for common return types
-ResolveVersion = List[str]
+ResolveVersion = list[str]
 ProjectName = str
 TimelineName = str
 PageName = str
-MediaClipInfo = Dict[str, Any]
+MediaClipInfo = dict[str, Any]

@@ -13,7 +13,7 @@ except ImportError:
     __version__ = version("davinci-mcp-professional")
 __author__ = "Hoyt Harness"
 
-from .server import DaVinciMCPServer
 from .resolve_client import DaVinciResolveClient
+from .server import DaVinciMCPServer
 
 __all__ = ["DaVinciMCPServer", "DaVinciResolveClient"]

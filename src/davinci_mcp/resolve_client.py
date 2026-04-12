@@ -6,14 +6,13 @@ and logging.
 """
 
 import logging
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     # Import for type checking only to avoid runtime import issues
-    from .types import DaVinciResolveApp, DaVinciProjectManager, DaVinciProject
+    from .types import DaVinciProject, DaVinciProjectManager, DaVinciResolveApp
 
-from .utils.platform import setup_resolve_environment, check_resolve_running
-
+from .utils.platform import check_resolve_running, setup_resolve_environment
 
 logger = logging.getLogger(__name__)
 
@@ -45,9 +44,9 @@ class DaVinciResolveClient:
     """
 
     def __init__(self) -> None:
-        self._resolve: Optional["DaVinciResolveApp"] = None
-        self._project_manager: Optional["DaVinciProjectManager"] = None
-        self._current_project: Optional["DaVinciProject"] = None
+        self._resolve: DaVinciResolveApp | None = None
+        self._project_manager: DaVinciProjectManager | None = None
+        self._current_project: DaVinciProject | None = None
         self._is_connected = False
 
     def connect(self) -> None:
@@ -72,7 +71,8 @@ class DaVinciResolveClient:
 
             if self._resolve is None:
                 raise DaVinciResolveConnectionError(
-                    "Failed to get Resolve object. Check that DaVinci Resolve is running."
+                    "Failed to get Resolve object. "
+                    "Check that DaVinci Resolve is running."
                 )  # type: ignore[reportUnknownMemberType]
 
             # Get project manager
@@ -162,7 +162,7 @@ class DaVinciResolveClient:
         return False
 
     # Project Management
-    def list_projects(self) -> List[str]:
+    def list_projects(self) -> list[str]:
         """List all projects in the current database."""
         self._ensure_connected()
 
@@ -171,7 +171,7 @@ class DaVinciResolveClient:
             return [p for p in projects if p]  # Filter out empty strings
         return []
 
-    def get_current_project_name(self) -> Optional[str]:
+    def get_current_project_name(self) -> str | None:
         """Get the name of the currently open project."""
         try:
             project = self._ensure_project()
@@ -220,12 +220,12 @@ class DaVinciResolveClient:
         return bool(result)
 
     # Timeline Management
-    def list_timelines(self) -> List[str]:
+    def list_timelines(self) -> list[str]:
         """List all timelines in the current project."""
         project = self._ensure_project()
 
         timeline_count = project.GetTimelineCount()
-        timelines: List[str] = []
+        timelines: list[str] = []
 
         for i in range(1, timeline_count + 1):
             timeline = project.GetTimelineByIndex(i)
@@ -236,7 +236,7 @@ class DaVinciResolveClient:
 
         return timelines
 
-    def get_current_timeline_name(self) -> Optional[str]:
+    def get_current_timeline_name(self) -> str | None:
         """Get the name of the current timeline."""
         try:
             project = self._ensure_project()
@@ -277,7 +277,7 @@ class DaVinciResolveClient:
         raise ValueError(f"Timeline '{name}' not found")
 
     # Media Pool Management
-    def list_media_clips(self) -> List[Dict[str, Any]]:
+    def list_media_clips(self) -> list[dict[str, Any]]:
         """List all clips in the media pool root folder."""
         project = self._ensure_project()
 
@@ -293,7 +293,7 @@ class DaVinciResolveClient:
         if not clips:
             return []
 
-        result: List[Dict[str, Any]] = []
+        result: list[dict[str, Any]] = []
         for clip in clips:
             clip_info = {
                 "name": clip.GetName(),

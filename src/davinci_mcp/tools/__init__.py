@@ -2,11 +2,10 @@
 MCP tools for DaVinci Resolve integration.
 """
 
-from typing import List
 import mcp.types as types
 
 
-def get_all_tools() -> List[types.Tool]:
+def get_all_tools() -> list[types.Tool]:
     """Get all available MCP tools."""
     return [
         # System tools
@@ -17,7 +16,10 @@ def get_all_tools() -> List[types.Tool]:
         ),
         types.Tool(
             name="get_current_page",
-            description="Get the current page open in DaVinci Resolve (Edit, Color, Fusion, etc.)",
+            description=(
+                "Get the current page open in DaVinci Resolve"
+                " (Edit, Color, Fusion, etc.)"
+            ),
             inputSchema={"type": "object", "properties": {}, "required": []},
         ),
         types.Tool(

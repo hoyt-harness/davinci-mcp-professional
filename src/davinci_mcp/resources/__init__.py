@@ -2,13 +2,13 @@
 MCP resources for DaVinci Resolve integration.
 """
 
-from typing import List, cast
+from typing import cast
 
 import mcp.types as types
 from pydantic import AnyUrl
 
 
-def get_all_resources() -> List[types.Resource]:
+def get_all_resources() -> list[types.Resource]:
     """Get all available MCP resources."""
     return [
         # System resources

@@ -3,9 +3,8 @@ Platform detection and environment setup utilities.
 """
 
 import os
-import sys
 import platform
-from typing import Dict
+import sys
 from pathlib import Path
 
 
@@ -22,16 +21,18 @@ def get_platform() -> str:
         return system
 
 
-def get_resolve_paths() -> Dict[str, Path]:
+def get_resolve_paths() -> dict[str, Path]:
     """Get platform-specific paths for DaVinci Resolve scripting API."""
     current_platform = get_platform()
 
     if current_platform == "macos":
         api_path = Path(
-            "/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting"
+            "/Library/Application Support/Blackmagic Design"
+            "/DaVinci Resolve/Developer/Scripting"
         )
         lib_path = Path(
-            "/Applications/DaVinci Resolve/DaVinci Resolve.app/Contents/Libraries/Fusion/fusionscript.so"
+            "/Applications/DaVinci Resolve/DaVinci Resolve.app"
+            "/Contents/Libraries/Fusion/fusionscript.so"
         )
 
     elif current_platform == "windows":
@@ -84,7 +85,7 @@ def setup_resolve_environment() -> bool:
         return False
 
 
-def check_resolve_installation() -> Dict[str, bool]:
+def check_resolve_installation() -> dict[str, bool]:
     """Check if DaVinci Resolve is properly installed."""
     paths = get_resolve_paths()
 
