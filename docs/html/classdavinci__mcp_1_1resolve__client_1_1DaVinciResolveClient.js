@@ -19,8 +19,8 @@ var classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient =
     [ "open_project", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a32aaa5b830d1c7de8bcb93a5a9173dd7", null ],
     [ "switch_page", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#aecb2b60108ab59839ec7c66343d482d2", null ],
     [ "switch_timeline", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#ad85a02d822ca1c548adb778247340c99", null ],
-    [ "_current_project", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a6964f077b6c5a7ce1181c5a25c59da43", null ],
+    [ "_current_project", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a4706f914e7974eba6064c6eaff9a13b2", null ],
     [ "_is_connected", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a717877eb2739879d6eb1ec1fe5a73d9f", null ],
-    [ "_project_manager", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a6f8514db2f26452e66fad41617bf4a8e", null ],
-    [ "_resolve", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a873efbce16563d405561fc4e7095e909", null ]
+    [ "_project_manager", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#acd54100abc7ed631ee77e6b90334e87f", null ],
+    [ "_resolve", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a6b79e027ace501caa06cfc71f89bc27f", null ]
 ];

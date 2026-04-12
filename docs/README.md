@@ -1,6 +1,7 @@
-# DaVinci MCP Professional - Documentation
+# DaVinci MCP Professional — API Documentation
 
-This directory contains the comprehensive API documentation for DaVinci MCP Professional, generated using Doxygen.
+This directory contains the comprehensive API documentation for DaVinci MCP
+Professional, generated using Doxygen.
 
 ## What's Included
 
@@ -19,14 +20,14 @@ This directory contains the comprehensive API documentation for DaVinci MCP Prof
 
 ### Modules
 - **Tools**: MCP tool definitions and implementations
-- **Resources**: MCP resource definitions and handlers  
+- **Resources**: MCP resource definitions and handlers
 - **Utils**: Platform detection and environment setup utilities
 - **CLI**: Command-line interface module
 
 ## Viewing the Documentation
 
 ### Option 1: Local File Browser
-Simply open `html/index.html` in any web browser to view the documentation locally.
+Open `html/index.html` in any web browser to view the documentation locally.
 
 ### Option 2: Local Web Server (Recommended)
 For the best experience with search functionality:
@@ -35,22 +36,11 @@ For the best experience with search functionality:
 # Navigate to the docs directory
 cd docs/html
 
-# Start a local web server (Python 3)
-python -m http.server 8000
-
-# Or using Python 2
-python -m SimpleHTTPServer 8000
+# Start a local web server
+uv run python -m http.server 8000
 
 # Then open http://localhost:8000 in your browser
 ```
-
-## Documentation Features
-
-- **Comprehensive API Reference**: Every class, method, and function documented
-- **Interactive Class Diagrams**: Visual inheritance and collaboration graphs
-- **Source Code Cross-References**: Click any symbol to see its definition
-- **Module Dependencies**: Visual dependency graphs showing relationships
-- **Professional Formatting**: Clean, navigable interface with search
 
 ## Regenerating Documentation
 
@@ -74,4 +64,4 @@ This documentation follows professional software documentation standards:
 
 ---
 
-*Generated with Doxygen for DaVinci MCP Professional v2.1.1*
+*Generated with Doxygen for DaVinci MCP Professional*

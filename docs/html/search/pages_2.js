@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['architecture_20highlights_0',['Architecture Highlights',['../index.html#autotoc_md2',1,'']]]
+  ['davinci_20mcp_20professional_0',['DaVinci MCP Professional',['../index.html',1,'']]],
+  ['desktop_1',['Configuring Claude Desktop',['../index.html#autotoc_md8',1,'']]]
 ];

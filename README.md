@@ -1,53 +1,128 @@
 # DaVinci MCP Professional
-A modern, professional implementation of a Model Context Protocol server for DaVinci Resolve integration. This project is a hard/project fork from the excellent work done by @samuelgursky at https://github.com/samuelgursky/davinci-resolve-mcp. It's an independent project now due to major overhaul and restructuring making it incompatible with the original repo. DaVinci MCP Professional is a fully enterprise-grade implementation of an MCP specifically designed to expose the full range of functionality of either DaVinci Resolve or DaVinci Resolve Studio to MCP clients. Supported clients include both Claude Desktop (preferred) or Cursor.
 
-## Installation Options
+An enterprise-grade Model Context Protocol (MCP) server that exposes the full
+DaVinci Resolve scripting API to AI assistants. This project is a hard fork of
+[davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp) by
+@samuelgursky, rewritten and maintained independently.
 
-### 🚀 One-Click Installation (Recommended)
-DaVinci MCP Professional is available as a Desktop Extension (DXT) for easy installation:
+Supported MCP clients: **Claude Desktop** (primary), Gemini CLI, ChatGPT.
 
-1. **Download** the latest `.dxt` file from [Releases](https://github.com/Positronikal/davinci-mcp-professional/releases)
-2. **Open Claude Desktop** and go to Settings > Extensions
-3. **Drag and drop** the `.dxt` file to install
-4. **Configure** any optional settings (DaVinci Resolve path, debug mode)
-5. **Start DaVinci Resolve** and begin using AI-assisted video editing!
+---
 
-### ⚙️ Manual Installation
-For developers and advanced users who prefer manual setup:
+## Prerequisites
 
-1. **Clone the repository**
-2. **Install dependencies**: `pip install -r requirements.txt`
-3. **Configure Claude Desktop**: Add server configuration to `claude_desktop_config.json`
-4. **See USING.md** for detailed manual setup instructions
+- [DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve)
+  (Free or Studio), installed and licensed
+- Python 3.10 or later
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) — fast Python
+  package and virtual environment manager
 
-## What Makes This Professional
-This is a complete architectural rewrite and cleanup of existing DaVinci Resolve MCP implementations:
+---
 
-- **Clean Architecture**: Proper separation of concerns between MCP protocol and DaVinci Resolve API
-- **Modern Python**: Uses current best practices with type hints, async/await, and comprehensive error handling
-- **Simplified Setup**: Single command installation with automatic dependency management
-- **Windows Compatible**: Proper encoding handling and console output for Windows environments
-- **Standardized Dependencies**: Uses `uv` for fast, reliable dependency management
-- **Comprehensive Testing**: Built-in test suite to verify functionality
-- **Production Ready**: Clean codebase suitable for professional environments
+## Installation
 
-## Architecture Highlights
-This implementation emphasizes:
+### From source (recommended)
 
-- **Reliability**: Comprehensive error handling and graceful failure modes
-- **Maintainability**: Clean separation of concerns and modular design
-- **Performance**: Efficient async/await patterns and minimal overhead
-- **Compatibility**: Cross-platform support with Windows-specific optimizations
-- **Professional Standards**: Proper logging, testing, and documentation
+```bash
+git clone https://github.com/Positronikal/davinci-mcp-professional.git
+cd davinci-mcp-professional
+uv venv
+uv sync
+```
 
-## Usage
-See `USING` located elsewhere in this repo.
+### Standalone Windows executable
 
-## Getting Help
-See `BUGS` located elsewhere in this repo.
+Download the pre-built `davinci-mcp-server.exe` from
+[Releases](https://github.com/Positronikal/davinci-mcp-professional/releases).
+No Python installation required.
 
-## License
-See `COPYING` located elsewhere in this repo.
+---
 
-## Contributing
-See `CONTRIBUTING` located elsewhere in this repo.
+## Configuring Claude Desktop
+
+Locate or create your `claude_desktop_config.json` file:
+
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+Add the server entry:
+
+**Running from source (Windows):**
+```json
+{
+  "mcpServers": {
+    "davinci-resolve": {
+      "name": "DaVinci MCP Professional",
+      "command": "C:\\path\\to\\davinci-mcp-professional\\.venv\\Scripts\\python.exe",
+      "args": ["C:\\path\\to\\davinci-mcp-professional\\mcp_server.py"]
+    }
+  }
+}
+```
+
+**Running from source (macOS):**
+```json
+{
+  "mcpServers": {
+    "davinci-resolve": {
+      "name": "DaVinci MCP Professional",
+      "command": "/path/to/davinci-mcp-professional/.venv/bin/python",
+      "args": ["/path/to/davinci-mcp-professional/mcp_server.py"]
+    }
+  }
+}
+```
+
+**Using the standalone Windows executable:**
+```json
+{
+  "mcpServers": {
+    "davinci-resolve": {
+      "name": "DaVinci MCP Professional",
+      "command": "C:\\path\\to\\davinci-mcp-server\\davinci-mcp-server.exe",
+      "args": []
+    }
+  }
+}
+```
+
+Restart Claude Desktop after saving the config.
+
+---
+
+## Other Supported Clients
+
+**Gemini CLI** and **ChatGPT** support the MCP standard and can connect to this
+server using the same `mcp_server.py` entry point. Their MCP integration is
+still maturing — consult each client's documentation for the current
+configuration method.
+
+---
+
+## Basic Usage
+
+1. Start DaVinci Resolve and wait for it to fully load.
+2. Start the MCP server (Claude Desktop does this automatically when configured).
+3. Ask your AI assistant to interact with Resolve:
+
+```
+What version of DaVinci Resolve is running?
+List all projects in the database.
+Create a new timeline called "Act 1".
+Switch to the Color page.
+Import /path/to/clip.mp4 into the media pool.
+```
+
+---
+
+## Further Reading
+
+| Document | Purpose |
+|---|---|
+| [USING.md](USING.md) | Developer setup, build instructions, contributing |
+| [BUGS.md](BUGS.md) | Troubleshooting and bug reporting |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
+| [COPYING.md](COPYING.md) | GPL-3.0 license |
+
+For developer setup, build instructions, and contribution guidelines,
+see **USING.md**.

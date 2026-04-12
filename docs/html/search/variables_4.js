@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['server_0',['server',['../classdavinci__mcp_1_1server_1_1DaVinciMCPServer.html#aa010bad6362fe84e8a7d0ab12cf25844',1,'davinci_mcp::server::DaVinciMCPServer']]]
+  ['mediaclipinfo_0',['MediaClipInfo',['../namespacedavinci__mcp_1_1types.html#a541dd8d242f3062299b7e0fb17fc5868',1,'davinci_mcp::types']]]
 ];

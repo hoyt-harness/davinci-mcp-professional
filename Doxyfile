@@ -7,7 +7,7 @@
 
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "DaVinci MCP Professional"
-PROJECT_NUMBER         = "v2.1.1"
+PROJECT_NUMBER         = "v3.0.0"
 PROJECT_BRIEF          = "A modern, professional Model Context Protocol server for DaVinci Resolve integration"
 PROJECT_LOGO           = 
 OUTPUT_DIRECTORY       = docs

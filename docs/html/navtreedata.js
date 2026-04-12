@@ -25,7 +25,15 @@
 var NAVTREE =
 [
   [ "DaVinci MCP Professional", "index.html", [
-    [ "DaVinci MCP Professional v2.1.0", "index.html", "index" ],
+    [ "Prerequisites", "index.html#autotoc_md2", null ],
+    [ "Installation", "index.html#autotoc_md4", [
+      [ "From source (recommended)", "index.html#autotoc_md5", null ],
+      [ "Standalone Windows executable", "index.html#autotoc_md6", null ]
+    ] ],
+    [ "Configuring Claude Desktop", "index.html#autotoc_md8", null ],
+    [ "Other Supported Clients", "index.html#autotoc_md10", null ],
+    [ "Basic Usage", "index.html#autotoc_md12", null ],
+    [ "Further Reading", "index.html#autotoc_md14", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['print_5fstatus_0',['print_status',['../namespacedavinci__mcp_1_1cli.html#aef09f18985e55b369086d7c84a5aa923',1,'davinci_mcp::cli']]]
+  ['open_5fproject_0',['open_project',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a32aaa5b830d1c7de8bcb93a5a9173dd7',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['openpage_1',['OpenPage',['../classdavinci__mcp_1_1types_1_1DaVinciResolveApp.html#a0d14ef1c3adb06a7f439307c287fe5a6',1,'davinci_mcp::types::DaVinciResolveApp']]]
 ];

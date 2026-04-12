@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['0_0',['DaVinci MCP Professional v2.1.0',['../index.html',1,'']]]
+  ['basic_20usage_0',['Basic Usage',['../index.html#autotoc_md12',1,'']]]
 ];

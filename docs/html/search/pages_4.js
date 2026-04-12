@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['davinci_20mcp_20professional_20v2_201_200_0',['DaVinci MCP Professional v2.1.0',['../index.html',1,'']]]
+  ['from_20source_20recommended_0',['From source (recommended)',['../index.html#autotoc_md5',1,'']]],
+  ['further_20reading_1',['Further Reading',['../index.html#autotoc_md14',1,'']]]
 ];

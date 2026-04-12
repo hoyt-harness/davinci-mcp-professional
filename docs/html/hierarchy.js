@@ -7,5 +7,12 @@ var hierarchy =
         [ "davinci_mcp.resolve_client.DaVinciResolveConnectionError", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveConnectionError.html", null ],
         [ "davinci_mcp.resolve_client.DaVinciResolveNotRunningError", "classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveNotRunningError.html", null ]
       ] ]
+    ] ],
+    [ "Protocol", null, [
+      [ "davinci_mcp.types.DaVinciMediaPool", "classdavinci__mcp_1_1types_1_1DaVinciMediaPool.html", null ],
+      [ "davinci_mcp.types.DaVinciProject", "classdavinci__mcp_1_1types_1_1DaVinciProject.html", null ],
+      [ "davinci_mcp.types.DaVinciProjectManager", "classdavinci__mcp_1_1types_1_1DaVinciProjectManager.html", null ],
+      [ "davinci_mcp.types.DaVinciResolveApp", "classdavinci__mcp_1_1types_1_1DaVinciResolveApp.html", null ],
+      [ "davinci_mcp.types.DaVinciTimeline", "classdavinci__mcp_1_1types_1_1DaVinciTimeline.html", null ]
     ] ]
 ];

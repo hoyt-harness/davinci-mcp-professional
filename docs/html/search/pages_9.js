@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['professional_0',['What Makes This Professional',['../index.html#autotoc_md1',1,'']]],
-  ['professional_20v2_201_200_1',['DaVinci MCP Professional v2.1.0',['../index.html',1,'']]]
+  ['reading_0',['Further Reading',['../index.html#autotoc_md14',1,'']]],
+  ['recommended_1',['From source (recommended)',['../index.html#autotoc_md5',1,'']]]
 ];

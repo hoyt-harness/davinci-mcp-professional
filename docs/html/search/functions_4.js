@@ -1,5 +1,25 @@
 var searchData=
 [
-  ['import_5fmedia_0',['import_media',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a7c61fa7aa52a2ac3c8c71a566bb57de9',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
-  ['is_5fconnected_1',['is_connected',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#aa9826b9247d6e96702808068dfc6311b',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]]
+  ['get_5fall_5fresources_0',['get_all_resources',['../namespacedavinci__mcp_1_1resources.html#adeb3b40d9efffb98795218594b9374e0',1,'davinci_mcp::resources']]],
+  ['get_5fall_5ftools_1',['get_all_tools',['../namespacedavinci__mcp_1_1tools.html#aa0261ef602ff4e939c9041ba7fce6839',1,'davinci_mcp::tools']]],
+  ['get_5fcurrent_5fpage_2',['get_current_page',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a56e78ff25d57df0ef3aef3e23d93f332',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['get_5fcurrent_5fproject_5fname_3',['get_current_project_name',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a456153aaec4a060cce7e9133a7773025',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['get_5fcurrent_5ftimeline_5fname_4',['get_current_timeline_name',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a0c48ac9ea0c12e07ffd71302d4b65a10',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['get_5fplatform_5',['get_platform',['../namespacedavinci__mcp_1_1utils_1_1platform.html#a6c243fae5cf3dfc89ebb4173e5b6026a',1,'davinci_mcp::utils::platform']]],
+  ['get_5fresolve_5fpaths_6',['get_resolve_paths',['../namespacedavinci__mcp_1_1utils_1_1platform.html#a765f84c06ef3a815a1d3515f4789b072',1,'davinci_mcp::utils::platform']]],
+  ['get_5fversion_7',['get_version',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a2da96cc0e6ec5af69934e03030a7cf89',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['getclips_8',['GetClips',['../classdavinci__mcp_1_1types_1_1DaVinciMediaPool.html#a08a8efd9298edffdace8dfd48f6c44c4',1,'davinci_mcp::types::DaVinciMediaPool']]],
+  ['getcurrentpage_9',['GetCurrentPage',['../classdavinci__mcp_1_1types_1_1DaVinciResolveApp.html#a83ee611ca21fd8a2d8f23519b7af6062',1,'davinci_mcp::types::DaVinciResolveApp']]],
+  ['getcurrentproject_10',['GetCurrentProject',['../classdavinci__mcp_1_1types_1_1DaVinciProjectManager.html#a3951f702e3a25ef1041b2a8c31858181',1,'davinci_mcp.types.DaVinciProjectManager.GetCurrentProject()'],['../classdavinci__mcp_1_1types_1_1DaVinciResolveApp.html#a75972ece14c7b814725c9ec21e46eb49',1,'davinci_mcp.types.DaVinciResolveApp.GetCurrentProject()']]],
+  ['getcurrenttimeline_11',['GetCurrentTimeline',['../classdavinci__mcp_1_1types_1_1DaVinciProject.html#ae7236df23a16aa1308eaa0ba22fd89d2',1,'davinci_mcp::types::DaVinciProject']]],
+  ['getmediapool_12',['GetMediaPool',['../classdavinci__mcp_1_1types_1_1DaVinciProject.html#ac87e1a0614ec1a21c272c6df8fd3df01',1,'davinci_mcp::types::DaVinciProject']]],
+  ['getname_13',['GetName',['../classdavinci__mcp_1_1types_1_1DaVinciProject.html#ab88b3c1c08c52e26b0b4ac3e5b8fd616',1,'davinci_mcp.types.DaVinciProject.GetName()'],['../classdavinci__mcp_1_1types_1_1DaVinciTimeline.html#aeef706eccdbc7b749de26d39a830675d',1,'davinci_mcp.types.DaVinciTimeline.GetName()']]],
+  ['getproductname_14',['GetProductName',['../classdavinci__mcp_1_1types_1_1DaVinciResolveApp.html#aa2d3ce620535b5b6cbd4b12df27a0edf',1,'davinci_mcp::types::DaVinciResolveApp']]],
+  ['getprojectlistincurrentfolder_15',['GetProjectListInCurrentFolder',['../classdavinci__mcp_1_1types_1_1DaVinciProjectManager.html#aafcc926bb68b798ebd90bf8eb27e6add',1,'davinci_mcp::types::DaVinciProjectManager']]],
+  ['getprojectmanager_16',['GetProjectManager',['../classdavinci__mcp_1_1types_1_1DaVinciResolveApp.html#a185699ebb1c14e38e89f5fe8ea8bfbe3',1,'davinci_mcp::types::DaVinciResolveApp']]],
+  ['getprojectsindatabase_17',['GetProjectsInDatabase',['../classdavinci__mcp_1_1types_1_1DaVinciProjectManager.html#a195ead3cced8db9d00bd23d4d2953418',1,'davinci_mcp::types::DaVinciProjectManager']]],
+  ['gettimelines_18',['GetTimelines',['../classdavinci__mcp_1_1types_1_1DaVinciProject.html#a6d7d252e68358e0eb70cea1c7ef066ef',1,'davinci_mcp::types::DaVinciProject']]],
+  ['gettrackcount_19',['GetTrackCount',['../classdavinci__mcp_1_1types_1_1DaVinciTimeline.html#aca5c121761db12b386b00ffab11f62d9',1,'davinci_mcp::types::DaVinciTimeline']]],
+  ['getversion_20',['GetVersion',['../classdavinci__mcp_1_1types_1_1DaVinciResolveApp.html#aea218ed3c1bbc3df28bfe4e445ea0497',1,'davinci_mcp::types::DaVinciResolveApp']]],
+  ['getversionstring_21',['GetVersionString',['../classdavinci__mcp_1_1types_1_1DaVinciResolveApp.html#aa510ab4d74f9d76b426c7782cfb39b69',1,'davinci_mcp::types::DaVinciResolveApp']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['v2_201_200_0',['DaVinci MCP Professional v2.1.0',['../index.html',1,'']]]
+  ['windows_20executable_0',['Standalone Windows executable',['../index.html#autotoc_md6',1,'']]]
 ];

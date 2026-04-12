@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,147,75,173"/>
+<area shape="rect" id="Node000001" href="$classdavinci__mcp_1_1types_1_1DaVinciMediaPool.html" title=" " alt="" coords="123,5,303,48"/>
+<area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="55,132,83,94,121,58,144,46,140,50,124,62,87,98,59,135"/>
+<area shape="rect" id="Node000002" href="$classdavinci__mcp_1_1types_1_1DaVinciProject.html" title=" " alt="" coords="123,72,303,115"/>
+<area shape="poly" id="edge5_Node000000_Node000002" title=" " alt="" coords="87,138,122,124,154,114,150,117,124,129,90,142"/>
+<area shape="rect" id="Node000003" href="$classdavinci__mcp_1_1types_1_1DaVinciProjectManager.html" title=" " alt="" coords="123,139,303,181"/>
+<area shape="poly" id="edge6_Node000000_Node000003" title=" " alt="" coords="89,158,124,158,120,162,91,162"/>
+<area shape="rect" id="Node000004" href="$classdavinci__mcp_1_1types_1_1DaVinciResolveApp.html" title=" " alt="" coords="123,205,303,248"/>
+<area shape="poly" id="edge7_Node000000_Node000004" title=" " alt="" coords="88,177,124,191,155,204,150,205,122,196,89,182"/>
+<area shape="rect" id="Node000005" href="$classdavinci__mcp_1_1types_1_1DaVinciTimeline.html" title=" " alt="" coords="123,272,303,315"/>
+<area shape="poly" id="edge8_Node000000_Node000005" title=" " alt="" coords="58,184,87,222,124,258,145,271,140,272,121,262,83,226,57,189"/>
+</map>

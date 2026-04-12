@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['main_0',['main',['../namespacedavinci__mcp_1_1cli.html#afb85b7358f66aa8750a1f5e19671fc25',1,'davinci_mcp::cli']]],
-  ['makes_20this_20professional_1',['What Makes This Professional',['../index.html#autotoc_md1',1,'']]],
-  ['mcp_20professional_20v2_201_200_2',['DaVinci MCP Professional v2.1.0',['../index.html',1,'']]]
+  ['open_5fproject_0',['open_project',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a32aaa5b830d1c7de8bcb93a5a9173dd7',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['openpage_1',['OpenPage',['../classdavinci__mcp_1_1types_1_1DaVinciResolveApp.html#a0d14ef1c3adb06a7f439307c287fe5a6',1,'davinci_mcp::types::DaVinciResolveApp']]],
+  ['other_20supported_20clients_2',['Other Supported Clients',['../index.html#autotoc_md10',1,'']]]
 ];

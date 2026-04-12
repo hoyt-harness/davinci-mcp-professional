@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['1_200_0',['DaVinci MCP Professional v2.1.0',['../index.html',1,'']]]
+  ['claude_20desktop_0',['Configuring Claude Desktop',['../index.html#autotoc_md8',1,'']]],
+  ['clients_1',['Other Supported Clients',['../index.html#autotoc_md10',1,'']]],
+  ['configuring_20claude_20desktop_2',['Configuring Claude Desktop',['../index.html#autotoc_md8',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['open_5fproject_0',['open_project',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a32aaa5b830d1c7de8bcb93a5a9173dd7',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]]
+  ['main_0',['main',['../namespacedavinci__mcp_1_1cli.html#afb85b7358f66aa8750a1f5e19671fc25',1,'davinci_mcp::cli']]]
 ];

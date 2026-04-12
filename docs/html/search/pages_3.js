@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['contributing_0',['Contributing',['../index.html#autotoc_md6',1,'']]]
+  ['executable_0',['Standalone Windows executable',['../index.html#autotoc_md6',1,'']]]
 ];
