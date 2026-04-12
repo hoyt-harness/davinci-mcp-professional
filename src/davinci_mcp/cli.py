@@ -23,6 +23,7 @@ if os.name == "nt":  # Windows
         except (AttributeError, OSError):
             pass  # Fallback to default behavior
 
+from . import __version__
 from .server import DaVinciMCPServer
 from .utils import check_resolve_running, check_resolve_installation
 
@@ -98,7 +99,7 @@ def main(debug: bool = False, skip_checks: bool = False) -> None:
 
     # Print banner
     click.echo(f"\n{Fore.MAGENTA}{'=' * 60}{Style.RESET_ALL}")
-    click.echo(f"{Fore.MAGENTA}  DaVinci MCP Professional v2.1.0{Style.RESET_ALL}")
+    click.echo(f"{Fore.MAGENTA}  DaVinci MCP Professional v{__version__}{Style.RESET_ALL}")
     click.echo(f"{Fore.MAGENTA}{'=' * 60}{Style.RESET_ALL}\n")
 
     # Check prerequisites unless skipped

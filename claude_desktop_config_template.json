@@ -1,9 +1,11 @@
 {
   "mcpServers": {
     "davinci-resolve": {
-      "name": "DaVinci MCP Professional v2.1.0",
-      "command": "D:\\bin\\DaVinci\\davinci-mcp-professional\\.venv\\Scripts\\python.exe",
-      "args": ["D:\\bin\\DaVinci\\davinci-mcp-professional\\mcp_server.py"]
+      "name": "DaVinci MCP Professional",
+      "command": "/path/to/repo/.venv/bin/python",
+      "args": ["/path/to/repo/mcp_server.py"],
+      "_comment_windows": "On Windows use .venv\\Scripts\\python.exe",
+      "_comment_uv": "Run 'uv venv && uv sync' in the repo to create .venv"
     }
   }
 }
