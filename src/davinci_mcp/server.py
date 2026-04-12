@@ -69,26 +69,20 @@ class DaVinciMCPServer:
         @self.server.read_resource()
         async def handle_read_resource(  # type: ignore[reportUnusedFunction]
             uri: AnyUrl,
-        ) -> list[types.TextResourceContents]:
+        ) -> str:
             try:
                 if not self.resolve_client.is_connected():
                     self.resolve_client.connect()
                 result = await self._read_resource(str(uri))
-                return [
-                    types.TextResourceContents(
-                        uri=uri,
-                        text=str(result),
-                        mimeType="text/plain",
-                    )
-                ]
+                return str(result)
             except DaVinciResolveError as e:
                 error_msg = f"DaVinci Resolve error: {e}"
                 logger.exception(error_msg)
-                return [types.TextResourceContents(uri=uri, text=error_msg, mimeType="text/plain")]
+                return error_msg
             except Exception as e:
                 error_msg = f"Unexpected error: {e}"
                 logger.exception(error_msg)
-                return [types.TextResourceContents(uri=uri, text=error_msg, mimeType="text/plain")]
+                return error_msg
 
     async def _call_tool(self, name: str, arguments: dict[str, Any]) -> Any:
         """Dispatch a tool call to the resolve client."""
