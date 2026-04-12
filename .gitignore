@@ -68,9 +68,6 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# VS Code
-.vscode/
-
 # Cursor
 .cursor/
 
@@ -102,11 +99,7 @@ security-audit-results.json
 # Any backup directories
 *_backup/
 
-# Cursor
-.cursor/
-
 # DXT Extension Build Artifacts
-lib/
 *.dxt
 build-dxt.ps1
 build-dxt.bat
@@ -114,3 +107,6 @@ setup_dxt.py
 DXT_README.md
 requirements.txt
 # Note: .dxtignore should be committed since the *.pyd fix is important
+
+# Miscellaneous
+etc/
