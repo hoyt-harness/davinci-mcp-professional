@@ -27,6 +27,11 @@ dependencies = [
     "colorama>=0.4.6",
 ]
 
+[project.optional-dependencies]
+build = [
+    "pyinstaller>=6.0.0",
+]
+
 [project.scripts]
 davinci-mcp = "davinci_mcp.cli:main"
 
