@@ -32,9 +32,20 @@ uv sync
 
 ### Standalone Windows executable
 
-Download the pre-built `davinci-mcp-server.exe` from
+Download the pre-built Windows binaries from
 [Releases](https://github.com/Positronikal/davinci-mcp-professional/releases).
 No Python installation required.
+
+The release includes two executables:
+
+| Executable | Purpose |
+|---|---|
+| `davinci-mcp-server.exe` | **MCP server** — launched automatically by Claude Desktop (or another MCP client). Communicates over stdio with no console output. Use this in your `claude_desktop_config.json`. |
+| `davinci-mcp.exe` | **Interactive CLI** — for running the server manually in a terminal. Displays a startup banner, checks that DaVinci Resolve is running, and supports `--debug` and `--skip-checks` flags. |
+
+Most users only need `davinci-mcp-server.exe` configured in their MCP client.
+`davinci-mcp.exe` is useful for troubleshooting or verifying that the server
+can connect to Resolve before configuring a client.
 
 ---
 

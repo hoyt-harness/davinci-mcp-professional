@@ -33,16 +33,29 @@ uv sync
 
 ## Running from Source
 
-**Interactive CLI** (prerequisite checks, colored output):
+The project has two entry points that serve different purposes:
+
+**`mcp_server.py` — MCP server (for AI clients)**
+
+```bash
+uv run python mcp_server.py
+```
+
+This is the entry point that MCP clients (Claude Desktop, Gemini CLI, etc.)
+launch as a subprocess. It speaks the MCP stdio protocol with no console
+output. Point your `claude_desktop_config.json` at this file.
+
+**`main.py` — Interactive CLI (for humans)**
+
 ```bash
 uv run python main.py
 uv run python main.py --debug
 ```
 
-**Pure MCP server** (no console output — use this for MCP client configuration):
-```bash
-uv run python mcp_server.py
-```
+This wraps the same MCP server with a human-friendly terminal interface:
+a colored startup banner, prerequisite checks (is Resolve running? is
+PYTHONPATH set?), and `--debug` / `--skip-checks` flags. Use this when
+running the server manually to verify connectivity or troubleshoot issues.
 
 ---
 
@@ -93,12 +106,17 @@ uv run python build.py     # build both targets
 Output:
 
 ```
-dist/davinci-mcp-server/davinci-mcp-server.exe   # pure MCP server
-dist/davinci-mcp/davinci-mcp.exe                 # interactive CLI
+dist/davinci-mcp-server/davinci-mcp-server.exe   # MCP server (for AI clients)
+dist/davinci-mcp/davinci-mcp.exe                 # Interactive CLI (for humans)
 ```
 
-Use `davinci-mcp-server.exe` (or the macOS equivalent) in MCP client
-configurations when distributing to end users who do not have Python installed.
+These mirror the two entry points described in **Running from Source** above:
+
+- **`davinci-mcp-server.exe`** — the MCP stdio server. Use this in MCP client
+  configurations when distributing to end users who do not have Python
+  installed.
+- **`davinci-mcp.exe`** — the interactive CLI with prerequisite checks and
+  colored output. Useful for manual testing and troubleshooting.
 
 ---
 
