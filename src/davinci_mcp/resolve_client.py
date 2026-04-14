@@ -13,8 +13,8 @@ if TYPE_CHECKING:
     from .types import DaVinciProject, DaVinciProjectManager, DaVinciResolveApp
 
 from .utils.platform import (
+    check_python_runtime_compatibility,
     check_resolve_running,
-    probe_resolve_scripting,
     setup_resolve_environment,
 )
 
@@ -67,13 +67,13 @@ class DaVinciResolveClient:
                 "Failed to set up DaVinci Resolve environment variables."
             )
 
-        # Probe the scripting API in an isolated subprocess.  If
-        # fusionscript.dll is ABI-incompatible with this Python version
-        # (e.g. Python 3.14 vs a DLL built for 3.10), the child process
-        # crashes instead of the MCP server.
-        probe_ok, probe_msg = probe_resolve_scripting()
-        if not probe_ok:
-            raise DaVinciResolveConnectionError(probe_msg)
+        # On Windows, fusionscript.dll discovers Python via the Windows
+        # registry and loads python3.dll by full path.  If the running
+        # Python is a different installation (e.g. uv-managed), two
+        # runtimes end up in the same process and it crashes.
+        compat_ok, compat_msg = check_python_runtime_compatibility()
+        if not compat_ok:
+            raise DaVinciResolveConnectionError(compat_msg)
 
         try:
             # Import and connect to Resolve

@@ -13,7 +13,11 @@ Supported MCP clients: **Claude Desktop** (primary), Gemini CLI, ChatGPT.
 
 - [DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve)
   (Free or Studio), installed and licensed
-- Python 3.10 or later
+- Python 3.10 or later, **installed system-wide** (the installer from
+  [python.org](https://www.python.org/downloads/) with "Add to PATH" and
+  "Install for all users" selected). On Windows, DaVinci Resolve locates
+  Python through the Windows registry; a uv-managed or user-only Python
+  install will not be found and will cause a crash.
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) — fast Python
   package and virtual environment manager
 
@@ -26,9 +30,13 @@ Supported MCP clients: **Claude Desktop** (primary), Gemini CLI, ChatGPT.
 ```bash
 git clone https://github.com/Positronikal/davinci-mcp-professional.git
 cd davinci-mcp-professional
-uv venv
+uv venv --python <system-python>   # e.g. --python "C:\Program Files\Python314\python.exe"
 uv sync
 ```
+
+On Windows, the `--python` flag must point to the system-installed Python
+(the one registered in the Windows registry).  See
+[USING.md](USING.md#development-setup) for details.
 
 ### Standalone Windows executable
 

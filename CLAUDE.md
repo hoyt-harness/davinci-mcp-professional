@@ -40,10 +40,24 @@ uv lock --upgrade-package <package>
 
 ### Python Version
 
-Python >= 3.10 is required. The MCP Python SDK uses `match` statements and
-other 3.10+ features. All tool configurations (pyright, mypy, ruff, black)
-must target 3.10 as the minimum version. Never declare compatibility with
-Python 3.9.
+Python >= 3.10 is required (the MCP Python SDK uses `match` statements and
+other 3.10+ features).  All tool configurations (pyright, mypy, ruff)
+must target 3.10 as the minimum version.
+
+On **Windows**, the virtual environment MUST be created from the
+system-installed Python — the same installation that appears in the
+Windows registry under `HKLM\SOFTWARE\Python\PythonCore`.  DaVinci
+Resolve's `fusionscript.dll` discovers Python via this registry key and
+loads `python3.dll` by full path.  If the running Python is a different
+installation (e.g. a uv-managed download), two Python runtimes end up
+in the same process and the server crashes.  Use:
+
+```bash
+uv venv --python "C:\Program Files\PythonXYZ\python.exe"
+uv sync
+```
+
+where `PythonXYZ` matches the system-installed version.
 
 ### Upstream Reference
 

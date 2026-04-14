@@ -134,136 +134,106 @@ def check_resolve_running() -> bool:
         return False
 
 
-_probe_cache: tuple[bool, str] | None = None
-
-
-def probe_resolve_scripting(*, use_cache: bool = True) -> tuple[bool, str]:
+def check_python_runtime_compatibility() -> tuple[bool, str]:
     """
-    Test that fusionscript loads without crashing the Python process.
+    Detect whether fusionscript.dll will load a conflicting Python runtime.
 
-    Imports DaVinciResolveScript in a child process so that an ABI-level
-    crash (segfault) kills only the child, not the MCP server.  The probe
-    does NOT call ``scriptapp("Resolve")`` — that would open an IPC
-    connection to Resolve whose teardown-on-exit can block subsequent
-    connections.  Only the DLL import is tested, which is where the ABI
-    crash occurs.
+    On Windows, DaVinci Resolve's fusionscript.dll discovers the system
+    Python installation via the Windows registry and calls LoadLibrary
+    with a full path to that installation's python3.dll.  If the MCP
+    server is running under a *different* Python installation (e.g. a
+    uv-managed Python), two incompatible Python runtimes end up in the
+    same process and the server crashes with an access violation.
 
-    A successful result is cached for the lifetime of the process (the
-    DLL's ABI compatibility will not change while the server is running).
-    Failures are never cached so the user can fix the issue and retry.
+    This function compares the running Python's python3.dll path to the
+    registry-registered Python's install directory.  If they differ, it
+    returns an actionable diagnostic.
 
-    Skipped inside PyInstaller bundles where sys.executable is the
-    frozen EXE.
-
-    Returns
-    -------
-    (success, message)
-        *success* is True when the DLL loaded without crashing.
-        *message* is a short status on success, or a diagnostic on
-        failure.
+    On non-Windows platforms or inside PyInstaller bundles the check is
+    skipped (always returns success).
     """
-    import subprocess as _sp
+    if platform.system().lower() != "windows":
+        return (True, "")
 
-    global _probe_cache  # noqa: PLW0603
-
-    if use_cache and _probe_cache is not None:
-        return _probe_cache
-
-    # In a PyInstaller bundle sys.executable is the EXE, not python,
-    # so a "-c" probe cannot work.  The frozen bundle was built with a
-    # specific Python version, so skip the probe.
     if getattr(sys, "frozen", False):
-        _probe_cache = (True, "probe skipped (frozen executable)")
-        return _probe_cache
-
-    paths = get_resolve_paths()
-    lib_path = str(paths["lib_path"])
-    modules_path = str(paths["modules_path"])
-
-    # Build a small script that only imports the DLL — no IPC.
-    lines: list[str] = ["import sys, os"]
-
-    if platform.system().lower() == "windows":
-        resolve_dir = str(paths["lib_path"].parent)
-        lines.append(f"os.add_dll_directory({resolve_dir!r})")
-
-    lines += [
-        f"os.environ['RESOLVE_SCRIPT_LIB'] = {lib_path!r}",
-        f"sys.path.insert(0, {modules_path!r})",
-        "try:",
-        "    import DaVinciResolveScript",
-        "    print('OK')",
-        "except SystemError:",
-        "    print('FAIL:INIT_ERROR')",
-        "except ImportError as e:",
-        "    print('FAIL:IMPORT_ERROR:' + str(e))",
-        "except Exception as e:",
-        "    print('FAIL:ERROR:' + str(e))",
-    ]
-
-    probe_code = "\n".join(lines)
+        return (True, "")
 
     try:
-        # stdin must be DEVNULL — the parent's stdin is the MCP
-        # transport pipe and inheriting it lets the child steal
-        # JSON-RPC bytes or hang reading from it.  close_fds
-        # prevents other inherited handles on Windows.
-        result = _sp.run(
-            [sys.executable, "-c", probe_code],
-            stdin=_sp.DEVNULL,
-            capture_output=True,
-            text=True,
-            timeout=10,
-            check=False,
-            close_fds=True,
-        )
-    except _sp.TimeoutExpired:
-        return (False, "Timed out probing DaVinci Resolve scripting API")
-    except Exception as e:
-        return (False, f"Failed to run scripting probe: {e}")
+        import ctypes
+        import winreg
 
-    stdout = result.stdout.strip()
+        # --- Find the registry-registered Python install path ---
+        base_key = r"SOFTWARE\Python\PythonCore"
+        registered_path: str | None = None
+        registered_ver: str | None = None
 
-    # Non-zero exit with no Python-level output means the child process
-    # crashed (segfault).  This is the ABI-mismatch scenario.
-    # Cache this — the DLL's ABI won't change while the server runs.
-    if result.returncode != 0 and not stdout:
-        py_ver = f"{sys.version_info.major}.{sys.version_info.minor}"
-        _probe_cache = (
+        try:
+            core_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, base_key)
+        except FileNotFoundError:
+            # No system Python registered — fusionscript.dll may fail to
+            # find Python at all, but that is a different error path.
+            return (True, "")
+
+        # Pick the highest registered Python 3.x version.
+        i = 0
+        while True:
+            try:
+                ver = winreg.EnumKey(core_key, i)
+                i += 1
+            except OSError:
+                break
+            if not ver.startswith("3"):
+                continue
+            try:
+                ip_key = winreg.OpenKey(core_key, ver + r"\InstallPath")
+                val, _ = winreg.QueryValueEx(ip_key, "")
+                winreg.CloseKey(ip_key)
+                if registered_ver is None or ver > registered_ver:
+                    registered_ver = ver
+                    registered_path = val
+            except (FileNotFoundError, OSError):
+                continue
+        winreg.CloseKey(core_key)
+
+        if not registered_path:
+            return (True, "")
+
+        # --- Find the running Python's python3.dll location ---
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        GetModuleHandleW = kernel32.GetModuleHandleW
+        GetModuleHandleW.restype = ctypes.c_void_p
+        GetModuleFileNameW = kernel32.GetModuleFileNameW
+
+        handle = GetModuleHandleW("python3.dll")
+        if not handle:
+            return (True, "")
+
+        buf = ctypes.create_unicode_buffer(512)
+        GetModuleFileNameW(ctypes.c_void_p(handle), buf, 512)
+        loaded_python3_path = buf.value
+
+        if not loaded_python3_path:
+            return (True, "")
+
+        # --- Compare directories ---
+        loaded_dir = os.path.normcase(os.path.dirname(loaded_python3_path))
+        registry_dir = os.path.normcase(registered_path.rstrip("\\/"))
+
+        if loaded_dir == registry_dir:
+            return (True, "")
+
+        return (
             False,
-            f"fusionscript.dll crashed during initialization "
-            f"(Python {py_ver} may be incompatible). "
-            f"DaVinci Resolve typically requires Python 3.10 or 3.11. "
-            f"Recreate the virtual environment with: "
-            f"uv venv --python 3.10",
+            f"Python runtime conflict: this process loaded python3.dll "
+            f"from {os.path.dirname(loaded_python3_path)}, but DaVinci "
+            f"Resolve will load Python from the system installation at "
+            f"{registered_path.rstrip(chr(92) + '/')}. Two Python "
+            f"runtimes in one process will crash. Create the virtual "
+            f"environment from the system Python instead:\n"
+            f'  uv venv --python "{registered_path}python.exe"\n'
+            f"  uv sync",
         )
-        return _probe_cache
 
-    if stdout == "OK":
-        _probe_cache = (True, "fusionscript loaded successfully")
-        return _probe_cache
-
-    # DLL init failures are deterministic for this process; cache them.
-    if "INIT_ERROR" in stdout:
-        _probe_cache = (
-            False,
-            "fusionscript.dll failed to initialize. "
-            "External scripting may require DaVinci Resolve Studio, "
-            "or scripting access may need to be enabled in "
-            "Resolve Preferences > System > General.",
-        )
-        return _probe_cache
-
-    if "IMPORT_ERROR" in stdout:
-        detail = stdout.split(":", 2)[-1] if stdout.count(":") >= 2 else ""
-        _probe_cache = (
-            False,
-            f"Failed to import DaVinciResolveScript: {detail}",
-        )
-        return _probe_cache
-
-    # Anything else (unexpected output) is not cached — may be transient.
-    return (
-        False,
-        f"Scripting probe failed: {stdout or result.stderr.strip()}",
-    )
+    except Exception:
+        # If anything goes wrong in detection, don't block startup.
+        return (True, "")

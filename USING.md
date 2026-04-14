@@ -11,7 +11,9 @@ For full API documentation, see `docs/html/index.html` or regenerate with
 
 ## Prerequisites
 
-- Python 3.10 or later
+- Python 3.10 or later, **installed system-wide** (the installer from
+  [python.org](https://www.python.org/downloads/) with "Add to PATH" and
+  "Install for all users" selected)
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
 - DaVinci Resolve (Free or Studio), installed and running when using the server
 - Git, configured with GPG signing (required for commits — see CONTRIBUTING.md)
@@ -23,9 +25,33 @@ For full API documentation, see `docs/html/index.html` or regenerate with
 ```bash
 git clone https://github.com/Positronikal/davinci-mcp-professional.git
 cd davinci-mcp-professional
-uv venv
+uv venv --python <system-python>
 uv sync
 ```
+
+**Windows — important:** The `--python` flag must point to the
+system-installed Python executable.  DaVinci Resolve's `fusionscript.dll`
+discovers Python through the Windows registry
+(`HKLM\SOFTWARE\Python\PythonCore`) and loads `python3.dll` by full path
+from that installation.  If the virtual environment uses a *different*
+Python (e.g. one downloaded by `uv` automatically), two Python runtimes
+end up in the same process and the server crashes.
+
+To find your system Python, run:
+
+```powershell
+py -0p          # Windows Python Launcher — lists installed versions and paths
+```
+
+Then create the venv:
+
+```bash
+uv venv --python "C:\Program Files\Python314\python.exe"   # adjust to your version
+uv sync
+```
+
+On **macOS / Linux**, `uv venv` with no `--python` flag works if the
+default `python3` is a system-wide installation.
 
 `uv sync` installs all runtime and dev dependencies from `uv.lock` into `.venv`.
 
