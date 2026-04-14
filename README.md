@@ -30,13 +30,9 @@ Supported MCP clients: **Claude Desktop** (primary), Gemini CLI, ChatGPT.
 ```bash
 git clone https://github.com/Positronikal/davinci-mcp-professional.git
 cd davinci-mcp-professional
-uv venv --python <system-python>   # e.g. --python "C:\Program Files\Python314\python.exe"
+uv venv
 uv sync
 ```
-
-On Windows, the `--python` flag must point to the system-installed Python
-(the one registered in the Windows registry).  See
-[USING.md](USING.md#development-setup) for details.
 
 ### Standalone Windows executable
 
