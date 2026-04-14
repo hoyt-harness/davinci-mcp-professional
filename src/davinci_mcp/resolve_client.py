@@ -12,7 +12,11 @@ if TYPE_CHECKING:
     # Import for type checking only to avoid runtime import issues
     from .types import DaVinciProject, DaVinciProjectManager, DaVinciResolveApp
 
-from .utils.platform import check_resolve_running, setup_resolve_environment
+from .utils.platform import (
+    check_resolve_running,
+    probe_resolve_scripting,
+    setup_resolve_environment,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -57,11 +61,19 @@ class DaVinciResolveClient:
                 "DaVinci Resolve is not running. Please start DaVinci Resolve first."
             )
 
-        # Set up environment
+        # Set up environment (env vars, sys.path, DLL search dirs)
         if not setup_resolve_environment():
             raise DaVinciResolveConnectionError(
                 "Failed to set up DaVinci Resolve environment variables."
             )
+
+        # Probe the scripting API in an isolated subprocess.  If
+        # fusionscript.dll is ABI-incompatible with this Python version
+        # (e.g. Python 3.14 vs a DLL built for 3.10), the child process
+        # crashes instead of the MCP server.
+        probe_ok, probe_msg = probe_resolve_scripting()
+        if not probe_ok:
+            raise DaVinciResolveConnectionError(probe_msg)
 
         try:
             # Import and connect to Resolve
@@ -86,11 +98,19 @@ class DaVinciResolveClient:
             self._is_connected = True
             logger.info(f"Connected to {self.get_version()}")
 
+        except SystemError as e:
+            raise DaVinciResolveConnectionError(
+                f"fusionscript.dll initialization failed: {e}. "
+                "Check that DaVinci Resolve Studio is running with "
+                "external scripting enabled in Preferences."
+            )
         except ImportError as e:
             raise DaVinciResolveConnectionError(
                 f"Failed to import DaVinciResolveScript: {e}. "
                 "Check environment variables and DaVinci Resolve installation."
             )
+        except DaVinciResolveConnectionError:
+            raise
         except Exception as e:
             raise DaVinciResolveConnectionError(f"Unexpected error connecting: {e}")
 
