@@ -104,9 +104,7 @@ def main(debug: bool = False, skip_checks: bool = False) -> None:
     click.echo(
         f"{Fore.MAGENTA}  DaVinci MCP Professional v{__version__}{Style.RESET_ALL}"
     )
-    click.echo(
-        f"{Fore.MAGENTA}  Python {py_ver}{Style.RESET_ALL}"
-    )
+    click.echo(f"{Fore.MAGENTA}  Python {py_ver}{Style.RESET_ALL}")
     click.echo(f"{Fore.MAGENTA}{'=' * 60}{Style.RESET_ALL}\n")
 
     # Check prerequisites unless skipped
