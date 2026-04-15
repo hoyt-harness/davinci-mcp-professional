@@ -11,8 +11,8 @@ Supported MCP clients: **Claude Desktop** (primary), Gemini CLI, ChatGPT.
 
 ## Prerequisites
 
-- [DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve)
-  (Free or Studio), installed and licensed
+- [DaVinci Resolve Studio](https://www.blackmagicdesign.com/products/davinciresolve)
+  installed and licensed (the free edition does not support external scripting)
 - Python 3.10 or later, **installed system-wide** (the installer from
   [python.org](https://www.python.org/downloads/) with "Add to PATH" and
   "Install for all users" selected). On Windows, DaVinci Resolve locates

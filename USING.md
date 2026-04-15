@@ -15,7 +15,8 @@ For full API documentation, see `docs/html/index.html` or regenerate with
   [python.org](https://www.python.org/downloads/) with "Add to PATH" and
   "Install for all users" selected)
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
-- DaVinci Resolve (Free or Studio), installed and running when using the server
+- DaVinci Resolve Studio, installed and running when using the server
+  (the free edition does not support external scripting)
 - Git, configured with GPG signing (required for commits — see CONTRIBUTING.md)
 
 ---
