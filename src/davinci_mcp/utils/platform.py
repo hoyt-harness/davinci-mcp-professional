@@ -84,7 +84,7 @@ def setup_resolve_environment() -> bool:
         # directories formerly found via PATH.  fusionscript.dll depends
         # on sibling DLLs in the Resolve install directory (lua5.1.dll,
         # tbbmalloc.dll, etc.) so we must add that directory explicitly.
-        if platform.system().lower() == "windows":
+        if sys.platform == "win32":
             lib_dir = paths["lib_path"].parent
             if lib_dir.exists():
                 os.add_dll_directory(str(lib_dir))
@@ -152,7 +152,7 @@ def check_python_runtime_compatibility() -> tuple[bool, str]:
     On non-Windows platforms or inside PyInstaller bundles the check is
     skipped (always returns success).
     """
-    if platform.system().lower() != "windows":
+    if sys.platform != "win32":
         return (True, "")
 
     if getattr(sys, "frozen", False):
