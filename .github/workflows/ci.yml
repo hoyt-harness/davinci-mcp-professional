@@ -25,33 +25,8 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies
-      run: uv sync
-
-    - name: Run tests
-      run: |
-        uv run pytest || echo "Tests failed (but continuing)"
-
-    - name: Run pyright
-      run: uv run pyright
-
-    - name: Lint with Ruff
-      run: |
-        uv run ruff check src/
-        uv run ruff format src/ --check
-
-    - name: Security vulnerability scan
-      run: |
-        uv run safety check --json || echo "Safety check completed with warnings"
-
-    - name: SAST with Bandit
-      run: |
-        uv run bandit -r src/ -f json -o bandit-report.json || echo "Bandit scan completed"
-
-    - name: License compliance check
-      run: |
-        uv run pip-licenses --format=json --output-file=licenses.json
-        echo "License compliance check completed"
+    - name: Run CI checks
+      run: bash hooks/ci-check.sh
 
     - name: Upload security artifacts
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

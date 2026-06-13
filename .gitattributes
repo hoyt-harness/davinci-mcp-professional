@@ -43,6 +43,7 @@
 *.py                    text
 *.rb                    text
 *.sass                  text
+/hooks/*                text eol=lf
 *.scm                   text
 *.scss                  text
 *.sh                    text eol=lf

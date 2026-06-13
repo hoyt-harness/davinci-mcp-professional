@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# pre-push: local CI/CD gate + informational security review
+#
+# 1. hooks/ci-check.sh — same checks as .github/workflows/ci.yml.
+#    BLOCKING: push aborts on failure. Local pass should reliably predict
+#    the CI verdict for the same commit; GitHub Actions runs are
+#    confirmation, not discovery.
+# 2. Claude Code security review — semantic, informational only.
+#    Findings are advisory; review them but they do not block the push.
+
+set -e
+
+echo "Running local CI checks (hooks/ci-check.sh)..."
+bash hooks/ci-check.sh
+
+echo ""
+echo "Local CI checks passed."
+echo ""
+
+if ! command -v claude >/dev/null 2>&1; then
+    echo "Claude Code not installed. Skipping security review."
+    echo "  Install from: https://claude.ai/download"
+    exit 0
+fi
+
+if [ ! -f ".claude/commands/security-review.md" ]; then
+    echo ".claude/commands/security-review.md not found. Skipping security review."
+    exit 0
+fi
+
+DIFF=$(git diff --merge-base origin/HEAD 2>/dev/null || git diff HEAD~1 2>/dev/null)
+
+if [ -z "$DIFF" ]; then
+    echo "No changes to review."
+    exit 0
+fi
+
+echo "Running security review..."
+claude -p "$(cat .claude/commands/security-review.md)
+
+DIFF:
+$DIFF" 2>&1
+
+echo ""
+echo "Security review complete. Address any findings above before pushing."
+exit 0
