@@ -36,7 +36,7 @@ if [ -z "$DIFF" ]; then
 fi
 
 echo "Running security review..."
-claude -p "$(cat .claude/commands/security-review.md)
+claude -p -- "$(cat .claude/commands/security-review.md)
 
 DIFF:
 $DIFF" 2>&1
