@@ -15,5 +15,13 @@ updates:
     # Security-focused configuration
     allow:
       - dependency-type: "security"
-    reviewers:
-      - "Positronikal"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "America/Chicago"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
