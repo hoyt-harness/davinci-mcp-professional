@@ -36,10 +36,10 @@ if [ -z "$DIFF" ]; then
 fi
 
 echo "Running security review..."
-claude -p -- "$(cat .claude/commands/security-review.md)
+PROMPT="$(cat .claude/commands/security-review.md)
 
-DIFF:
-$DIFF" 2>&1
+DIFF:"
+printf '%s\n%s\n' "$PROMPT" "$DIFF" | claude -p 2>&1 || echo "Security review failed to run (non-blocking)."
 
 echo ""
 echo "Security review complete. Address any findings above before pushing."
