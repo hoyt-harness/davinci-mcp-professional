@@ -1,8 +1,2 @@
-# Examples for future reference.
-# Assigns @someContributor to everything under the docs folder:
-#docs/ @someContributor
-# Assigns @installExpert to a specific script:
-#scripts/install.sh @installExpert
-
 # Default code owner for the entire repository
-* @Positronikal
+* @hoyt-harness
