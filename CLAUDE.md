@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+> Vault documentation: `C:\Users\hoyth\Obsidian\Positronikal\03-OPERATIONS\Engineering\davinci-mcp-professional\`
+
 This file provides guidance to Claude Code when working with this repository.
 
 ## Project Overview

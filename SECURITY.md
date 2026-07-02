@@ -1,5 +1,13 @@
 # Security Policy
 
+## Supported Versions
+
+| Version | Supported          | End of Support |
+| ------- | ------------------ | -------------- |
+| 2.2.x   | :white_check_mark: | TBD            |
+| 2.1.x   | :white_check_mark: | 2025-12-31     |
+| < 2.0   | :x:                | 2024-12-31     |
+
 ## Reporting a Vulnerability
 
 We take security vulnerabilities seriously. If you discover a security issue, please report it to us by following these steps:
