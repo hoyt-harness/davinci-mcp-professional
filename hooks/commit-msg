@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# commit-msg: Conventional Commits format (BLOCKING). Copy as-is.
+
+commit_regex='^(feat|fix|docs|style|refactor|test|chore|security|perf)(\(.+\))?: .{1,50}'
+
+if ! grep -qE "$commit_regex" "$1"; then
+    echo "Commit message does not follow conventional commit format."
+    echo ""
+    echo "  Format:  type(scope): description"
+    echo "  Types:   feat, fix, docs, style, refactor, test, chore, security, perf"
+    echo ""
+    echo "  Examples:"
+    echo "    feat: add triage acquisition module"
+    echo "    fix(auth): correct session token expiry"
+    echo "    docs: update contributing guidelines"
+    exit 1
+fi
+
+if grep -qiE "(security|vulnerability|cve|exploit|breach)" "$1"; then
+    echo "Security-related commit. Ensure security review has been completed before pushing."
+fi
+
+echo "Commit message validated."

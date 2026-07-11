@@ -87,7 +87,7 @@ def setup_resolve_environment() -> bool:
         if sys.platform == "win32":
             lib_dir = paths["lib_path"].parent
             if lib_dir.exists():
-                os.add_dll_directory(str(lib_dir))
+                os.add_dll_directory(str(lib_dir))  # type: ignore[attr-defined]
 
         return True
     except Exception:
@@ -160,7 +160,7 @@ def check_python_runtime_compatibility() -> tuple[bool, str]:
 
     try:
         import ctypes
-        import winreg
+        import winreg  # type: ignore[import]
 
         # --- Find the registry-registered Python install path ---
         base_key = r"SOFTWARE\Python\PythonCore"
@@ -199,7 +199,7 @@ def check_python_runtime_compatibility() -> tuple[bool, str]:
             return (True, "")
 
         # --- Find the running Python's python3.dll location ---
-        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)  # type: ignore[attr-defined]
         GetModuleHandleW = kernel32.GetModuleHandleW
         GetModuleHandleW.restype = ctypes.c_void_p
         GetModuleFileNameW = kernel32.GetModuleFileNameW

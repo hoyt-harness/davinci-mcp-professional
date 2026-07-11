@@ -36,9 +36,9 @@ build = [
 davinci-mcp = "davinci_mcp.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/Positronikal/davinci-mcp-professional"
-Repository = "https://github.com/Positronikal/davinci-mcp-professional"
-Issues = "https://github.com/Positronikal/davinci-mcp-professional/issues"
+Homepage = "https://github.com/hoyt-harness/davinci-mcp-professional"
+Repository = "https://github.com/hoyt-harness/davinci-mcp-professional"
+Issues = "https://github.com/hoyt-harness/davinci-mcp-professional/issues"
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]

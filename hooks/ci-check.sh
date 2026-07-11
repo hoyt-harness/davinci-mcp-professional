@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Single source of truth for CI/code-quality checks.
 # Invoked locally by hooks/pre-push (blocking) and by .github/workflows/ci.yml
-# (confirmation only) — both run this exact script so local and CI cannot drift.
+# (confirmation only) — local and CI run this exact script to prevent drift.
 set -e
 
 uv sync
@@ -20,10 +20,11 @@ echo "Security vulnerability scan (safety)..."
 uv run safety check --json || echo "Safety check completed with warnings"
 
 echo "SAST with Bandit..."
-uv run bandit -r src/ -f json -o bandit-report.json || echo "Bandit scan completed"
+uv run python -m bandit -r src/ -f json -o bandit-report.json \
+    || echo "Bandit scan completed"
 
 echo "License compliance check..."
-uv run pip-licenses --format=json --output-file=licenses.json
+uv run python -m pip_licenses --format=json --output-file=licenses.json
 echo "License compliance check completed"
 
 echo "ci-check passed."

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# pre-commit: fast, language-native formatting and static analysis (BLOCKING).
+#
+# Language-neutral stub. Replace the body below with the template for this
+# repository's primary language from Git Hooks Standards.md (Go, Python, C,
+# bash/shell, or PowerShell), then append the Secret Scanning and File Size
+# and Binary Restrictions sections from the same document.
+
+set -e
+
+echo "pre-commit: no language-specific checks configured yet."
+echo "  See standards/Git Hooks Standards.md to customize this hook."
+echo "Pre-commit checks passed."

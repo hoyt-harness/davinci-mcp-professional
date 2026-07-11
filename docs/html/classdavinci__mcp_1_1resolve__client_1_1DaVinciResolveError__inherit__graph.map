@@ -1,9 +1,0 @@
-<map id="davinci_mcp.resolve_client.DaVinciResolveError" name="davinci_mcp.resolve_client.DaVinciResolveError">
-<area shape="rect" id="Node000001" title=" " alt="" coords="133,55,318,97"/>
-<area shape="rect" id="Node000003" href="$classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveConnectionError.html" title=" " alt="" coords="368,5,591,64"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="333,56,367,50,368,56,334,61"/>
-<area shape="rect" id="Node000004" href="$classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveNotRunningError.html" title=" " alt="" coords="366,88,592,147"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="334,91,366,96,365,101,333,96"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,63,85,89"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,73,132,73,132,79,101,79"/>
-</map>

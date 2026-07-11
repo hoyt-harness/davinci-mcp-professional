@@ -13,8 +13,8 @@ The build extra installs PyInstaller. Alternatively install it manually:
   uv add --optional build pyinstaller
 """
 
-import sys
 import os
+import sys
 from pathlib import Path
 
 try:
@@ -79,13 +79,18 @@ def _args(name: str, script: Path) -> list[str]:
     """Assemble the PyInstaller argument list for one target."""
     args = [
         str(script),
-        "--name", name,
-        "--onedir",               # directory bundle — avoids AV false positives
-        "--noconfirm",            # overwrite previous dist without prompting
-        "--distpath", str(ROOT / "dist"),
-        "--workpath", str(ROOT / "build"),
-        "--specpath", str(ROOT / "build"),
-        "--paths", str(SRC),      # ensure src/ is on the analysis path
+        "--name",
+        name,
+        "--onedir",  # directory bundle — avoids AV false positives
+        "--noconfirm",  # overwrite previous dist without prompting
+        "--distpath",
+        str(ROOT / "dist"),
+        "--workpath",
+        str(ROOT / "build"),
+        "--specpath",
+        str(ROOT / "build"),
+        "--paths",
+        str(SRC),  # ensure src/ is on the analysis path
     ]
 
     for imp in HIDDEN_IMPORTS:
@@ -138,7 +143,7 @@ def build_target(name: str, script_name: str) -> bool:
 def main() -> int:
     targets = [
         ("davinci-mcp-server", "mcp_server.py"),
-        ("davinci-mcp",        "main.py"),
+        ("davinci-mcp", "main.py"),
     ]
 
     results: list[tuple[str, bool]] = []
