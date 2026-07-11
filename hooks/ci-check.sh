@@ -24,7 +24,7 @@ uv run python -m bandit -r src/ -f json -o bandit-report.json \
     || echo "Bandit scan completed"
 
 echo "License compliance check..."
-uv run python -m pip_licenses --format=json --output-file=licenses.json
+uv run python -m piplicenses --format=json --output-file=licenses.json
 echo "License compliance check completed"
 
 echo "ci-check passed."
