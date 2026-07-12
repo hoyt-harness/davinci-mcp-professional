@@ -111,9 +111,9 @@ def check_resolve_running() -> bool:
 
     try:
         if current_platform == "windows":
-            import subprocess
+            import subprocess  # nosec B404
 
-            result = subprocess.run(
+            result = subprocess.run(  # nosec B603,B607
                 ["tasklist", "/FI", "IMAGENAME eq Resolve.exe"],
                 capture_output=True,
                 text=True,
@@ -122,9 +122,9 @@ def check_resolve_running() -> bool:
             return "Resolve.exe" in result.stdout
 
         elif current_platform in ["macos", "linux"]:
-            import subprocess
+            import subprocess  # nosec B404
 
-            result = subprocess.run(
+            result = subprocess.run(  # nosec B603,B607
                 ["pgrep", "-f", "DaVinci Resolve"], capture_output=True, check=False
             )
             return result.returncode == 0
