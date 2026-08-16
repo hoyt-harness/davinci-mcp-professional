@@ -127,7 +127,8 @@ def check_resolve_running() -> bool:
 
             result = subprocess.run(  # nosec B603,B607  # noqa: S603
                 ["pgrep", "-f", "DaVinci Resolve"],  # noqa: S607
-                capture_output=True, check=False
+                capture_output=True,
+                check=False,
             )
             return result.returncode == 0
 
