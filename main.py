@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Main entry point for DaVinci Resolve MCP Server.
 """
@@ -27,7 +28,7 @@ if (
     if venv_python.exists():
         print(f"Starting with virtual environment: {venv_python}")
         # Re-run this script with the virtual environment Python
-        result = subprocess.run(
+        result = subprocess.run(  # noqa: S603
             [str(venv_python), __file__] + sys.argv[1:], check=False
         )
         sys.exit(result.returncode)
@@ -40,7 +41,7 @@ if (
 src_dir = current_dir / "src"
 sys.path.insert(0, str(src_dir))
 
-from davinci_mcp.cli import main
+from davinci_mcp.cli import main  # noqa: E402
 
 if __name__ == "__main__":
     main()

@@ -28,7 +28,7 @@ Supported MCP clients: **Claude Desktop** (primary), Gemini CLI, ChatGPT.
 ### From source (recommended)
 
 ```bash
-git clone https://github.com/Positronikal/davinci-mcp-professional.git
+git clone https://github.com/hoyt-harness/davinci-mcp-professional.git
 cd davinci-mcp-professional
 uv venv
 uv sync
@@ -37,7 +37,7 @@ uv sync
 ### Standalone Windows executable
 
 Download the pre-built Windows binaries from
-[Releases](https://github.com/Positronikal/davinci-mcp-professional/releases).
+[Releases](https://github.com/hoyt-harness/davinci-mcp-professional/releases).
 No Python installation required.
 
 The release includes two executables:
@@ -105,6 +105,23 @@ Restart Claude Desktop after saving the config.
 
 ---
 
+## Configuring Claude Code
+
+Add the server entry using the `claude mcp add` command (user scope, persists
+across projects):
+
+```bash
+claude mcp add -s user davinci-resolve \
+  -- /path/to/davinci-mcp-professional/.venv/Scripts/python.exe \
+  /path/to/davinci-mcp-professional/mcp_server.py
+```
+
+This writes to `~/.claude.json` and makes the server available in all Claude
+Code sessions without per-project configuration. Adjust the paths to your
+actual install location.
+
+---
+
 ## Other Supported Clients
 
 **Gemini CLI** and **ChatGPT** support the MCP standard and can connect to this
@@ -137,7 +154,7 @@ Import /path/to/clip.mp4 into the media pool.
 | [USING.md](USING.md) | Developer setup, build instructions, contributing |
 | [BUGS.md](BUGS.md) | Troubleshooting and bug reporting |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
-| [COPYING.md](COPYING.md) | GPL-3.0 license |
+| [COPYING](COPYING) | GPL-3.0 license |
 
 For developer setup, build instructions, and contribution guidelines,
 see **USING.md**.

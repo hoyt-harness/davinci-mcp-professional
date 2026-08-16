@@ -1,7 +1,7 @@
 # Support
 
 **Issues**: Report bugs and feature requests via
-[GitHub Issues](https://github.com/Positronikal/davinci-mcp-professional/issues).
+[GitHub Issues](https://github.com/hoyt-harness/davinci-mcp-professional/issues).
 
 ---
 

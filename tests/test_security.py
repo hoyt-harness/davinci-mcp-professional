@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Security-focused test suite for DaVinci MCP Professional.
 
@@ -12,7 +13,6 @@ import stat
 import subprocess
 import sys
 from pathlib import Path
-from typing import Generator
 
 import pytest
 
@@ -70,7 +70,7 @@ class TestSecurity:
         """Check for known vulnerabilities in dependencies using safety."""
         try:
             result = subprocess.run(
-                ["safety", "check", "--json"],
+                ["safety", "check", "--json"],  # noqa: S607
                 capture_output=True,
                 text=True,
                 cwd=Path(__file__).parent.parent,
@@ -82,17 +82,21 @@ class TestSecurity:
                     if vulnerabilities:
                         vuln_summary = []
                         for vuln in vulnerabilities:
-                            vuln_summary.append(
+                            vuln_summary.append(  # noqa: PERF401
                                 f"Package: {vuln.get('package', 'Unknown')} "
                                 f"Version: {vuln.get('installed_version', 'Unknown')} "
-                                f"Vulnerability: {vuln.get('vulnerability_id', 'Unknown')}"
+                                "Vulnerability: "
+                                f"{vuln.get('vulnerability_id', 'Unknown')}"
                             )
                         pytest.fail(
-                            "Security vulnerabilities found:\n" + "\n".join(vuln_summary)
+                            "Security vulnerabilities found:\n"
+                            + "\n".join(vuln_summary)
                         )
                 except json.JSONDecodeError:
                     if "vulnerabilities found" in result.stdout.lower():
-                        pytest.fail(f"Security vulnerabilities detected: {result.stdout}")
+                        pytest.fail(
+                            f"Security vulnerabilities detected: {result.stdout}"
+                        )
 
         except FileNotFoundError:
             pytest.skip("Safety tool not installed. Run: uv sync")
@@ -165,8 +169,9 @@ class TestSecurity:
                 for i, line in enumerate(lines):
                     for dangerous in dangerous_imports:
                         if dangerous in line and not line.strip().startswith("#"):
-                            violations.append(
-                                f"{py_file}:{i+1} - Potentially dangerous: {line.strip()}"
+                            violations.append(  # noqa: PERF401
+                                f"{py_file}:{i+1} - Potentially dangerous: "
+                                f"{line.strip()}"
                             )
             except UnicodeDecodeError:
                 continue
@@ -188,7 +193,8 @@ class TestSecurity:
         ]
         exposed_vars = [v for v in sensitive_env_vars if os.getenv(v)]
         if exposed_vars:
-            print(f"⚠️  Sensitive environment variables detected: {', '.join(exposed_vars)}")
+            detected = ", ".join(exposed_vars)
+            print(f"⚠️  Sensitive environment variables detected: {detected}")
             print("Ensure these are properly secured in production.")
 
     def test_configuration_security(self):
@@ -206,14 +212,17 @@ class TestSecurity:
             try:
                 content = config_file.read_text(encoding="utf-8").lower()
                 if not any(
-                    s in content for s in ["password", "secret", "token", "key", "credential"]
+                    s in content
+                    for s in ["password", "secret", "token", "key", "credential"]
                 ):
                     continue
                 lines = content.split("\n")
                 for i, line in enumerate(lines):
                     if "=" not in line and ":" not in line:
                         continue
-                    if not any(s in line for s in ["password", "secret", "token", "key"]):
+                    if not any(
+                        s in line for s in ["password", "secret", "token", "key"]
+                    ):
                         continue
                     parts = line.split("=" if "=" in line else ":")
                     if len(parts) > 1 and parts[1].strip():

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Security audit script for DaVinci MCP Professional.
 
@@ -15,21 +16,20 @@ import os
 import subprocess
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 
 
 class SecurityAuditor:
     """Comprehensive security auditing tool."""
 
-    def __init__(self, project_root: Optional[Path] = None):
+    def __init__(self, project_root: Path | None = None):
         self.project_root = project_root or Path(__file__).parent
         self.results = {}
         self.errors = []
 
-    def run_command(self, cmd: List[str], description: str) -> Tuple[bool, str, str]:
+    def run_command(self, cmd: list[str], description: str) -> tuple[bool, str, str]:
         """Run a command and capture output."""
         try:
-            result = subprocess.run(
+            result = subprocess.run(  # noqa: S603
                 cmd, capture_output=True, text=True, cwd=self.project_root
             )
             return (result.returncode == 0, result.stdout, result.stderr)
@@ -38,7 +38,7 @@ class SecurityAuditor:
         except Exception as e:
             return False, "", str(e)
 
-    def check_dependencies_safety(self) -> Dict:
+    def check_dependencies_safety(self) -> dict:
         """Check dependencies for known vulnerabilities using Safety."""
         print("🔍 Checking dependencies with Safety...")
 
@@ -59,7 +59,7 @@ class SecurityAuditor:
         else:
             return {"status": "error", "error": stderr or "Safety check failed"}
 
-    def run_bandit_sast(self) -> Dict:
+    def run_bandit_sast(self) -> dict:
         """Run Bandit static application security testing."""
         print("🔍 Running Bandit SAST analysis...")
 
@@ -72,7 +72,7 @@ class SecurityAuditor:
         report_file = self.project_root / "bandit-report.json"
         if report_file.exists():
             try:
-                with open(report_file, "r") as f:
+                with open(report_file) as f:
                     report = json.load(f)
 
                 return {
@@ -89,7 +89,7 @@ class SecurityAuditor:
         else:
             return {"status": "error", "error": "Bandit report not generated"}
 
-    def check_license_compliance(self) -> Dict:
+    def check_license_compliance(self) -> dict:
         """Check license compliance."""
         print("📄 Checking license compliance...")
 
@@ -128,7 +128,7 @@ class SecurityAuditor:
         else:
             return {"status": "error", "error": stderr or "License check failed"}
 
-    def run_security_tests(self) -> Dict:
+    def run_security_tests(self) -> dict:
         """Run security-focused tests."""
         print("🧪 Running security tests...")
 
@@ -143,7 +143,7 @@ class SecurityAuditor:
             "error": stderr if not success else None,
         }
 
-    def run_code_quality_checks(self) -> Dict:
+    def run_code_quality_checks(self) -> dict:
         """Run code quality and style checks."""
         print("✨ Running code quality checks...")
 
@@ -285,8 +285,8 @@ class SecurityAuditor:
                 "📊 SECURITY AUDIT SUMMARY",
                 "-" * 25,
                 f"🗓️  Audit Date: {os.environ.get('DATE', 'Unknown')}",
-                f"👤 Auditor: Security Automation Script",
-                f"📁 Project: DaVinci MCP Professional v2.2.1",
+                "👤 Auditor: Security Automation Script",
+                "📁 Project: DaVinci MCP Professional v2.2.1",
                 "",
                 "🔗 Next Steps:",
                 "1. Review and address any security vulnerabilities",
@@ -341,7 +341,7 @@ Usage: python security_audit.py [options]
 
 Options:
   --help     Show this help message
-  
+
 This script performs a comprehensive security audit including:
 - Dependency vulnerability scanning (Safety)
 - Static application security testing (Bandit)

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "davinci-mcp": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "davinci-mcp"]
+    }
+  }
+}

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 PyInstaller build script for DaVinci MCP Professional.
 
@@ -13,7 +14,6 @@ The build extra installs PyInstaller. Alternatively install it manually:
   uv add --optional build pyinstaller
 """
 
-import os
 import sys
 from pathlib import Path
 
@@ -158,7 +158,7 @@ def main() -> int:
         print(f"  {tag}  dist/{name}/")
 
     if all(ok for _, ok in results):
-        print(f"\nExecutables are inside their respective dist/ subdirectories.")
+        print("\nExecutables are inside their respective dist/ subdirectories.")
         if sys.platform == "win32":
             print("  dist/davinci-mcp-server/davinci-mcp-server.exe")
             print("  dist/davinci-mcp/davinci-mcp.exe")

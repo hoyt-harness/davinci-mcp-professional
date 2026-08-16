@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Test script for the new DaVinci Resolve MCP implementation.
 """
@@ -25,7 +26,7 @@ if not hasattr(sys, "real_prefix") and not (
     if venv_python.exists():
         print(f"Running tests with virtual environment: {venv_python}")
         # Re-run this script with the virtual environment Python
-        result = subprocess.run(
+        result = subprocess.run(  # noqa: S603
             [str(venv_python), __file__] + sys.argv[1:], check=False
         )
         sys.exit(result.returncode)
@@ -38,8 +39,11 @@ if not hasattr(sys, "real_prefix") and not (
 src_dir = current_dir / "src"
 sys.path.insert(0, str(src_dir))
 
-from davinci_mcp.resolve_client import DaVinciResolveClient, DaVinciResolveError
-from davinci_mcp.utils import (
+from davinci_mcp.resolve_client import (  # noqa: E402
+    DaVinciResolveClient,
+    DaVinciResolveError,
+)
+from davinci_mcp.utils import (  # noqa: E402
     check_resolve_installation,
     check_resolve_running,
     get_platform,

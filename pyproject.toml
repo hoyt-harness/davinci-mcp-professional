@@ -3,7 +3,7 @@ name = "davinci-mcp-professional"
 dynamic = ["version"]
 description = "Model Context Protocol server for DaVinci Resolve integration"
 readme = "README.md"
-license = { file = "COPYING.md" }
+license = { file = "COPYING" }
 authors = [
     { name = "Hoyt Harness", email = "hoyt.harness@gmail.com" }
 ]
@@ -19,7 +19,7 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "mcp>=1.10.0",
+    "mcp>=1.10.0,<2.0.0",
     "anyio>=4.9",
     "httpx>=0.27.1,<1.0.0",
     "pydantic>=2.12.0",

@@ -1,11 +1,12 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Pytest configuration for DaVinci MCP Professional test suite.
 """
 
-import pytest
 import sys
 from pathlib import Path
-from typing import Generator, Any
+
+import pytest
 from _pytest.config import Config
 from _pytest.nodes import Item
 
@@ -59,15 +60,15 @@ def pytest_configure(config: Config) -> None:
 def pytest_collection_modifyitems(config: Config, items: list[Item]) -> None:
     """Modify test collection to handle conditional skipping."""
     try:
-        import safety  # type: ignore[import-untyped]
+        import safety  # type: ignore[import-untyped]  # noqa: F401
     except ImportError:
         safety_skip = pytest.mark.skip(reason="safety not installed")
         for item in items:
             if "safety" in item.name:
                 item.add_marker(safety_skip)
-    
+
     try:
-        import bandit  # type: ignore[import-untyped]
+        import bandit  # type: ignore[import-untyped]  # noqa: F401
     except ImportError:
         bandit_skip = pytest.mark.skip(reason="bandit not installed")
         for item in items:

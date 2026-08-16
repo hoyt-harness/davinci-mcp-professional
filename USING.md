@@ -4,7 +4,7 @@ This document covers everything needed to work on the project from source,
 including setup, running, building, testing, and contributing.
 
 For end-user installation, see [README.md](README.md).
-For full API documentation, see `docs/html/index.html` or regenerate with
+For full API documentation, see `doxygen/html/index.html` or regenerate with
 `doxygen Doxyfile`.
 
 ---
@@ -24,7 +24,7 @@ For full API documentation, see `docs/html/index.html` or regenerate with
 ## Development Setup
 
 ```bash
-git clone https://github.com/Positronikal/davinci-mcp-professional.git
+git clone https://github.com/hoyt-harness/davinci-mcp-professional.git
 cd davinci-mcp-professional
 uv venv --python <system-python>
 uv sync
@@ -168,7 +168,7 @@ davinci-mcp-professional/
 ├── tests/
 │   ├── conftest.py
 │   └── test_security.py
-├── docs/                      # Doxygen-generated HTML (tracked in git)
+├── doxygen/                   # Doxygen-generated HTML (not tracked in git)
 ├── pyproject.toml
 ├── uv.lock
 └── Doxyfile
@@ -257,20 +257,21 @@ uv run safety check
 
 ## API Documentation
 
-Full Doxygen-generated API documentation is in `docs/html/`:
+Doxygen-generated API documentation is written to `doxygen/html/` (not tracked
+in git — regenerate locally):
 
 ```bash
-# View locally
-open docs/html/index.html          # macOS
-start docs/html/index.html         # Windows
-
-# Serve with search support
-cd docs/html
-uv run python -m http.server 8000
-# then open http://localhost:8000
-
 # Regenerate after code changes
 doxygen Doxyfile
+
+# View locally
+open doxygen/html/index.html          # macOS
+start doxygen/html/index.html         # Windows
+
+# Serve with search support
+cd doxygen/html
+uv run python -m http.server 8000
+# then open http://localhost:8000
 ```
 
 ---

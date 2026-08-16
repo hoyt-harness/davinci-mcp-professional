@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Platform detection and environment setup utilities.
 """
@@ -113,8 +114,8 @@ def check_resolve_running() -> bool:
         if current_platform == "windows":
             import subprocess  # nosec B404
 
-            result = subprocess.run(  # nosec B603,B607
-                ["tasklist", "/FI", "IMAGENAME eq Resolve.exe"],
+            result = subprocess.run(  # nosec B603,B607  # noqa: S603
+                ["tasklist", "/FI", "IMAGENAME eq Resolve.exe"],  # noqa: S607
                 capture_output=True,
                 text=True,
                 check=False,
@@ -124,8 +125,9 @@ def check_resolve_running() -> bool:
         elif current_platform in ["macos", "linux"]:
             import subprocess  # nosec B404
 
-            result = subprocess.run(  # nosec B603,B607
-                ["pgrep", "-f", "DaVinci Resolve"], capture_output=True, check=False
+            result = subprocess.run(  # nosec B603,B607  # noqa: S603
+                ["pgrep", "-f", "DaVinci Resolve"],  # noqa: S607
+                capture_output=True, check=False
             )
             return result.returncode == 0
 
@@ -199,7 +201,7 @@ def check_python_runtime_compatibility() -> tuple[bool, str]:
             return (True, "")
 
         # --- Find the running Python's python3.dll location ---
-        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)  # type: ignore[attr-defined]
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)  # type: ignore
         GetModuleHandleW = kernel32.GetModuleHandleW
         GetModuleHandleW.restype = ctypes.c_void_p
         GetModuleFileNameW = kernel32.GetModuleFileNameW

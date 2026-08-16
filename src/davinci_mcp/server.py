@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 DaVinci Resolve MCP Server.
 
@@ -39,11 +40,11 @@ class DaVinciMCPServer:
         """Register MCP server handlers."""
 
         @self.server.list_tools()
-        async def handle_list_tools() -> list[types.Tool]:  # type: ignore[reportUnusedFunction]
+        async def handle_list_tools() -> list[types.Tool]:  # type: ignore
             return get_all_tools()
 
         @self.server.call_tool()
-        async def handle_call_tool(  # type: ignore[reportUnusedFunction]
+        async def handle_call_tool(  # type: ignore
             name: str, arguments: dict[str, Any] | None = None
         ) -> list[types.TextContent]:
             if arguments is None:
@@ -63,11 +64,11 @@ class DaVinciMCPServer:
                 return [types.TextContent(type="text", text=error_msg)]
 
         @self.server.list_resources()
-        async def handle_list_resources() -> list[types.Resource]:  # type: ignore[reportUnusedFunction]
+        async def handle_list_resources() -> list[types.Resource]:  # type: ignore
             return get_all_resources()
 
         @self.server.read_resource()
-        async def handle_read_resource(  # type: ignore[reportUnusedFunction]
+        async def handle_read_resource(  # type: ignore
             uri: AnyUrl,
         ) -> str:
             try:

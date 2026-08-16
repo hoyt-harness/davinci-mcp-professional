@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 DaVinci Resolve client wrapper.
 
@@ -77,23 +78,25 @@ class DaVinciResolveClient:
 
         try:
             # Import and connect to Resolve
-            import DaVinciResolveScript as dvr_script  # type: ignore[reportMissingImports]
+            import DaVinciResolveScript as dvr_script  # type: ignore
 
-            self._resolve = dvr_script.scriptapp("Resolve")  # type: ignore[reportUnknownMemberType]
+            self._resolve = dvr_script.scriptapp("Resolve")  # type: ignore
 
             if self._resolve is None:
                 raise DaVinciResolveConnectionError(
                     "Failed to get Resolve object. "
                     "Check that DaVinci Resolve is running."
-                )  # type: ignore[reportUnknownMemberType]
+                )  # type: ignore
 
             # Get project manager
-            self._project_manager = self._resolve.GetProjectManager()  # type: ignore[reportUnknownMemberType]
+            self._project_manager = self._resolve.GetProjectManager()  # type: ignore
             if self._project_manager is None:
                 raise DaVinciResolveConnectionError("Failed to get Project Manager.")
 
             # Get current project if one is open
-            self._current_project = self._project_manager.GetCurrentProject()  # type: ignore[reportUnknownMemberType]
+            self._current_project = (  # type: ignore
+                self._project_manager.GetCurrentProject()
+            )
 
             self._is_connected = True
             logger.info(f"Connected to {self.get_version()}")

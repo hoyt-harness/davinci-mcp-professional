@@ -40,7 +40,7 @@
 *.php                   text
 *.pl                    text
 *.properties            text
-*.py                    text
+*.py                    text eol=lf
 *.rb                    text
 *.sass                  text
 /hooks/*                text eol=lf

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Command line interface for DaVinci Resolve MCP Server.
 """

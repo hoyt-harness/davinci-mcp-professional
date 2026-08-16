@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Utility modules for DaVinci MCP."""
 
 from .platform import (

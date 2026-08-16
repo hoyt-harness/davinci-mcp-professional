@@ -4,9 +4,8 @@
 
 | Version | Supported          | End of Support |
 | ------- | ------------------ | -------------- |
-| 2.2.x   | :white_check_mark: | TBD            |
-| 2.1.x   | :white_check_mark: | 2025-12-31     |
-| < 2.0   | :x:                | 2024-12-31     |
+| 3.x     | :white_check_mark: | TBD            |
+| < 3.0   | :x:                | 2026-04-12     |
 
 ## Reporting a Vulnerability
 
