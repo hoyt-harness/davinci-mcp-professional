@@ -1,15 +1,64 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
-MCP tools for DaVinci Resolve integration.
+Kernel tool definitions for the DaVinci Resolve MCP server.
+
+Only tools that are always useful regardless of active domain belong here.
+Domain-specific tool definitions live in their respective domain modules.
 """
 
 import mcp.types as types
 
 
 def get_all_tools() -> list[types.Tool]:
-    """Get all available MCP tools."""
+    """Return the fixed kernel tool set."""
     return [
-        # System tools
+        types.Tool(
+            name="activate_domain",
+            description=(
+                "Activate a domain to make its tools available. "
+                "Available domains: project_management, timeline_operations, "
+                "media_pool. Call list_domains to see current activation status."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "domain": {
+                        "type": "string",
+                        "description": "Domain name to activate",
+                        "enum": [
+                            "project_management",
+                            "timeline_operations",
+                            "media_pool",
+                        ],
+                    }
+                },
+                "required": ["domain"],
+            },
+        ),
+        types.Tool(
+            name="deactivate_domain",
+            description=(
+                "Deactivate a domain to remove its tools from the active tool list."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "domain": {
+                        "type": "string",
+                        "description": "Domain name to deactivate",
+                    }
+                },
+                "required": ["domain"],
+            },
+        ),
+        types.Tool(
+            name="list_domains",
+            description=(
+                "List all registered domains and their activation status. "
+                "Use this to discover available domains before calling activate_domain."
+            ),
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
         types.Tool(
             name="get_version",
             description="Get DaVinci Resolve version information",
@@ -44,104 +93,6 @@ def get_all_tools() -> list[types.Tool]:
                     }
                 },
                 "required": ["page"],
-            },
-        ),
-        # Project tools
-        types.Tool(
-            name="list_projects",
-            description="List all available projects in the current database",
-            inputSchema={"type": "object", "properties": {}, "required": []},
-        ),
-        types.Tool(
-            name="get_current_project",
-            description="Get the name of the currently open project",
-            inputSchema={"type": "object", "properties": {}, "required": []},
-        ),
-        types.Tool(
-            name="open_project",
-            description="Open a project by name",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "The name of the project to open",
-                    }
-                },
-                "required": ["name"],
-            },
-        ),
-        types.Tool(
-            name="create_project",
-            description="Create a new project with the given name",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "The name for the new project",
-                    }
-                },
-                "required": ["name"],
-            },
-        ),
-        # Timeline tools
-        types.Tool(
-            name="list_timelines",
-            description="List all timelines in the current project",
-            inputSchema={"type": "object", "properties": {}, "required": []},
-        ),
-        types.Tool(
-            name="get_current_timeline",
-            description="Get the name of the current timeline",
-            inputSchema={"type": "object", "properties": {}, "required": []},
-        ),
-        types.Tool(
-            name="create_timeline",
-            description="Create a new timeline with the given name",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "The name for the new timeline",
-                    }
-                },
-                "required": ["name"],
-            },
-        ),
-        types.Tool(
-            name="switch_timeline",
-            description="Switch to a timeline by name",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "The name of the timeline to switch to",
-                    }
-                },
-                "required": ["name"],
-            },
-        ),
-        # Media tools
-        types.Tool(
-            name="list_media_clips",
-            description="List all clips in the media pool",
-            inputSchema={"type": "object", "properties": {}, "required": []},
-        ),
-        types.Tool(
-            name="import_media",
-            description="Import a media file into the media pool",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "file_path": {
-                        "type": "string",
-                        "description": "The path to the media file to import",
-                    }
-                },
-                "required": ["file_path"],
             },
         ),
     ]
