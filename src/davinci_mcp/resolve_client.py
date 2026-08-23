@@ -269,12 +269,16 @@ class DaVinciResolveClient:
         project = self._ensure_project()
         return bool(project.SetName(new_name))
 
-    def export_project(self, name: str, file_path: str, with_stills_and_luts: bool) -> bool:
+    def export_project(
+        self, name: str, file_path: str, with_stills_and_luts: bool
+    ) -> bool:
         """Export a project to a .drp file."""
         self._ensure_connected()
         if not self._project_manager:
             return False
-        return bool(self._project_manager.ExportProject(name, file_path, with_stills_and_luts))
+        return bool(
+            self._project_manager.ExportProject(name, file_path, with_stills_and_luts)
+        )
 
     def import_project(self, file_path: str, project_name: str) -> bool:
         """Import a project from a .drp file."""
@@ -438,7 +442,6 @@ class DaVinciResolveClient:
         """Switch to a timeline by name."""
         project = self._ensure_project()
 
-        # Find timeline by name
         timeline_count = project.GetTimelineCount()
         for i in range(1, timeline_count + 1):
             timeline = project.GetTimelineByIndex(i)
@@ -449,6 +452,383 @@ class DaVinciResolveClient:
                 return bool(result)
 
         raise ValueError(f"Timeline '{name}' not found")
+
+    # ------------------------------------------------------------------
+    # Timeline helpers
+    # ------------------------------------------------------------------
+
+    def _get_timeline_by_name(self, name: str) -> Any:
+        """Look up a Timeline object by name. Re-walks on every call (Article IV)."""
+        project = self._ensure_project()
+        count = project.GetTimelineCount()
+        for i in range(1, count + 1):
+            tl = project.GetTimelineByIndex(i)
+            if tl and tl.GetName() == name:
+                return tl
+        raise ValueError(f"Timeline '{name}' not found")
+
+    def _get_current_timeline_obj(self) -> Any:
+        project = self._ensure_project()
+        tl = project.GetCurrentTimeline()
+        if not tl:
+            raise DaVinciResolveError("No current timeline")
+        return tl
+
+    def _resolve_timeline_items(
+        self, timeline: Any, item_refs: list[dict[str, Any]]
+    ) -> list[Any]:
+        """Resolve [{track_type, track_index, item_index}] to TimelineItem objects."""
+        items = []
+        for ref in item_refs:
+            track_type = ref.get("track_type", "video")
+            track_index = int(ref.get("track_index", 1))
+            item_index = int(ref.get("item_index", 1))
+            track_items = timeline.GetItemListInTrack(track_type, track_index) or []
+            if item_index < 1 or item_index > len(track_items):
+                raise ValueError(
+                    f"item_index {item_index} out of range for {track_type} track {track_index}"  # noqa: E501
+                )
+            items.append(track_items[item_index - 1])
+        return items
+
+    # ------------------------------------------------------------------
+    # Timeline expanded methods
+    # ------------------------------------------------------------------
+
+    def rename_timeline(self, name: str, new_name: str) -> bool:
+        """Rename a timeline."""
+        tl = self._get_timeline_by_name(name)
+        return bool(tl.SetName(new_name))
+
+    def delete_timeline(self, name: str) -> bool:
+        """Permanently delete a timeline."""
+        project = self._ensure_project()
+        tl = self._get_timeline_by_name(name)
+        media_pool = project.GetMediaPool()
+        if not media_pool:
+            raise DaVinciResolveError("Failed to get Media Pool")
+        return bool(media_pool.DeleteTimelines([tl]))
+
+    def duplicate_timeline(self, name: str, new_name: str) -> bool:
+        """Duplicate a timeline with a new name."""
+        tl = self._get_timeline_by_name(name)
+        result = tl.DuplicateTimeline(new_name)
+        return bool(result)
+
+    def get_timeline_settings(self, name: str, setting_name: str | None) -> Any:
+        """Get timeline setting(s). Pass None to get all settings."""
+        tl = self._get_timeline_by_name(name)
+        if setting_name:
+            return tl.GetSetting(setting_name)
+        return tl.GetSetting()
+
+    def set_timeline_setting(
+        self, name: str, setting_name: str, setting_value: Any
+    ) -> bool:
+        """Set a timeline setting."""
+        tl = self._get_timeline_by_name(name)
+        return bool(tl.SetSetting(setting_name, setting_value))
+
+    def get_start_timecode(self, name: str) -> str:
+        """Get the start timecode of a timeline."""
+        return str(self._get_timeline_by_name(name).GetStartTimecode())
+
+    def set_start_timecode(self, name: str, timecode: str) -> bool:
+        """Set the start timecode of a timeline."""
+        return bool(self._get_timeline_by_name(name).SetStartTimecode(timecode))
+
+    def get_current_timecode(self, name: str) -> str:
+        """Get the current playhead timecode of a timeline."""
+        return str(self._get_timeline_by_name(name).GetCurrentTimecode())
+
+    def set_current_timecode(self, name: str, timecode: str) -> bool:
+        """Move the playhead to a timecode."""
+        return bool(self._get_timeline_by_name(name).SetCurrentTimecode(timecode))
+
+    def get_timeline_start_frame(self, name: str) -> int:
+        """Get the start frame number of a timeline."""
+        return int(self._get_timeline_by_name(name).GetStartFrame())
+
+    def get_timeline_end_frame(self, name: str) -> int:
+        """Get the end frame number of a timeline."""
+        return int(self._get_timeline_by_name(name).GetEndFrame())
+
+    def get_timeline_marks(self, name: str) -> dict[str, Any]:
+        """Get the in/out marks of a timeline."""
+        result = self._get_timeline_by_name(name).GetMarkInOut()
+        return dict(result) if result else {}
+
+    def set_timeline_marks(
+        self, name: str, mark_in: int, mark_out: int, mark_type: str
+    ) -> bool:
+        """Set the in/out marks on a timeline."""
+        return bool(
+            self._get_timeline_by_name(name).SetMarkInOut(mark_in, mark_out, mark_type)
+        )
+
+    def clear_timeline_marks(self, name: str, mark_type: str) -> bool:
+        """Clear in/out marks from a timeline."""
+        return bool(self._get_timeline_by_name(name).ClearMarkInOut(mark_type))
+
+    def get_track_count(self, name: str, track_type: str) -> int:
+        """Get the number of tracks of a given type."""
+        return int(self._get_timeline_by_name(name).GetTrackCount(track_type))
+
+    def add_track(self, name: str, track_type: str, sub_track_type: str) -> bool:
+        """Add a track to a timeline."""
+        tl = self._get_timeline_by_name(name)
+        if sub_track_type:
+            return bool(tl.AddTrack(track_type, sub_track_type))
+        return bool(tl.AddTrack(track_type))
+
+    def delete_track(self, name: str, track_type: str, track_index: int) -> bool:
+        """Permanently delete a track from a timeline."""
+        return bool(
+            self._get_timeline_by_name(name).DeleteTrack(track_type, track_index)
+        )
+
+    def get_track_name(self, name: str, track_type: str, track_index: int) -> str:
+        """Get the name of a timeline track."""
+        return str(
+            self._get_timeline_by_name(name).GetTrackName(track_type, track_index)
+        )
+
+    def set_track_name(
+        self, name: str, track_type: str, track_index: int, new_name: str
+    ) -> bool:
+        """Set the name of a timeline track."""
+        return bool(
+            self._get_timeline_by_name(name).SetTrackName(
+                track_type, track_index, new_name
+            )
+        )
+
+    def get_track_subtype(self, name: str, track_type: str, track_index: int) -> str:
+        """Get the subtype (audio format) of a timeline track."""
+        return str(
+            self._get_timeline_by_name(name).GetTrackSubType(track_type, track_index)
+        )
+
+    def enable_track(
+        self, name: str, track_type: str, track_index: int, enabled: bool
+    ) -> bool:
+        """Enable or disable a timeline track."""
+        return bool(
+            self._get_timeline_by_name(name).SetTrackEnable(
+                track_type, track_index, enabled
+            )
+        )
+
+    def get_track_enabled(self, name: str, track_type: str, track_index: int) -> bool:
+        """Get whether a timeline track is enabled."""
+        return bool(
+            self._get_timeline_by_name(name).GetIsTrackEnabled(track_type, track_index)
+        )
+
+    def lock_track(
+        self, name: str, track_type: str, track_index: int, locked: bool
+    ) -> bool:
+        """Lock or unlock a timeline track."""
+        return bool(
+            self._get_timeline_by_name(name).SetTrackLock(
+                track_type, track_index, locked
+            )
+        )
+
+    def get_track_locked(self, name: str, track_type: str, track_index: int) -> bool:
+        """Get whether a timeline track is locked."""
+        return bool(
+            self._get_timeline_by_name(name).GetIsTrackLocked(track_type, track_index)
+        )
+
+    def get_items_in_track(
+        self, name: str, track_type: str, track_index: int
+    ) -> list[dict[str, Any]]:
+        """List items in a timeline track with their coordinates.
+
+        Coordinates are valid until any timeline modification — re-list after mutations.
+        """
+        tl = self._get_timeline_by_name(name)
+        items = tl.GetItemListInTrack(track_type, track_index) or []
+        return [
+            {
+                "item_index": i + 1,
+                "track_type": track_type,
+                "track_index": track_index,
+                "name": item.GetName(),
+                "start": item.GetStart(),
+                "end": item.GetEnd(),
+                "duration": item.GetDuration(),
+            }
+            for i, item in enumerate(items)
+        ]
+
+    def get_selected_timeline_clips(self, name: str) -> list[dict[str, Any]]:
+        """Get clips currently selected in a timeline (name/position info)."""
+        tl = self._get_timeline_by_name(name)
+        clips = tl.GetSelectedClips() or []
+        return [
+            {"name": c.GetName(), "start": c.GetStart(), "end": c.GetEnd()}
+            for c in clips
+        ]
+
+    def get_current_video_item(self, name: str) -> dict[str, Any] | None:
+        """Get the current video item in a timeline."""
+        tl = self._get_timeline_by_name(name)
+        item = tl.GetCurrentVideoItem()
+        if not item:
+            return None
+        return {"name": item.GetName(), "start": item.GetStart(), "end": item.GetEnd()}
+
+    def get_current_clip_thumbnail(self, name: str) -> dict[str, Any] | None:
+        """Get the current clip thumbnail image data from the Color page."""
+        tl = self._get_timeline_by_name(name)
+        data = tl.GetCurrentClipThumbnailImage()
+        if not data:
+            return None
+        return dict(data)
+
+    def get_timeline_media_pool_item(self, name: str) -> dict[str, Any] | None:
+        """Get the media pool item associated with a timeline."""
+        tl = self._get_timeline_by_name(name)
+        item = tl.GetMediaPoolItem()
+        if not item:
+            return None
+        return {"clip_id": item.GetUniqueId(), "name": item.GetName()}
+
+    def add_timeline_marker(
+        self,
+        name: str,
+        frame_id: int,
+        color: str,
+        marker_name: str,
+        note: str,
+        duration: int,
+        custom_data: str,
+    ) -> bool:
+        """Add a marker to a timeline."""
+        tl = self._get_timeline_by_name(name)
+        return bool(
+            tl.AddMarker(frame_id, color, marker_name, note, duration, custom_data)
+        )
+
+    def get_timeline_markers(self, name: str) -> dict[str, Any]:
+        """Get all markers on a timeline."""
+        result = self._get_timeline_by_name(name).GetMarkers()
+        return dict(result) if result else {}
+
+    def delete_timeline_markers_by_color(self, name: str, color: str) -> bool:
+        """Delete timeline markers by color. Use 'All' to clear all markers."""
+        return bool(self._get_timeline_by_name(name).DeleteMarkersByColor(color))
+
+    def delete_timeline_marker_at_frame(self, name: str, frame_num: int) -> bool:
+        """Delete the timeline marker at a specific frame."""
+        return bool(self._get_timeline_by_name(name).DeleteMarkerAtFrame(frame_num))
+
+    def export_timeline(
+        self, name: str, file_name: str, export_type: str, export_subtype: str
+    ) -> bool:
+        """Export a timeline to AAF/EDL/XML/FCPXML/OTIO/DRT/ALE/HDR/DolbyVision."""
+        tl = self._get_timeline_by_name(name)
+        return bool(tl.Export(file_name, export_type, export_subtype))
+
+    def import_into_timeline(
+        self, name: str, file_path: str, import_options: dict[str, Any]
+    ) -> bool:
+        """Import content into a timeline from AAF with remapping options."""
+        tl = self._get_timeline_by_name(name)
+        return bool(tl.ImportIntoTimeline(file_path, import_options))
+
+    def create_compound_clip(
+        self,
+        name: str,
+        item_refs: list[dict[str, Any]],
+        clip_info: dict[str, Any],
+    ) -> bool:
+        """Create a compound clip from selected timeline items."""
+        tl = self._get_timeline_by_name(name)
+        items = self._resolve_timeline_items(tl, item_refs)
+        result = tl.CreateCompoundClip(items, clip_info)
+        return bool(result)
+
+    def create_fusion_clip(self, name: str, item_refs: list[dict[str, Any]]) -> bool:
+        """Create a Fusion clip from selected timeline items."""
+        tl = self._get_timeline_by_name(name)
+        items = self._resolve_timeline_items(tl, item_refs)
+        result = tl.CreateFusionClip(items)
+        return bool(result)
+
+    def insert_generator(self, name: str, generator_name: str) -> bool:
+        """Insert a generator into the current position of a timeline."""
+        return bool(
+            self._get_timeline_by_name(name).InsertGeneratorIntoTimeline(generator_name)
+        )
+
+    def insert_fusion_generator(self, name: str, generator_name: str) -> bool:
+        """Insert a Fusion generator into a timeline."""
+        return bool(
+            self._get_timeline_by_name(name).InsertFusionGeneratorIntoTimeline(
+                generator_name
+            )
+        )
+
+    def insert_ofx_generator(self, name: str, generator_name: str) -> bool:
+        """Insert an OFX generator into a timeline."""
+        return bool(
+            self._get_timeline_by_name(name).InsertOFXGeneratorIntoTimeline(
+                generator_name
+            )
+        )
+
+    def insert_title(self, name: str, title_name: str) -> bool:
+        """Insert a title into a timeline."""
+        return bool(
+            self._get_timeline_by_name(name).InsertTitleIntoTimeline(title_name)
+        )
+
+    def insert_fusion_title(self, name: str, title_name: str) -> bool:
+        """Insert a Fusion title into a timeline."""
+        return bool(
+            self._get_timeline_by_name(name).InsertFusionTitleIntoTimeline(title_name)
+        )
+
+    def insert_fusion_composition(self, name: str) -> bool:
+        """Insert a Fusion composition into a timeline."""
+        return bool(
+            self._get_timeline_by_name(name).InsertFusionCompositionIntoTimeline()
+        )
+
+    def get_timeline_node_graph(self, name: str) -> dict[str, Any]:
+        """Get the node graph for a timeline (Color page)."""
+        tl = self._get_timeline_by_name(name)
+        graph = tl.GetNodeGraph()
+        if not graph:
+            return {}
+        return {"node_count": graph.GetNumNodes()}
+
+    def delete_timeline_clips(
+        self, name: str, item_refs: list[dict[str, Any]], ripple: bool
+    ) -> bool:
+        """Permanently delete clips from a timeline."""
+        tl = self._get_timeline_by_name(name)
+        items = self._resolve_timeline_items(tl, item_refs)
+        return bool(tl.DeleteClips(items, ripple))
+
+    def link_clips(
+        self, name: str, item_refs: list[dict[str, Any]], linked: bool
+    ) -> bool:
+        """Link or unlink timeline clips."""
+        tl = self._get_timeline_by_name(name)
+        items = self._resolve_timeline_items(tl, item_refs)
+        return bool(tl.SetClipsLinked(items, linked))
+
+    def analyze_dolby_vision(
+        self, name: str, item_refs: list[dict[str, Any]], analysis_type: int
+    ) -> bool:
+        """Run Dolby Vision analysis on timeline items."""
+        tl = self._get_timeline_by_name(name)
+        items = self._resolve_timeline_items(tl, item_refs)
+        return bool(tl.AnalyzeDolbyVision(items, analysis_type))
 
     # Media Pool Management
     def list_media_clips(self) -> list[dict[str, Any]]:
@@ -607,7 +987,9 @@ class DaVinciResolveClient:
         folders = self._resolve_folder_paths(folder_paths)
         return bool(media_pool.DeleteFolders(folders))
 
-    def move_clips_to_folder(self, clip_ids: list[str], target_folder_path: str) -> bool:
+    def move_clips_to_folder(
+        self, clip_ids: list[str], target_folder_path: str
+    ) -> bool:
         """Move clips to a target folder."""
         media_pool = self._get_media_pool()
         clips = self._resolve_clip_ids(clip_ids)
@@ -641,7 +1023,9 @@ class DaVinciResolveClient:
         result = media_pool.CreateTimelineFromClips(name, clips)
         return bool(result)
 
-    def import_timeline_from_file(self, file_path: str, import_options: dict[str, Any]) -> bool:
+    def import_timeline_from_file(
+        self, file_path: str, import_options: dict[str, Any]
+    ) -> bool:
         """Import a timeline from EDL/AAF/XML/FCPXML/DRT/ADL/OTIO."""
         media_pool = self._get_media_pool()
         result = media_pool.ImportTimelineFromFile(file_path, import_options)
@@ -694,12 +1078,14 @@ class DaVinciResolveClient:
         self, clip_id: str, file_paths: list[str], stereo_eye: str
     ) -> bool:
         """Add matte files to a clip."""
-        project = self._ensure_project()
+        self._ensure_project()
         media_storage = self._resolve.GetMediaStorage() if self._resolve else None  # type: ignore[union-attr]
         if not media_storage:
             raise DaVinciResolveError("Failed to get MediaStorage")
         clip = self._get_clip_by_id(clip_id)
-        return bool(media_storage.AddClipMattesToMediaPool(clip, file_paths, stereo_eye))
+        return bool(
+            media_storage.AddClipMattesToMediaPool(clip, file_paths, stereo_eye)
+        )
 
     def delete_clip_mattes(self, clip_id: str, file_paths: list[str]) -> bool:
         """Permanently delete matte files from a clip."""
@@ -726,10 +1112,7 @@ class DaVinciResolveClient:
         """Get clips currently selected in the media pool."""
         media_pool = self._get_media_pool()
         clips = media_pool.GetSelectedClips() or []
-        return [
-            {"clip_id": c.GetUniqueId(), "name": c.GetName()}
-            for c in clips
-        ]
+        return [{"clip_id": c.GetUniqueId(), "name": c.GetName()} for c in clips]
 
     def set_selected_pool_clip(self, clip_id: str) -> bool:
         """Set a clip as the selected clip in the media pool."""

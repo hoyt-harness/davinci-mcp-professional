@@ -39,7 +39,10 @@ class MediaPoolDomain:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "file_path": {"type": "string", "description": "Path to the media file"},
+                        "file_path": {
+                            "type": "string",
+                            "description": "Path to the media file",
+                        },
                     },
                     "required": ["file_path"],
                 },
@@ -65,7 +68,7 @@ class MediaPoolDomain:
                     "properties": {
                         "folder_path": {
                             "type": "string",
-                            "description": "Slash-separated path from root, e.g. 'Master/B-Roll'",
+                            "description": "Slash-separated path from root, e.g. 'Master/B-Roll'",  # noqa: E501
                         },
                     },
                     "required": ["folder_path"],
@@ -79,7 +82,7 @@ class MediaPoolDomain:
                     "properties": {
                         "folder_path": {
                             "type": "string",
-                            "description": "Slash-separated path from root, e.g. 'Master/B-Roll'",
+                            "description": "Slash-separated path from root, e.g. 'Master/B-Roll'",  # noqa: E501
                         },
                     },
                     "required": ["folder_path"],
@@ -112,7 +115,7 @@ class MediaPoolDomain:
                     "properties": {
                         "clip_id": {
                             "type": "string",
-                            "description": "UUID from get_folder_clips or list_media_clips",
+                            "description": "UUID from get_folder_clips or list_media_clips",  # noqa: E501
                         },
                     },
                     "required": ["clip_id"],
@@ -134,7 +137,7 @@ class MediaPoolDomain:
                     "properties": {
                         "folder_path": {
                             "type": "string",
-                            "description": "Parent folder path (slash-separated from root)",
+                            "description": "Parent folder path (slash-separated from root)",  # noqa: E501
                         },
                         "name": {"type": "string", "description": "New subfolder name"},
                     },
@@ -143,7 +146,7 @@ class MediaPoolDomain:
             ),
             types.Tool(
                 name="delete_media_pool_folders",
-                description=f"{_DESTRUCTIVE}Delete media pool folders and all clips they contain. Requires confirm=true.",
+                description=f"{_DESTRUCTIVE}Delete media pool folders and all clips they contain. Requires confirm=true.",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {
@@ -154,7 +157,7 @@ class MediaPoolDomain:
                         },
                         "confirm": {
                             "type": "boolean",
-                            "description": "Must be true. Permanently deletes folders and all contained clips.",
+                            "description": "Must be true. Permanently deletes folders and all contained clips.",  # noqa: E501
                         },
                     },
                     "required": ["folder_paths", "confirm"],
@@ -164,7 +167,7 @@ class MediaPoolDomain:
                 name="move_clips_to_folder",
                 description=(
                     f"{_DESTRUCTIVE}Move clips to a different media pool folder. "
-                    "Re-list clips after this call — clip_id references remain valid but folder context changes. "
+                    "Re-list clips after this call — clip_id references remain valid but folder context changes. "  # noqa: E501
                     "Requires confirm=true."
                 ),
                 inputSchema={
@@ -208,7 +211,7 @@ class MediaPoolDomain:
             # ----------------------------------------------------------------
             types.Tool(
                 name="delete_media_pool_clips",
-                description=f"{_DESTRUCTIVE}Permanently delete clips from the media pool. Requires confirm=true.",
+                description=f"{_DESTRUCTIVE}Permanently delete clips from the media pool. Requires confirm=true.",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {
@@ -258,14 +261,17 @@ class MediaPoolDomain:
             ),
             types.Tool(
                 name="import_timeline_from_file",
-                description="Import a timeline from an EDL, AAF, XML, FCPXML, DRT, ADL, or OTIO file",
+                description="Import a timeline from an EDL, AAF, XML, FCPXML, DRT, ADL, or OTIO file",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "file_path": {"type": "string", "description": "Source file path"},
+                        "file_path": {
+                            "type": "string",
+                            "description": "Source file path",
+                        },
                         "import_options": {
                             "type": "object",
-                            "description": "Import options dict (see DaVinci scripting docs)",
+                            "description": "Import options dict (see DaVinci scripting docs)",  # noqa: E501
                         },
                     },
                     "required": ["file_path", "import_options"],
@@ -273,15 +279,18 @@ class MediaPoolDomain:
             ),
             types.Tool(
                 name="export_clip_metadata",
-                description="Export clip metadata to a CSV file. Pass empty clip_ids list to export all clips.",
+                description="Export clip metadata to a CSV file. Pass empty clip_ids list to export all clips.",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "file_name": {"type": "string", "description": "Destination CSV file path"},
+                        "file_name": {
+                            "type": "string",
+                            "description": "Destination CSV file path",
+                        },
                         "clip_ids": {
                             "type": "array",
                             "items": {"type": "string"},
-                            "description": "UUIDs of clips to export; empty list exports all",
+                            "description": "UUIDs of clips to export; empty list exports all",  # noqa: E501
                         },
                     },
                     "required": ["file_name", "clip_ids"],
@@ -300,7 +309,7 @@ class MediaPoolDomain:
                         },
                         "folder_path": {
                             "type": "string",
-                            "description": "Filesystem path to search for replacement media",
+                            "description": "Filesystem path to search for replacement media",  # noqa: E501
                         },
                     },
                     "required": ["clip_ids", "folder_path"],
@@ -308,7 +317,7 @@ class MediaPoolDomain:
             ),
             types.Tool(
                 name="unlink_clips",
-                description=f"{_DESTRUCTIVE}Unlink clips from their source media files. Requires confirm=true.",
+                description=f"{_DESTRUCTIVE}Unlink clips from their source media files. Requires confirm=true.",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {
@@ -324,7 +333,7 @@ class MediaPoolDomain:
             ),
             types.Tool(
                 name="auto_sync_audio",
-                description="Auto-sync audio clips to video clips by waveform or timecode",
+                description="Auto-sync audio clips to video clips by waveform or timecode",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {
@@ -336,7 +345,7 @@ class MediaPoolDomain:
                         "audio_sync_settings": {
                             "type": "object",
                             "description": (
-                                '{"syncMode": "AUDIO_SYNC_WAVEFORM"|"AUDIO_SYNC_TIMECODE", ...}'
+                                '{"syncMode": "AUDIO_SYNC_WAVEFORM"|"AUDIO_SYNC_TIMECODE", ...}'  # noqa: E501
                             ),
                         },
                     },
@@ -349,7 +358,10 @@ class MediaPoolDomain:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "file_path": {"type": "string", "description": "Source .drb file path"},
+                        "file_path": {
+                            "type": "string",
+                            "description": "Source .drb file path",
+                        },
                         "source_clips_path": {
                             "type": "string",
                             "description": "Root folder path for clip relinking",
@@ -399,7 +411,7 @@ class MediaPoolDomain:
             ),
             types.Tool(
                 name="delete_clip_mattes",
-                description=f"{_DESTRUCTIVE}Remove matte files from a clip. Requires confirm=true.",
+                description=f"{_DESTRUCTIVE}Remove matte files from a clip. Requires confirm=true.",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {
@@ -434,12 +446,18 @@ class MediaPoolDomain:
             # ----------------------------------------------------------------
             types.Tool(
                 name="create_stereo_clip",
-                description="Create a stereo clip from two existing clips (DaVinci Resolve Studio only)",
+                description="Create a stereo clip from two existing clips (DaVinci Resolve Studio only)",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "left_clip_id": {"type": "string", "description": "UUID of the left-eye clip"},
-                        "right_clip_id": {"type": "string", "description": "UUID of the right-eye clip"},
+                        "left_clip_id": {
+                            "type": "string",
+                            "description": "UUID of the left-eye clip",
+                        },
+                        "right_clip_id": {
+                            "type": "string",
+                            "description": "UUID of the right-eye clip",
+                        },
                     },
                     "required": ["left_clip_id", "right_clip_id"],
                 },
@@ -490,39 +508,59 @@ class MediaPoolDomain:
             return f"Created folder '{name}' in '{fp}'" if result else "Failed"
         elif tool_name == "delete_media_pool_folders":
             fps = arguments.get("folder_paths", [])
-            if err := _confirm_gate(arguments, f"Permanently deletes folders {fps} and all clips they contain."):
+            if err := _confirm_gate(
+                arguments,
+                f"Permanently deletes folders {fps} and all clips they contain.",
+            ):
                 return err
             result = client.delete_media_pool_folders(fps)
             return f"Deleted {len(fps)} folder(s)" if result else "Delete failed"
         elif tool_name == "move_clips_to_folder":
             clip_ids = arguments.get("clip_ids", [])
             target = arguments.get("target_folder_path", "")
-            if err := _confirm_gate(arguments, f"Moves {len(clip_ids)} clip(s) to '{target}'."):
+            if err := _confirm_gate(
+                arguments, f"Moves {len(clip_ids)} clip(s) to '{target}'."
+            ):
                 return err
             result = client.move_clips_to_folder(clip_ids, target)
-            return f"Moved {len(clip_ids)} clip(s) to '{target}'" if result else "Move failed"
+            return (
+                f"Moved {len(clip_ids)} clip(s) to '{target}'"
+                if result
+                else "Move failed"
+            )
         elif tool_name == "move_folders":
             fps = arguments.get("folder_paths", [])
             target = arguments.get("target_folder_path", "")
             result = client.move_folders(fps, target)
-            return f"Moved {len(fps)} folder(s) to '{target}'" if result else "Move failed"
+            return (
+                f"Moved {len(fps)} folder(s) to '{target}'" if result else "Move failed"
+            )
 
         # --- clip operations ---
         elif tool_name == "delete_media_pool_clips":
             clip_ids = arguments.get("clip_ids", [])
-            if err := _confirm_gate(arguments, f"Permanently deletes {len(clip_ids)} clip(s) from the media pool."):
+            if err := _confirm_gate(
+                arguments,
+                f"Permanently deletes {len(clip_ids)} clip(s) from the media pool.",
+            ):
                 return err
             result = client.delete_media_pool_clips(clip_ids)
             return f"Deleted {len(clip_ids)} clip(s)" if result else "Delete failed"
         elif tool_name == "append_clips_to_timeline":
             clip_ids = arguments.get("clip_ids", [])
             result = client.append_clips_to_timeline(clip_ids)
-            return f"Appended {len(clip_ids)} clip(s) to timeline" if result else "Append failed"
+            return (
+                f"Appended {len(clip_ids)} clip(s) to timeline"
+                if result
+                else "Append failed"
+            )
         elif tool_name == "create_timeline_from_clips":
             name = arguments.get("name", "")
             clip_ids = arguments.get("clip_ids", [])
             result = client.create_timeline_from_clips(name, clip_ids)
-            return f"Created timeline '{name}'" if result else "Timeline creation failed"
+            return (
+                f"Created timeline '{name}'" if result else "Timeline creation failed"
+            )
         elif tool_name == "import_timeline_from_file":
             fp = arguments.get("file_path", "")
             opts = arguments.get("import_options", {})
@@ -540,7 +578,9 @@ class MediaPoolDomain:
             return f"Relinked {len(clip_ids)} clip(s)" if result else "Relink failed"
         elif tool_name == "unlink_clips":
             clip_ids = arguments.get("clip_ids", [])
-            if err := _confirm_gate(arguments, f"Unlinks {len(clip_ids)} clip(s) from their source media."):
+            if err := _confirm_gate(
+                arguments, f"Unlinks {len(clip_ids)} clip(s) from their source media."
+            ):
                 return err
             result = client.unlink_clips(clip_ids)
             return f"Unlinked {len(clip_ids)} clip(s)" if result else "Unlink failed"
@@ -548,7 +588,11 @@ class MediaPoolDomain:
             clip_ids = arguments.get("clip_ids", [])
             settings = arguments.get("audio_sync_settings", {})
             result = client.auto_sync_audio(clip_ids, settings)
-            return f"Audio sync completed for {len(clip_ids)} clip(s)" if result else "Sync failed"
+            return (
+                f"Audio sync completed for {len(clip_ids)} clip(s)"
+                if result
+                else "Sync failed"
+            )
         elif tool_name == "import_folder_from_file":
             fp = arguments.get("file_path", "")
             scp = arguments.get("source_clips_path", "")
@@ -571,7 +615,9 @@ class MediaPoolDomain:
         elif tool_name == "delete_clip_mattes":
             clip_id = arguments.get("clip_id", "")
             fps = arguments.get("file_paths", [])
-            if err := _confirm_gate(arguments, f"Removes {len(fps)} matte(s) from clip '{clip_id}'."):
+            if err := _confirm_gate(
+                arguments, f"Removes {len(fps)} matte(s) from clip '{clip_id}'."
+            ):
                 return err
             result = client.delete_clip_mattes(clip_id, fps)
             return "Mattes removed" if result else "Failed to remove mattes"

@@ -10,20 +10,19 @@ from ..resolve_client import DaVinciResolveClient
 _DESTRUCTIVE = "DESTRUCTIVE — permanent, no API undo. "
 
 
-def _confirm_gate(tool_name: str, arguments: dict[str, Any], description: str) -> str | None:
+def _confirm_gate(
+    tool_name: str, arguments: dict[str, Any], description: str
+) -> str | None:
     """Return an error string if confirm=True is missing, else None."""
     if not arguments.get("confirm", False):
-        return (
-            f"{_DESTRUCTIVE}{description} "
-            f"Set confirm=true to proceed."
-        )
+        return f"{_DESTRUCTIVE}{description} Set confirm=true to proceed."
     return None
 
 
 class ProjectManagementDomain:
     name = "project_management"
     description = (
-        "Full project lifecycle: open, save, close, rename, delete, export/import/archive, "
+        "Full project lifecycle: open, save, close, rename, delete, export/import/archive, "  # noqa: E501
         "project folder navigation, and database management"
     )
 
@@ -34,7 +33,7 @@ class ProjectManagementDomain:
             # ----------------------------------------------------------------
             types.Tool(
                 name="list_projects",
-                description="List all available projects in the current database folder",
+                description="List all available projects in the current database folder",  # noqa: E501
                 inputSchema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
@@ -48,7 +47,10 @@ class ProjectManagementDomain:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "name": {"type": "string", "description": "Project name to open"},
+                        "name": {
+                            "type": "string",
+                            "description": "Project name to open",
+                        },
                     },
                     "required": ["name"],
                 },
@@ -59,7 +61,10 @@ class ProjectManagementDomain:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "name": {"type": "string", "description": "Name for the new project"},
+                        "name": {
+                            "type": "string",
+                            "description": "Name for the new project",
+                        },
                     },
                     "required": ["name"],
                 },
@@ -78,7 +83,10 @@ class ProjectManagementDomain:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "new_name": {"type": "string", "description": "New project name"},
+                        "new_name": {
+                            "type": "string",
+                            "description": "New project name",
+                        },
                     },
                     "required": ["new_name"],
                 },
@@ -105,7 +113,7 @@ class ProjectManagementDomain:
                     "properties": {
                         "confirm": {
                             "type": "boolean",
-                            "description": "Must be true. Unsaved changes will be lost.",
+                            "description": "Must be true. Unsaved changes will be lost.",  # noqa: E501
                         },
                     },
                     "required": ["confirm"],
@@ -120,7 +128,10 @@ class ProjectManagementDomain:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "name": {"type": "string", "description": "Project name to delete"},
+                        "name": {
+                            "type": "string",
+                            "description": "Project name to delete",
+                        },
                         "confirm": {
                             "type": "boolean",
                             "description": "Must be true. Deletion cannot be undone.",
@@ -138,11 +149,17 @@ class ProjectManagementDomain:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "name": {"type": "string", "description": "Project name to export"},
-                        "file_path": {"type": "string", "description": "Destination .drp file path"},
+                        "name": {
+                            "type": "string",
+                            "description": "Project name to export",
+                        },
+                        "file_path": {
+                            "type": "string",
+                            "description": "Destination .drp file path",
+                        },
                         "with_stills_and_luts": {
                             "type": "boolean",
-                            "description": "Include gallery stills and LUTs in the export",
+                            "description": "Include gallery stills and LUTs in the export",  # noqa: E501
                         },
                     },
                     "required": ["name", "file_path", "with_stills_and_luts"],
@@ -154,8 +171,14 @@ class ProjectManagementDomain:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "file_path": {"type": "string", "description": "Source .drp file path"},
-                        "project_name": {"type": "string", "description": "Name for the imported project"},
+                        "file_path": {
+                            "type": "string",
+                            "description": "Source .drp file path",
+                        },
+                        "project_name": {
+                            "type": "string",
+                            "description": "Name for the imported project",
+                        },
                     },
                     "required": ["file_path", "project_name"],
                 },
@@ -163,39 +186,67 @@ class ProjectManagementDomain:
             types.Tool(
                 name="archive_project",
                 description=(
-                    f"{_DESTRUCTIVE}Archive a project to a .dra file with optional media. "
+                    f"{_DESTRUCTIVE}Archive a project to a .dra file with optional media. "  # noqa: E501
                     "Requires confirm=true."
                 ),
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "name": {"type": "string", "description": "Project name to archive"},
-                        "file_path": {"type": "string", "description": "Destination .dra file path"},
-                        "src_media": {"type": "boolean", "description": "Include source media"},
-                        "render_cache": {"type": "boolean", "description": "Include render cache"},
-                        "proxy_media": {"type": "boolean", "description": "Include proxy media"},
+                        "name": {
+                            "type": "string",
+                            "description": "Project name to archive",
+                        },
+                        "file_path": {
+                            "type": "string",
+                            "description": "Destination .dra file path",
+                        },
+                        "src_media": {
+                            "type": "boolean",
+                            "description": "Include source media",
+                        },
+                        "render_cache": {
+                            "type": "boolean",
+                            "description": "Include render cache",
+                        },
+                        "proxy_media": {
+                            "type": "boolean",
+                            "description": "Include proxy media",
+                        },
                         "confirm": {
                             "type": "boolean",
-                            "description": "Must be true. This operation cannot be undone.",
+                            "description": "Must be true. This operation cannot be undone.",  # noqa: E501
                         },
                     },
-                    "required": ["name", "file_path", "src_media", "render_cache", "proxy_media", "confirm"],
+                    "required": [
+                        "name",
+                        "file_path",
+                        "src_media",
+                        "render_cache",
+                        "proxy_media",
+                        "confirm",
+                    ],
                 },
             ),
             types.Tool(
                 name="restore_project",
                 description=(
                     f"{_DESTRUCTIVE}Restore a project from a .dra archive. "
-                    "Will overwrite if a project with the same name exists. Requires confirm=true."
+                    "Will overwrite if a project with the same name exists. Requires confirm=true."  # noqa: E501
                 ),
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "file_path": {"type": "string", "description": "Source .dra archive path"},
-                        "project_name": {"type": "string", "description": "Name for the restored project"},
+                        "file_path": {
+                            "type": "string",
+                            "description": "Source .dra archive path",
+                        },
+                        "project_name": {
+                            "type": "string",
+                            "description": "Name for the restored project",
+                        },
                         "confirm": {
                             "type": "boolean",
-                            "description": "Must be true. Will overwrite an existing project of the same name.",
+                            "description": "Must be true. Will overwrite an existing project of the same name.",  # noqa: E501
                         },
                     },
                     "required": ["file_path", "project_name", "confirm"],
@@ -220,7 +271,10 @@ class ProjectManagementDomain:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "folder_name": {"type": "string", "description": "Folder name to create"},
+                        "folder_name": {
+                            "type": "string",
+                            "description": "Folder name to create",
+                        },
                     },
                     "required": ["folder_name"],
                 },
@@ -228,16 +282,19 @@ class ProjectManagementDomain:
             types.Tool(
                 name="delete_project_folder",
                 description=(
-                    f"{_DESTRUCTIVE}Delete a project folder and all projects it contains. "
+                    f"{_DESTRUCTIVE}Delete a project folder and all projects it contains. "  # noqa: E501
                     "Requires confirm=true."
                 ),
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "folder_name": {"type": "string", "description": "Folder name to delete"},
+                        "folder_name": {
+                            "type": "string",
+                            "description": "Folder name to delete",
+                        },
                         "confirm": {
                             "type": "boolean",
-                            "description": "Must be true. Deletes the folder and all contained projects.",
+                            "description": "Must be true. Deletes the folder and all contained projects.",  # noqa: E501
                         },
                     },
                     "required": ["folder_name", "confirm"],
@@ -249,7 +306,10 @@ class ProjectManagementDomain:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "folder_name": {"type": "string", "description": "Folder name to open"},
+                        "folder_name": {
+                            "type": "string",
+                            "description": "Folder name to open",
+                        },
                     },
                     "required": ["folder_name"],
                 },
@@ -322,7 +382,9 @@ class ProjectManagementDomain:
         elif tool_name == "create_project":
             name = arguments.get("name", "")
             result = client.create_project(name)
-            return f"Created project '{name}'" if result else f"Failed to create '{name}'"
+            return (
+                f"Created project '{name}'" if result else f"Failed to create '{name}'"
+            )
 
         # --- save / rename ---
         elif tool_name == "save_project":
@@ -337,16 +399,24 @@ class ProjectManagementDomain:
 
         # --- destructive project operations ---
         elif tool_name == "close_project":
-            if err := _confirm_gate("close_project", arguments, "Closes the current project; unsaved changes are lost."):
+            if err := _confirm_gate(
+                "close_project",
+                arguments,
+                "Closes the current project; unsaved changes are lost.",
+            ):
                 return err
             result = client.close_project()
             return "Project closed" if result else "Close failed"
         elif tool_name == "delete_project":
             name = arguments.get("name", "")
-            if err := _confirm_gate("delete_project", arguments, f"Permanently deletes project '{name}'."):
+            if err := _confirm_gate(
+                "delete_project", arguments, f"Permanently deletes project '{name}'."
+            ):
                 return err
             result = client.delete_project(name)
-            return f"Deleted project '{name}'" if result else f"Delete failed for '{name}'"
+            return (
+                f"Deleted project '{name}'" if result else f"Delete failed for '{name}'"
+            )
 
         # --- export / import / archive / restore ---
         elif tool_name == "export_project":
@@ -359,11 +429,17 @@ class ProjectManagementDomain:
             file_path = arguments.get("file_path", "")
             project_name = arguments.get("project_name", "")
             result = client.import_project(file_path, project_name)
-            return f"Imported project as '{project_name}'" if result else "Import failed"
+            return (
+                f"Imported project as '{project_name}'" if result else "Import failed"
+            )
         elif tool_name == "archive_project":
             name = arguments.get("name", "")
             file_path = arguments.get("file_path", "")
-            if err := _confirm_gate("archive_project", arguments, f"Archives project '{name}' to {file_path}."):
+            if err := _confirm_gate(
+                "archive_project",
+                arguments,
+                f"Archives project '{name}' to {file_path}.",
+            ):
                 return err
             result = client.archive_project(
                 name,
@@ -376,10 +452,16 @@ class ProjectManagementDomain:
         elif tool_name == "restore_project":
             file_path = arguments.get("file_path", "")
             project_name = arguments.get("project_name", "")
-            if err := _confirm_gate("restore_project", arguments, f"Restores project from {file_path} as '{project_name}'."):
+            if err := _confirm_gate(
+                "restore_project",
+                arguments,
+                f"Restores project from {file_path} as '{project_name}'.",
+            ):
                 return err
             result = client.restore_project(file_path, project_name)
-            return f"Restored project as '{project_name}'" if result else "Restore failed"
+            return (
+                f"Restored project as '{project_name}'" if result else "Restore failed"
+            )
 
         # --- folder navigation ---
         elif tool_name == "list_project_folders":
@@ -389,10 +471,18 @@ class ProjectManagementDomain:
         elif tool_name == "create_project_folder":
             folder_name = arguments.get("folder_name", "")
             result = client.create_project_folder(folder_name)
-            return f"Created folder '{folder_name}'" if result else "Folder creation failed"
+            return (
+                f"Created folder '{folder_name}'"
+                if result
+                else "Folder creation failed"
+            )
         elif tool_name == "delete_project_folder":
             folder_name = arguments.get("folder_name", "")
-            if err := _confirm_gate("delete_project_folder", arguments, f"Permanently deletes folder '{folder_name}' and all projects it contains."):
+            if err := _confirm_gate(
+                "delete_project_folder",
+                arguments,
+                f"Permanently deletes folder '{folder_name}' and all projects it contains.",  # noqa: E501
+            ):
                 return err
             result = client.delete_project_folder(folder_name)
             return f"Deleted folder '{folder_name}'" if result else "Delete failed"
@@ -414,9 +504,17 @@ class ProjectManagementDomain:
             return client.get_current_database()
         elif tool_name == "set_current_database":
             db_info = arguments.get("db_info", {})
-            if err := _confirm_gate("set_current_database", arguments, f"Switches database to {db_info}; closes the current project."):
+            if err := _confirm_gate(
+                "set_current_database",
+                arguments,
+                f"Switches database to {db_info}; closes the current project.",
+            ):
                 return err
             result = client.set_current_database(db_info)
-            return f"Switched to database {db_info}" if result else "Database switch failed"
+            return (
+                f"Switched to database {db_info}"
+                if result
+                else "Database switch failed"
+            )
 
         return f"Unknown tool in project_management domain: {tool_name}"
