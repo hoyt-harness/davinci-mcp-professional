@@ -8,16 +8,19 @@ Domain-specific tool definitions live in their respective domain modules.
 
 import mcp.types as types
 
+from ..domains.registry import DOMAIN_REGISTRY
+
 
 def get_all_tools() -> list[types.Tool]:
     """Return the fixed kernel tool set."""
+    domain_names = sorted(DOMAIN_REGISTRY)
     return [
         types.Tool(
             name="activate_domain",
             description=(
                 "Activate a domain to make its tools available. "
-                "Available domains: project_management, timeline_operations, "
-                "media_pool. Call list_domains to see current activation status."
+                f"Available domains: {', '.join(domain_names)}. "
+                "Call list_domains to see current activation status."
             ),
             inputSchema={
                 "type": "object",
@@ -25,11 +28,7 @@ def get_all_tools() -> list[types.Tool]:
                     "domain": {
                         "type": "string",
                         "description": "Domain name to activate",
-                        "enum": [
-                            "project_management",
-                            "timeline_operations",
-                            "media_pool",
-                        ],
+                        "enum": domain_names,
                     }
                 },
                 "required": ["domain"],

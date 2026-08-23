@@ -242,6 +242,157 @@ class DaVinciResolveClient:
 
         return bool(result)
 
+    def save_project(self) -> bool:
+        """Save the current project."""
+        project = self._ensure_project()
+        return bool(project.SaveProject())
+
+    def close_project(self) -> bool:
+        """Close the current project (unsaved changes are lost)."""
+        self._ensure_connected()
+        if not self._project_manager or not self._current_project:
+            return False
+        result = self._project_manager.CloseProject(self._current_project)
+        if result:
+            self._current_project = None
+        return bool(result)
+
+    def delete_project(self, name: str) -> bool:
+        """Permanently delete a project by name."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(self._project_manager.DeleteProject(name))
+
+    def rename_project(self, new_name: str) -> bool:
+        """Rename the current project."""
+        project = self._ensure_project()
+        return bool(project.SetName(new_name))
+
+    def export_project(self, name: str, file_path: str, with_stills_and_luts: bool) -> bool:
+        """Export a project to a .drp file."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(self._project_manager.ExportProject(name, file_path, with_stills_and_luts))
+
+    def import_project(self, file_path: str, project_name: str) -> bool:
+        """Import a project from a .drp file."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(self._project_manager.ImportProject(file_path, project_name))
+
+    def archive_project(
+        self,
+        name: str,
+        file_path: str,
+        src_media: bool,
+        render_cache: bool,
+        proxy_media: bool,
+    ) -> bool:
+        """Archive a project with optional media to a .dra file."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(
+            self._project_manager.ArchiveProject(
+                name, file_path, src_media, render_cache, proxy_media
+            )
+        )
+
+    def restore_project(self, file_path: str, project_name: str) -> bool:
+        """Restore a project from a .dra archive."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(self._project_manager.RestoreProject(file_path, project_name))
+
+    def get_project_attributes(self) -> dict[str, Any]:
+        """Get attributes of all projects in the current folder."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return {}
+        attrs = self._project_manager.GetProjectAttributesInCurrentFolder()
+        return dict(attrs) if attrs else {}
+
+    def create_project_folder(self, folder_name: str) -> bool:
+        """Create a project folder in the current location."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(self._project_manager.CreateFolder(folder_name))
+
+    def delete_project_folder(self, folder_name: str) -> bool:
+        """Permanently delete a project folder."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(self._project_manager.DeleteFolder(folder_name))
+
+    def list_project_folders(self) -> list[str]:
+        """List project folders in the current location."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return []
+        folders = self._project_manager.GetFolderListInCurrentFolder()
+        return list(folders) if folders else []
+
+    def get_current_project_folder(self) -> str:
+        """Get the name of the current project folder."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return ""
+        name = self._project_manager.GetCurrentFolder()
+        return str(name) if name else ""
+
+    def open_project_folder(self, folder_name: str) -> bool:
+        """Open a project folder."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(self._project_manager.OpenFolder(folder_name))
+
+    def goto_root_folder(self) -> bool:
+        """Navigate to the root project folder."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(self._project_manager.GotoRootFolder())
+
+    def goto_parent_folder(self) -> bool:
+        """Navigate to the parent project folder."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(self._project_manager.GotoParentFolder())
+
+    def list_databases(self) -> list[dict[str, Any]]:
+        """List available project databases."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return []
+        dbs = self._project_manager.GetDatabaseList()
+        return [dict(db) for db in dbs] if dbs else []
+
+    def get_current_database(self) -> dict[str, Any]:
+        """Get the current project database info."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return {}
+        db = self._project_manager.GetCurrentDatabase()
+        return dict(db) if db else {}
+
+    def set_current_database(self, db_info: dict[str, Any]) -> bool:
+        """Switch to a different project database (closes current project)."""
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        result = self._project_manager.SetCurrentDatabase(db_info)
+        if result:
+            self._current_project = None
+        return bool(result)
+
     # Timeline Management
     def list_timelines(self) -> list[str]:
         """List all timelines in the current project."""
