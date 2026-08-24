@@ -30,6 +30,7 @@ class DomainModule(Protocol):
     ) -> Any: ...
 
 
+from .ai_studio import AIStudioDomain  # noqa: E402
 from .clip_properties import ClipPropertiesDomain  # noqa: E402
 from .color_grading import ColorGradingDomain  # noqa: E402
 from .media_pool import MediaPoolDomain  # noqa: E402
@@ -48,4 +49,5 @@ DOMAIN_REGISTRY: dict[str, DomainModule] = {
     "system_fairlight_storage": SystemFairlightStorageDomain(),
     "color_grading": ColorGradingDomain(),
     "timeline_item_editing": TimelineItemEditingDomain(),
+    "ai_studio": AIStudioDomain(),
 }

@@ -211,6 +211,10 @@ class DaVinciMCPServer:
         async def handle_list_resources() -> list[types.Resource]:  # type: ignore
             return get_all_resources()
 
+        @self.server.list_resource_templates()
+        async def handle_list_resource_templates() -> list[types.ResourceTemplate]:  # type: ignore  # noqa: E501
+            return []
+
         @self.server.read_resource()
         async def handle_read_resource(  # type: ignore
             uri: AnyUrl,

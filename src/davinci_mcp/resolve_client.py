@@ -2157,3 +2157,104 @@ class DaVinciResolveClient:
     def reset_item_node_colors(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:  # noqa: E501
         """Reset all node colors on a timeline item."""  # noqa: E501
         return bool(self._get_timeline_item(timeline_name, item_ref).ResetAllNodeColors())  # noqa: E501
+
+    # ------------------------------------------------------------------
+    # Domain 8: AI & Studio Features
+    # ------------------------------------------------------------------
+
+    def create_magic_mask(
+        self, timeline_name: str, item_ref: dict[str, Any], mode: str
+    ) -> bool:
+        """Create a magic mask on a timeline item (Studio only)."""
+        item = self._get_timeline_item(timeline_name, item_ref)
+        return bool(item.CreateMagicMask(mode))
+
+    def regenerate_magic_mask(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:  # noqa: E501
+        """Regenerate the magic mask on a timeline item (Studio only)."""
+        return bool(self._get_timeline_item(timeline_name, item_ref).RegenerateMagicMask())  # noqa: E501
+
+    def stabilize_clip(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:
+        """Stabilize a timeline item (Studio only)."""
+        return bool(self._get_timeline_item(timeline_name, item_ref).Stabilize())
+
+    def smart_reframe_clip(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:
+        """Apply Smart Reframe to a timeline item (Studio only)."""
+        return bool(self._get_timeline_item(timeline_name, item_ref).SmartReframe())
+
+    def create_subtitles_from_audio(self, timeline_name: str, settings: dict[str, Any]) -> bool:  # noqa: E501
+        """Generate subtitles from audio for a timeline (Studio only)."""
+        tl = self._get_timeline_by_name(timeline_name)
+        return bool(tl.CreateSubtitlesFromAudio(settings))
+
+    def detect_scene_cuts(self, timeline_name: str) -> bool:
+        """Detect scene cuts in a timeline (Studio only)."""
+        tl = self._get_timeline_by_name(timeline_name)
+        return bool(tl.DetectSceneCuts())
+
+    def transcribe_clip_audio(self, clip_id: str, use_speaker_detection: bool) -> bool:
+        """Transcribe audio for a media pool clip (Studio + Extras)."""
+        clip = self._get_clip_by_id(clip_id)
+        return bool(clip.TranscribeAudio(use_speaker_detection))
+
+    def clear_transcription(self, clip_id: str) -> bool:
+        """Clear transcription data for a clip (Studio only)."""
+        return bool(self._get_clip_by_id(clip_id).ClearTranscription())
+
+    def classify_clip_audio(self, clip_id: str) -> bool:
+        """Classify audio content for a clip (Studio + Extras)."""
+        return bool(self._get_clip_by_id(clip_id).PerformAudioClassification())
+
+    def clear_audio_classification(self, clip_id: str) -> bool:
+        """Clear audio classification for a clip (Studio only)."""
+        return bool(self._get_clip_by_id(clip_id).ClearAudioClassification())
+
+    def transcribe_folder_audio(self, folder_path: str, use_speaker_detection: bool) -> bool:  # noqa: E501
+        """Transcribe audio for all clips in a folder (Studio + Extras)."""
+        folder = self._get_folder_by_path(folder_path)
+        return bool(folder.TranscribeAudio(use_speaker_detection))
+
+    def analyze_for_intellisearch(
+        self, folder_path: str, identify_faces: bool, is_better_mode: bool
+    ) -> bool:
+        """Analyze folder clips for IntelliSearch (Studio + AI Extras)."""
+        folder = self._get_folder_by_path(folder_path)
+        return bool(folder.AnalyzeForIntellisearch(identify_faces, is_better_mode))
+
+    def analyze_for_slate(self, folder_path: str, marker_color: str) -> bool:
+        """Analyze folder clips for Slate ID (Studio + AI Slate ID Extras)."""
+        folder = self._get_folder_by_path(folder_path)
+        return bool(folder.AnalyzeForSlate(marker_color))
+
+    def remove_motion_blur(
+        self, clip_id: str, deblur_options: dict[str, Any]
+    ) -> dict[str, Any] | None:
+        """Remove motion blur from a clip (Studio only). Returns new item info."""
+        clip = self._get_clip_by_id(clip_id)
+        result = clip.RemoveMotionBlur(deblur_options)
+        if not result:
+            return None
+        return {"clip_id": result.GetUniqueId(), "name": result.GetName()}
+
+    def set_voice_isolation(
+        self, timeline_name: str, track_index: int, state: dict[str, Any]
+    ) -> bool:
+        """Set voice isolation state for an audio track (Studio only)."""
+        tl = self._get_timeline_by_name(timeline_name)
+        return bool(tl.SetVoiceIsolationState(track_index, state))
+
+    def set_item_voice_isolation(
+        self, timeline_name: str, item_ref: dict[str, Any], state: dict[str, Any]
+    ) -> bool:
+        """Set voice isolation state for a timeline item (Studio only)."""
+        item = self._get_timeline_item(timeline_name, item_ref)
+        return bool(item.SetVoiceIsolationState(state))
+
+    def generate_speech(self, settings: dict[str, Any], timecode: str) -> bool:
+        """Generate speech and add it to the timeline (Studio + AI Speech Generator)."""
+        project = self._ensure_project()
+        return bool(project.GenerateSpeech(settings, timecode))
+
+    def reset_intellisearch(self) -> bool:
+        """Reset IntelliSearch analysis for the current project (Studio only)."""
+        project = self._ensure_project()
+        return bool(project.ResetIntellisearchAnalysis())
