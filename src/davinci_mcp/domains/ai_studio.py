@@ -384,7 +384,9 @@ class AIStudioDomain:
 
         # --- timeline AI tools ---
         elif tool_name == "create_subtitles_from_audio":
-            result = client.create_subtitles_from_audio(tl, arguments.get("settings", {}))  # noqa: E501
+            result = client.create_subtitles_from_audio(
+                tl, arguments.get("settings", {})
+            )  # noqa: E501
             return "Subtitles created" if result else "Failed to create subtitles"
         elif tool_name == "detect_scene_cuts":
             result = client.detect_scene_cuts(tl)
@@ -396,7 +398,9 @@ class AIStudioDomain:
             result = client.transcribe_clip_audio(
                 clip_id, bool(arguments.get("use_speaker_detection", False))
             )
-            return "Transcription started" if result else "Failed to start transcription"  # noqa: E501
+            return (
+                "Transcription started" if result else "Failed to start transcription"
+            )  # noqa: E501
         elif tool_name == "clear_transcription":
             clip_id = arguments.get("clip_id", "")
             if err := _confirm_gate(
@@ -454,7 +458,9 @@ class AIStudioDomain:
             )
             return "Voice isolation set" if result else "Failed"
         elif tool_name == "set_item_voice_isolation":
-            result = client.set_item_voice_isolation(tl, item_ref, arguments.get("state", {}))  # noqa: E501
+            result = client.set_item_voice_isolation(
+                tl, item_ref, arguments.get("state", {})
+            )  # noqa: E501
             return "Voice isolation set" if result else "Failed"
 
         # --- generate speech ---

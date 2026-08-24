@@ -27,7 +27,9 @@ class ColorGradingDomain:
         _tl = {"timeline_name": {"type": "string", "description": "Timeline name"}}
         _alb = {"album_name": {"type": "string", "description": "Album name"}}
         _ni = {"node_index": {"type": "integer", "description": "Node index (1-based)"}}  # noqa: E501
-        _si = {"still_index": {"type": "integer", "description": "Still index (1-based)"}}  # noqa: E501
+        _si = {
+            "still_index": {"type": "integer", "description": "Still index (1-based)"}
+        }  # noqa: E501
         _req_tl = ["timeline_name"]
         _req_alb = ["album_name"]
 
@@ -260,7 +262,8 @@ class ColorGradingDomain:
                         },
                         "format": {"type": "string", "description": "Export format"},
                     },
-                    "required": _req_alb + ["still_indices", "folder_path", "file_prefix", "format"],  # noqa: E501
+                    "required": _req_alb
+                    + ["still_indices", "folder_path", "file_prefix", "format"],  # noqa: E501
                 },
             ),
             types.Tool(
@@ -448,7 +451,9 @@ class ColorGradingDomain:
             )
             return "LUT set" if result else "Failed to set LUT"
         elif tool_name == "get_graph_node_cache_mode":
-            return client.get_graph_node_cache_mode(tl, int(arguments.get("node_index", 1)))  # noqa: E501
+            return client.get_graph_node_cache_mode(
+                tl, int(arguments.get("node_index", 1))
+            )  # noqa: E501
         elif tool_name == "set_graph_node_enabled":
             result = client.set_graph_node_enabled(
                 tl,
@@ -558,9 +563,7 @@ class ColorGradingDomain:
             result = client.rename_color_group(group_name, new_name)
             return f"Renamed to '{new_name}'" if result else "Rename failed"
         elif tool_name == "get_clips_in_color_group":
-            return client.get_clips_in_color_group(
-                arguments.get("group_name", ""), tl
-            )
+            return client.get_clips_in_color_group(arguments.get("group_name", ""), tl)
         elif tool_name == "get_color_group_pre_graph":
             return client.get_color_group_pre_graph(arguments.get("group_name", ""))
         elif tool_name == "get_color_group_post_graph":

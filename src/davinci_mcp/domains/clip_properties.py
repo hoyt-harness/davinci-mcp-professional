@@ -268,7 +268,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="delete_clip_markers_by_color",
                 description=(
-                    f'{_DESTRUCTIVE}Delete clip markers by color. '
+                    f"{_DESTRUCTIVE}Delete clip markers by color. "
                     'Use "All" to delete all. Requires confirm=true.'
                 ),
                 inputSchema={

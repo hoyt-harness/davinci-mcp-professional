@@ -46,7 +46,12 @@ class TimelineItemEditingDomain:
         }
         _req = ["timeline_name", "item_ref"]
 
-        def _tool(name: str, desc: str, extra: dict | None = None, req_extra: list | None = None) -> types.Tool:  # noqa: E501
+        def _tool(
+            name: str,
+            desc: str,
+            extra: dict | None = None,
+            req_extra: list | None = None,
+        ) -> types.Tool:  # noqa: E501
             props = dict(_tl_props)
             if extra:
                 props.update(extra)
@@ -92,7 +97,9 @@ class TimelineItemEditingDomain:
                 {"subframe_precision": {"type": "boolean", "description": "Sub-frame"}},
                 ["subframe_precision"],
             ),
-            _tool("get_item_source_start", "Get the source media start frame of an item"),  # noqa: E501
+            _tool(
+                "get_item_source_start", "Get the source media start frame of an item"
+            ),  # noqa: E501
             _tool("get_item_source_end", "Get the source media end frame of an item"),
             _tool(
                 "get_item_left_offset",
@@ -180,7 +187,15 @@ class TimelineItemEditingDomain:
                         "duration": {"type": "integer", "description": "Frames"},
                         "custom_data": {"type": "string", "description": "Data"},
                     },
-                    "required": _req + ["frame_id", "color", "marker_name", "note", "duration", "custom_data"],  # noqa: E501
+                    "required": _req
+                    + [
+                        "frame_id",
+                        "color",
+                        "marker_name",
+                        "note",
+                        "duration",
+                        "custom_data",
+                    ],  # noqa: E501
                 },
             ),
             _tool(
@@ -190,7 +205,7 @@ class TimelineItemEditingDomain:
             types.Tool(
                 name="delete_item_markers_by_color",
                 description=(
-                    f'{_DESTRUCTIVE}Delete item markers by color. '
+                    f"{_DESTRUCTIVE}Delete item markers by color. "
                     'Use "All" to delete all. Requires confirm=true.'
                 ),
                 inputSchema={
@@ -230,7 +245,10 @@ class TimelineItemEditingDomain:
                     "properties": {
                         **_tl_props,
                         "clip_id": {"type": "string", "description": "Clip UUID"},
-                        "start_frame": {"type": "integer", "description": "Start frame"},  # noqa: E501
+                        "start_frame": {
+                            "type": "integer",
+                            "description": "Start frame",
+                        },  # noqa: E501
                         "end_frame": {"type": "integer", "description": "End frame"},
                     },
                     "required": _req + ["clip_id", "start_frame", "end_frame"],
@@ -240,13 +258,23 @@ class TimelineItemEditingDomain:
             _tool(
                 "get_take_by_index",
                 "Get take info (startFrame, endFrame, mediaPoolItem) by 1-based index",
-                {"take_index": {"type": "integer", "description": "Take index (1-based)"}},  # noqa: E501
+                {
+                    "take_index": {
+                        "type": "integer",
+                        "description": "Take index (1-based)",
+                    }
+                },  # noqa: E501
                 ["take_index"],
             ),
             _tool(
                 "select_take",
                 "Select the active take by 1-based index",
-                {"take_index": {"type": "integer", "description": "Take index (1-based)"}},  # noqa: E501
+                {
+                    "take_index": {
+                        "type": "integer",
+                        "description": "Take index (1-based)",
+                    }
+                },  # noqa: E501
                 ["take_index"],
             ),
             types.Tool(
@@ -268,11 +296,19 @@ class TimelineItemEditingDomain:
             # ----------------------------------------------------------------
             # Color versions
             # ----------------------------------------------------------------
-            _tool("get_current_color_version", "Get the current color version (name and type)"),  # noqa: E501
+            _tool(
+                "get_current_color_version",
+                "Get the current color version (name and type)",
+            ),  # noqa: E501
             _tool(
                 "get_color_version_list",
                 "Get color version names for an item (version_type: 0=local, 1=remote)",
-                {"version_type": {"type": "integer", "description": "0=local, 1=remote"}},  # noqa: E501
+                {
+                    "version_type": {
+                        "type": "integer",
+                        "description": "0=local, 1=remote",
+                    }
+                },  # noqa: E501
                 ["version_type"],
             ),
             types.Tool(
@@ -282,8 +318,14 @@ class TimelineItemEditingDomain:
                     "type": "object",
                     "properties": {
                         **_tl_props,
-                        "version_name": {"type": "string", "description": "Version name"},  # noqa: E501
-                        "version_type": {"type": "integer", "description": "0=local, 1=remote"},  # noqa: E501
+                        "version_name": {
+                            "type": "string",
+                            "description": "Version name",
+                        },  # noqa: E501
+                        "version_type": {
+                            "type": "integer",
+                            "description": "0=local, 1=remote",
+                        },  # noqa: E501
                     },
                     "required": _req + ["version_name", "version_type"],
                 },
@@ -295,8 +337,14 @@ class TimelineItemEditingDomain:
                     "type": "object",
                     "properties": {
                         **_tl_props,
-                        "version_name": {"type": "string", "description": "Version name"},  # noqa: E501
-                        "version_type": {"type": "integer", "description": "0=local, 1=remote"},  # noqa: E501
+                        "version_name": {
+                            "type": "string",
+                            "description": "Version name",
+                        },  # noqa: E501
+                        "version_type": {
+                            "type": "integer",
+                            "description": "0=local, 1=remote",
+                        },  # noqa: E501
                     },
                     "required": _req + ["version_name", "version_type"],
                 },
@@ -310,8 +358,14 @@ class TimelineItemEditingDomain:
                     "type": "object",
                     "properties": {
                         **_tl_props,
-                        "version_name": {"type": "string", "description": "Version name"},  # noqa: E501
-                        "version_type": {"type": "integer", "description": "0=local, 1=remote"},  # noqa: E501
+                        "version_name": {
+                            "type": "string",
+                            "description": "Version name",
+                        },  # noqa: E501
+                        "version_type": {
+                            "type": "integer",
+                            "description": "0=local, 1=remote",
+                        },  # noqa: E501
                         "confirm": {"type": "boolean", "description": "Must be true."},
                     },
                     "required": _req + ["version_name", "version_type", "confirm"],
@@ -326,7 +380,10 @@ class TimelineItemEditingDomain:
                         **_tl_props,
                         "old_name": {"type": "string", "description": "Current name"},
                         "new_name": {"type": "string", "description": "New name"},
-                        "version_type": {"type": "integer", "description": "0=local, 1=remote"},  # noqa: E501
+                        "version_type": {
+                            "type": "integer",
+                            "description": "0=local, 1=remote",
+                        },  # noqa: E501
                     },
                     "required": _req + ["old_name", "new_name", "version_type"],
                 },
@@ -334,7 +391,9 @@ class TimelineItemEditingDomain:
             # ----------------------------------------------------------------
             # Fusion comps
             # ----------------------------------------------------------------
-            _tool("list_fusion_comps", "List Fusion composition names on a timeline item"),  # noqa: E501
+            _tool(
+                "list_fusion_comps", "List Fusion composition names on a timeline item"
+            ),  # noqa: E501
             _tool("add_fusion_comp", "Add a new Fusion composition to a timeline item"),
             _tool(
                 "load_fusion_comp",
@@ -356,7 +415,10 @@ class TimelineItemEditingDomain:
                     "properties": {
                         **_tl_props,
                         "file_path": {"type": "string", "description": "Destination"},
-                        "comp_index": {"type": "integer", "description": "Comp index (0-based)"},  # noqa: E501
+                        "comp_index": {
+                            "type": "integer",
+                            "description": "Comp index (0-based)",
+                        },  # noqa: E501
                     },
                     "required": _req + ["file_path", "comp_index"],
                 },
@@ -443,7 +505,10 @@ class TimelineItemEditingDomain:
                     "type": "object",
                     "properties": {
                         **_tl_props,
-                        "export_type": {"type": "integer", "description": "LUT type (0-3)"},  # noqa: E501
+                        "export_type": {
+                            "type": "integer",
+                            "description": "LUT type (0-3)",
+                        },  # noqa: E501
                         "file_path": {"type": "string", "description": "Output path"},
                     },
                     "required": _req + ["export_type", "file_path"],
@@ -465,14 +530,19 @@ class TimelineItemEditingDomain:
             # ----------------------------------------------------------------
             # Color group
             # ----------------------------------------------------------------
-            _tool("get_item_color_group", "Get the color group assigned to a timeline item"),  # noqa: E501
+            _tool(
+                "get_item_color_group",
+                "Get the color group assigned to a timeline item",
+            ),  # noqa: E501
             _tool(
                 "assign_to_color_group",
                 "Assign a timeline item to a color group",
                 {"group_name": {"type": "string", "description": "Group name"}},
                 ["group_name"],
             ),
-            _tool("remove_from_color_group", "Remove a timeline item from its color group"),  # noqa: E501
+            _tool(
+                "remove_from_color_group", "Remove a timeline item from its color group"
+            ),  # noqa: E501
             # ----------------------------------------------------------------
             # Cache control
             # ----------------------------------------------------------------
@@ -527,19 +597,29 @@ class TimelineItemEditingDomain:
 
         # --- timing ---
         elif tool_name == "get_item_duration":
-            return client.get_item_duration(tl, item_ref, bool(arguments.get("subframe_precision", False)))  # noqa: E501
+            return client.get_item_duration(
+                tl, item_ref, bool(arguments.get("subframe_precision", False))
+            )  # noqa: E501
         elif tool_name == "get_item_start":
-            return client.get_item_start(tl, item_ref, bool(arguments.get("subframe_precision", False)))  # noqa: E501
+            return client.get_item_start(
+                tl, item_ref, bool(arguments.get("subframe_precision", False))
+            )  # noqa: E501
         elif tool_name == "get_item_end":
-            return client.get_item_end(tl, item_ref, bool(arguments.get("subframe_precision", False)))  # noqa: E501
+            return client.get_item_end(
+                tl, item_ref, bool(arguments.get("subframe_precision", False))
+            )  # noqa: E501
         elif tool_name == "get_item_source_start":
             return client.get_item_source_start(tl, item_ref)
         elif tool_name == "get_item_source_end":
             return client.get_item_source_end(tl, item_ref)
         elif tool_name == "get_item_left_offset":
-            return client.get_item_left_offset(tl, item_ref, bool(arguments.get("subframe_precision", False)))  # noqa: E501
+            return client.get_item_left_offset(
+                tl, item_ref, bool(arguments.get("subframe_precision", False))
+            )  # noqa: E501
         elif tool_name == "get_item_right_offset":
-            return client.get_item_right_offset(tl, item_ref, bool(arguments.get("subframe_precision", False)))  # noqa: E501
+            return client.get_item_right_offset(
+                tl, item_ref, bool(arguments.get("subframe_precision", False))
+            )  # noqa: E501
 
         # --- properties ---
         elif tool_name == "get_item_properties":
@@ -557,12 +637,16 @@ class TimelineItemEditingDomain:
         elif tool_name == "get_item_enabled":
             return client.get_item_enabled(tl, item_ref)
         elif tool_name == "set_item_enabled":
-            result = client.set_item_enabled(tl, item_ref, bool(arguments.get("enabled", True)))  # noqa: E501
+            result = client.set_item_enabled(
+                tl, item_ref, bool(arguments.get("enabled", True))
+            )  # noqa: E501
             return "Item enabled state set" if result else "Failed"
         elif tool_name == "get_item_color":
             return client.get_item_color(tl, item_ref)
         elif tool_name == "set_item_color":
-            result = client.set_item_color(tl, item_ref, arguments.get("color_name", ""))  # noqa: E501
+            result = client.set_item_color(
+                tl, item_ref, arguments.get("color_name", "")
+            )  # noqa: E501
             return "Color set" if result else "Failed to set color"
         elif tool_name == "clear_item_color":
             result = client.clear_item_color(tl, item_ref)
@@ -575,7 +659,9 @@ class TimelineItemEditingDomain:
         elif tool_name == "get_item_flags":
             return client.get_item_flags(tl, item_ref)
         elif tool_name == "clear_item_flags":
-            result = client.clear_item_flags(tl, item_ref, arguments.get("color", "All"))  # noqa: E501
+            result = client.clear_item_flags(
+                tl, item_ref, arguments.get("color", "All")
+            )  # noqa: E501
             return "Flags cleared" if result else "Failed"
 
         # --- markers ---
@@ -623,9 +709,13 @@ class TimelineItemEditingDomain:
         elif tool_name == "get_take_count":
             return client.get_take_count(tl, item_ref)
         elif tool_name == "get_take_by_index":
-            return client.get_take_by_index(tl, item_ref, int(arguments.get("take_index", 1)))  # noqa: E501
+            return client.get_take_by_index(
+                tl, item_ref, int(arguments.get("take_index", 1))
+            )  # noqa: E501
         elif tool_name == "select_take":
-            result = client.select_take(tl, item_ref, int(arguments.get("take_index", 1)))  # noqa: E501
+            result = client.select_take(
+                tl, item_ref, int(arguments.get("take_index", 1))
+            )  # noqa: E501
             return "Take selected" if result else "Failed to select take"
         elif tool_name == "delete_take":
             take_index = int(arguments.get("take_index", 1))
@@ -689,10 +779,14 @@ class TimelineItemEditingDomain:
             result = client.add_fusion_comp(tl, item_ref)
             return "Fusion comp added" if result else "Failed to add comp"
         elif tool_name == "load_fusion_comp":
-            result = client.load_fusion_comp(tl, item_ref, arguments.get("comp_name", ""))  # noqa: E501
+            result = client.load_fusion_comp(
+                tl, item_ref, arguments.get("comp_name", "")
+            )  # noqa: E501
             return "Comp loaded" if result else "Failed to load comp"
         elif tool_name == "import_fusion_comp":
-            result = client.import_fusion_comp(tl, item_ref, arguments.get("file_path", ""))  # noqa: E501
+            result = client.import_fusion_comp(
+                tl, item_ref, arguments.get("file_path", "")
+            )  # noqa: E501
             return "Comp imported" if result else "Failed to import comp"
         elif tool_name == "export_fusion_comp":
             result = client.export_fusion_comp(
@@ -721,7 +815,9 @@ class TimelineItemEditingDomain:
 
         # --- node graph / grade ---
         elif tool_name == "get_item_node_graph":
-            return client.get_item_node_graph(tl, item_ref, int(arguments.get("layer_index", 1)))  # noqa: E501
+            return client.get_item_node_graph(
+                tl, item_ref, int(arguments.get("layer_index", 1))
+            )  # noqa: E501
         elif tool_name == "copy_grades":
             result = client.copy_grades(
                 tl, item_ref, arguments.get("target_item_refs", [])

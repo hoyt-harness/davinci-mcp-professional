@@ -1136,7 +1136,9 @@ class DaVinciResolveClient:
         result = project.GetRenderCodecs(render_format)
         return dict(result) if result else {}
 
-    def get_render_resolutions(self, render_format: str, codec: str) -> list[dict[str, Any]]:  # noqa: E501
+    def get_render_resolutions(
+        self, render_format: str, codec: str
+    ) -> list[dict[str, Any]]:  # noqa: E501
         """Get available render resolutions for a format and codec."""
         project = self._ensure_project()
         result = project.GetRenderResolutions(render_format, codec)
@@ -1195,7 +1197,9 @@ class DaVinciResolveClient:
         result = project.GetQuickExportRenderPresets()
         return list(result) if result else []
 
-    def render_with_quick_export(self, preset_name: str, params: dict[str, Any]) -> bool:  # noqa: E501
+    def render_with_quick_export(
+        self, preset_name: str, params: dict[str, Any]
+    ) -> bool:  # noqa: E501
         """Render using a Quick Export preset."""
         project = self._ensure_project()
         return bool(project.RenderWithQuickExport(preset_name, params))
@@ -1286,17 +1290,25 @@ class DaVinciResolveClient:
         clip = self._get_clip_by_id(clip_id)
         return clip.GetClipProperty()
 
-    def set_clip_property(self, clip_id: str, property_key: str, property_value: str) -> bool:  # noqa: E501
+    def set_clip_property(
+        self, clip_id: str, property_key: str, property_value: str
+    ) -> bool:  # noqa: E501
         """Set a single clip property."""
-        return bool(self._get_clip_by_id(clip_id).SetClipProperty(property_key, property_value))  # noqa: E501
+        return bool(
+            self._get_clip_by_id(clip_id).SetClipProperty(property_key, property_value)
+        )  # noqa: E501
 
     def get_clip_metadata(self, clip_id: str) -> Any:
         """Get clip metadata (all if no key given)."""
         return self._get_clip_by_id(clip_id).GetMetadata()
 
-    def set_clip_metadata(self, clip_id: str, metadata_type: str, metadata_value: str) -> bool:  # noqa: E501
+    def set_clip_metadata(
+        self, clip_id: str, metadata_type: str, metadata_value: str
+    ) -> bool:  # noqa: E501
         """Set a clip metadata field."""
-        return bool(self._get_clip_by_id(clip_id).SetMetadata(metadata_type, metadata_value))  # noqa: E501
+        return bool(
+            self._get_clip_by_id(clip_id).SetMetadata(metadata_type, metadata_value)
+        )  # noqa: E501
 
     def get_clip_third_party_metadata(self, clip_id: str) -> Any:
         """Get third-party metadata from a clip."""
@@ -1307,7 +1319,9 @@ class DaVinciResolveClient:
     ) -> bool:
         """Set a third-party metadata field on a clip."""
         return bool(
-            self._get_clip_by_id(clip_id).SetThirdPartyMetadata(metadata_type, metadata_value)  # noqa: E501
+            self._get_clip_by_id(clip_id).SetThirdPartyMetadata(
+                metadata_type, metadata_value
+            )  # noqa: E501
         )
 
     def get_clip_color(self, clip_id: str) -> str:
@@ -1508,7 +1522,9 @@ class DaVinciResolveClient:
         """Insert audio from a file at the current playhead on the Fairlight page."""
         project = self._ensure_project()
         return bool(
-            project.InsertAudioToCurrentTrackAtPlayhead(media_path, start_offset, duration)  # noqa: E501
+            project.InsertAudioToCurrentTrackAtPlayhead(
+                media_path, start_offset, duration
+            )  # noqa: E501
         )
 
     def get_mounted_volumes(self) -> list[str]:
@@ -1606,27 +1622,45 @@ class DaVinciResolveClient:
         """Get the LUT path assigned to a graph node."""
         return str(self._get_timeline_graph(timeline_name).GetLUT(node_index))
 
-    def set_graph_node_lut(self, timeline_name: str, node_index: int, lut_path: str) -> bool:  # noqa: E501
+    def set_graph_node_lut(
+        self, timeline_name: str, node_index: int, lut_path: str
+    ) -> bool:  # noqa: E501
         """Assign a LUT file to a graph node."""
-        return bool(self._get_timeline_graph(timeline_name).SetLUT(node_index, lut_path))  # noqa: E501
+        return bool(
+            self._get_timeline_graph(timeline_name).SetLUT(node_index, lut_path)
+        )  # noqa: E501
 
     def get_graph_node_cache_mode(self, timeline_name: str, node_index: int) -> int:
         """Get the cache mode of a graph node."""
         return int(self._get_timeline_graph(timeline_name).GetNodeCacheMode(node_index))
 
-    def set_graph_node_enabled(self, timeline_name: str, node_index: int, enabled: bool) -> bool:  # noqa: E501
+    def set_graph_node_enabled(
+        self, timeline_name: str, node_index: int, enabled: bool
+    ) -> bool:  # noqa: E501
         """Enable or disable a graph node."""
-        return bool(self._get_timeline_graph(timeline_name).SetNodeEnabled(node_index, enabled))  # noqa: E501
+        return bool(
+            self._get_timeline_graph(timeline_name).SetNodeEnabled(node_index, enabled)
+        )  # noqa: E501
 
-    def set_graph_node_cache_mode(self, timeline_name: str, node_index: int, cache_mode: int) -> bool:  # noqa: E501
+    def set_graph_node_cache_mode(
+        self, timeline_name: str, node_index: int, cache_mode: int
+    ) -> bool:  # noqa: E501
         """Set the cache mode of a graph node."""
         return bool(
-            self._get_timeline_graph(timeline_name).SetNodeCacheMode(node_index, cache_mode)  # noqa: E501
+            self._get_timeline_graph(timeline_name).SetNodeCacheMode(
+                node_index, cache_mode
+            )  # noqa: E501
         )
 
-    def apply_grade_from_drx(self, timeline_name: str, drx_path: str, grade_mode: int) -> bool:  # noqa: E501
+    def apply_grade_from_drx(
+        self, timeline_name: str, drx_path: str, grade_mode: int
+    ) -> bool:  # noqa: E501
         """Apply a grade from a .drx file."""
-        return bool(self._get_timeline_graph(timeline_name).ApplyGradeFromDRX(drx_path, grade_mode))  # noqa: E501
+        return bool(
+            self._get_timeline_graph(timeline_name).ApplyGradeFromDRX(
+                drx_path, grade_mode
+            )
+        )  # noqa: E501
 
     def apply_arri_cdl_lut(self, timeline_name: str) -> bool:
         """Apply ARRI CDL LUT to a timeline's graph."""
@@ -1702,11 +1736,7 @@ class DaVinciResolveClient:
         """Export stills from an album."""
         album = self._get_album_by_name(album_name)
         all_stills = album.GetStills() or []
-        stills = [
-            all_stills[i - 1]
-            for i in still_indices
-            if 1 <= i <= len(all_stills)
-        ]
+        stills = [all_stills[i - 1] for i in still_indices if 1 <= i <= len(all_stills)]
         return bool(album.ExportStills(stills, folder_path, file_prefix, format))
 
     def import_stills(self, album_name: str, file_paths: list[str]) -> bool:
@@ -1718,11 +1748,7 @@ class DaVinciResolveClient:
         """Permanently delete stills from an album by index."""
         album = self._get_album_by_name(album_name)
         all_stills = album.GetStills() or []
-        stills = [
-            all_stills[i - 1]
-            for i in still_indices
-            if 1 <= i <= len(all_stills)
-        ]
+        stills = [all_stills[i - 1] for i in still_indices if 1 <= i <= len(all_stills)]
         return bool(album.DeleteStills(stills))
 
     def get_still_label(self, album_name: str, still_index: int) -> str:
@@ -1762,7 +1788,9 @@ class DaVinciResolveClient:
         group = self._get_color_group_by_name(group_name)
         return bool(group.SetName(new_name))
 
-    def get_clips_in_color_group(self, group_name: str, timeline_name: str) -> list[dict[str, Any]]:  # noqa: E501
+    def get_clips_in_color_group(
+        self, group_name: str, timeline_name: str
+    ) -> list[dict[str, Any]]:  # noqa: E501
         """Get timeline items assigned to a color group."""
         group = self._get_color_group_by_name(group_name)
         tl = self._get_timeline_by_name(timeline_name)
@@ -1822,25 +1850,41 @@ class DaVinciResolveClient:
         """Get the name of a timeline item."""
         return str(self._get_timeline_item(timeline_name, item_ref).GetName())
 
-    def set_item_name(self, timeline_name: str, item_ref: dict[str, Any], name: str) -> bool:  # noqa: E501
+    def set_item_name(
+        self, timeline_name: str, item_ref: dict[str, Any], name: str
+    ) -> bool:  # noqa: E501
         """Set the name of a timeline item."""  # noqa: E501
         return bool(self._get_timeline_item(timeline_name, item_ref).SetName(name))
 
     # --- Timing ---
 
-    def get_item_duration(self, timeline_name: str, item_ref: dict[str, Any], subframe_precision: bool) -> Any:  # noqa: E501
+    def get_item_duration(
+        self, timeline_name: str, item_ref: dict[str, Any], subframe_precision: bool
+    ) -> Any:  # noqa: E501
         """Get the duration of a timeline item."""
-        return self._get_timeline_item(timeline_name, item_ref).GetDuration(subframe_precision)  # noqa: E501
+        return self._get_timeline_item(timeline_name, item_ref).GetDuration(
+            subframe_precision
+        )  # noqa: E501
 
-    def get_item_start(self, timeline_name: str, item_ref: dict[str, Any], subframe_precision: bool) -> Any:  # noqa: E501
+    def get_item_start(
+        self, timeline_name: str, item_ref: dict[str, Any], subframe_precision: bool
+    ) -> Any:  # noqa: E501
         """Get the timeline start of a timeline item."""
-        return self._get_timeline_item(timeline_name, item_ref).GetStart(subframe_precision)  # noqa: E501
+        return self._get_timeline_item(timeline_name, item_ref).GetStart(
+            subframe_precision
+        )  # noqa: E501
 
-    def get_item_end(self, timeline_name: str, item_ref: dict[str, Any], subframe_precision: bool) -> Any:  # noqa: E501
+    def get_item_end(
+        self, timeline_name: str, item_ref: dict[str, Any], subframe_precision: bool
+    ) -> Any:  # noqa: E501
         """Get the timeline end of a timeline item."""
-        return self._get_timeline_item(timeline_name, item_ref).GetEnd(subframe_precision)  # noqa: E501
+        return self._get_timeline_item(timeline_name, item_ref).GetEnd(
+            subframe_precision
+        )  # noqa: E501
 
-    def get_item_source_start(self, timeline_name: str, item_ref: dict[str, Any]) -> Any:  # noqa: E501
+    def get_item_source_start(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> Any:  # noqa: E501
         """Get the source media start frame."""  # noqa: E501
         return self._get_timeline_item(timeline_name, item_ref).GetSourceStartFrame()
 
@@ -1848,13 +1892,21 @@ class DaVinciResolveClient:
         """Get the source media end frame."""  # noqa: E501
         return self._get_timeline_item(timeline_name, item_ref).GetSourceEndFrame()
 
-    def get_item_left_offset(self, timeline_name: str, item_ref: dict[str, Any], subframe_precision: bool) -> Any:  # noqa: E501
+    def get_item_left_offset(
+        self, timeline_name: str, item_ref: dict[str, Any], subframe_precision: bool
+    ) -> Any:  # noqa: E501
         """Get the left trim headroom."""
-        return self._get_timeline_item(timeline_name, item_ref).GetLeftOffset(subframe_precision)  # noqa: E501
+        return self._get_timeline_item(timeline_name, item_ref).GetLeftOffset(
+            subframe_precision
+        )  # noqa: E501
 
-    def get_item_right_offset(self, timeline_name: str, item_ref: dict[str, Any], subframe_precision: bool) -> Any:  # noqa: E501
+    def get_item_right_offset(
+        self, timeline_name: str, item_ref: dict[str, Any], subframe_precision: bool
+    ) -> Any:  # noqa: E501
         """Get the right trim headroom."""
-        return self._get_timeline_item(timeline_name, item_ref).GetRightOffset(subframe_precision)  # noqa: E501
+        return self._get_timeline_item(timeline_name, item_ref).GetRightOffset(
+            subframe_precision
+        )  # noqa: E501
 
     # --- Properties ---
 
@@ -1862,10 +1914,18 @@ class DaVinciResolveClient:
         """Get all transform/composite properties of a timeline item."""
         return self._get_timeline_item(timeline_name, item_ref).GetProperty()
 
-    def set_item_property(self, timeline_name: str, item_ref: dict[str, Any], property_key: str, property_value: Any) -> bool:  # noqa: E501
+    def set_item_property(
+        self,
+        timeline_name: str,
+        item_ref: dict[str, Any],
+        property_key: str,
+        property_value: Any,
+    ) -> bool:  # noqa: E501
         """Set a single property on a timeline item."""
         return bool(
-            self._get_timeline_item(timeline_name, item_ref).SetProperty(property_key, property_value)  # noqa: E501
+            self._get_timeline_item(timeline_name, item_ref).SetProperty(
+                property_key, property_value
+            )  # noqa: E501
         )
 
     # --- Enabled / color ---
@@ -1874,17 +1934,25 @@ class DaVinciResolveClient:
         """Check whether a timeline item is enabled."""  # noqa: E501
         return bool(self._get_timeline_item(timeline_name, item_ref).GetClipEnabled())
 
-    def set_item_enabled(self, timeline_name: str, item_ref: dict[str, Any], enabled: bool) -> bool:  # noqa: E501
+    def set_item_enabled(
+        self, timeline_name: str, item_ref: dict[str, Any], enabled: bool
+    ) -> bool:  # noqa: E501
         """Enable or disable a timeline item."""
-        return bool(self._get_timeline_item(timeline_name, item_ref).SetClipEnabled(enabled))  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).SetClipEnabled(enabled)
+        )  # noqa: E501
 
     def get_item_color(self, timeline_name: str, item_ref: dict[str, Any]) -> str:
         """Get the color label of a timeline item."""  # noqa: E501
         return str(self._get_timeline_item(timeline_name, item_ref).GetClipColor())
 
-    def set_item_color(self, timeline_name: str, item_ref: dict[str, Any], color_name: str) -> bool:  # noqa: E501
+    def set_item_color(
+        self, timeline_name: str, item_ref: dict[str, Any], color_name: str
+    ) -> bool:  # noqa: E501
         """Set the color label of a timeline item."""
-        return bool(self._get_timeline_item(timeline_name, item_ref).SetClipColor(color_name))  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).SetClipColor(color_name)
+        )  # noqa: E501
 
     def clear_item_color(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:
         """Clear the color label of a timeline item."""  # noqa: E501
@@ -1892,7 +1960,9 @@ class DaVinciResolveClient:
 
     # --- Flags ---
 
-    def add_item_flag(self, timeline_name: str, item_ref: dict[str, Any], color: str) -> bool:  # noqa: E501
+    def add_item_flag(
+        self, timeline_name: str, item_ref: dict[str, Any], color: str
+    ) -> bool:  # noqa: E501
         """Add a color flag to a timeline item."""  # noqa: E501
         return bool(self._get_timeline_item(timeline_name, item_ref).AddFlag(color))
 
@@ -1901,7 +1971,9 @@ class DaVinciResolveClient:
         result = self._get_timeline_item(timeline_name, item_ref).GetFlagList()
         return list(result) if result else []
 
-    def clear_item_flags(self, timeline_name: str, item_ref: dict[str, Any], color: str) -> bool:  # noqa: E501
+    def clear_item_flags(
+        self, timeline_name: str, item_ref: dict[str, Any], color: str
+    ) -> bool:  # noqa: E501
         """Clear flags from a timeline item."""
         return bool(self._get_timeline_item(timeline_name, item_ref).ClearFlags(color))
 
@@ -1924,18 +1996,30 @@ class DaVinciResolveClient:
             item.AddMarker(frame_id, color, marker_name, note, duration, custom_data)
         )
 
-    def get_item_markers(self, timeline_name: str, item_ref: dict[str, Any]) -> dict[str, Any]:  # noqa: E501
+    def get_item_markers(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> dict[str, Any]:  # noqa: E501
         """Get all markers on a timeline item."""  # noqa: E501
         result = self._get_timeline_item(timeline_name, item_ref).GetMarkers()
         return dict(result) if result else {}
 
-    def delete_item_markers_by_color(self, timeline_name: str, item_ref: dict[str, Any], color: str) -> bool:  # noqa: E501
+    def delete_item_markers_by_color(
+        self, timeline_name: str, item_ref: dict[str, Any], color: str
+    ) -> bool:  # noqa: E501
         """Delete item markers by color."""
-        return bool(self._get_timeline_item(timeline_name, item_ref).DeleteMarkersByColor(color))  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).DeleteMarkersByColor(color)
+        )  # noqa: E501
 
-    def delete_item_marker_at_frame(self, timeline_name: str, item_ref: dict[str, Any], frame_num: int) -> bool:  # noqa: E501
+    def delete_item_marker_at_frame(
+        self, timeline_name: str, item_ref: dict[str, Any], frame_num: int
+    ) -> bool:  # noqa: E501
         """Delete the item marker at a specific frame."""
-        return bool(self._get_timeline_item(timeline_name, item_ref).DeleteMarkerAtFrame(frame_num))  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).DeleteMarkerAtFrame(
+                frame_num
+            )
+        )  # noqa: E501
 
     # --- Takes ---
 
@@ -1956,7 +2040,9 @@ class DaVinciResolveClient:
         """Get the number of takes on a timeline item."""  # noqa: E501
         return int(self._get_timeline_item(timeline_name, item_ref).GetTakesCount())
 
-    def get_take_by_index(self, timeline_name: str, item_ref: dict[str, Any], idx: int) -> Any:  # noqa: E501
+    def get_take_by_index(
+        self, timeline_name: str, item_ref: dict[str, Any], idx: int
+    ) -> Any:  # noqa: E501
         """Get take info (startFrame, endFrame, mediaPoolItem) by 1-based index."""  # noqa: E501
         result = self._get_timeline_item(timeline_name, item_ref).GetTakeByIndex(idx)
         if not result:
@@ -1968,13 +2054,21 @@ class DaVinciResolveClient:
             "clip_name": mpi.GetName() if mpi else None,
         }
 
-    def select_take(self, timeline_name: str, item_ref: dict[str, Any], idx: int) -> bool:  # noqa: E501
+    def select_take(
+        self, timeline_name: str, item_ref: dict[str, Any], idx: int
+    ) -> bool:  # noqa: E501
         """Select the active take by 1-based index."""  # noqa: E501
-        return bool(self._get_timeline_item(timeline_name, item_ref).SelectTakeByIndex(idx))  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).SelectTakeByIndex(idx)
+        )  # noqa: E501
 
-    def delete_take(self, timeline_name: str, item_ref: dict[str, Any], idx: int) -> bool:  # noqa: E501
+    def delete_take(
+        self, timeline_name: str, item_ref: dict[str, Any], idx: int
+    ) -> bool:  # noqa: E501
         """Permanently delete a take by 1-based index."""  # noqa: E501
-        return bool(self._get_timeline_item(timeline_name, item_ref).DeleteTakeByIndex(idx))  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).DeleteTakeByIndex(idx)
+        )  # noqa: E501
 
     def finalize_take(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:
         """Finalize the current take on a timeline item."""  # noqa: E501
@@ -1982,45 +2076,88 @@ class DaVinciResolveClient:
 
     # --- Color versions ---
 
-    def get_current_color_version(self, timeline_name: str, item_ref: dict[str, Any]) -> Any:  # noqa: E501
+    def get_current_color_version(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> Any:  # noqa: E501
         """Get the current color version (name and type)."""  # noqa: E501
         result = self._get_timeline_item(timeline_name, item_ref).GetCurrentVersion()
         return dict(result) if result else {}
 
-    def get_color_version_list(self, timeline_name: str, item_ref: dict[str, Any], version_type: int) -> list[str]:  # noqa: E501
+    def get_color_version_list(
+        self, timeline_name: str, item_ref: dict[str, Any], version_type: int
+    ) -> list[str]:  # noqa: E501
         """Get color version names for an item."""
-        result = self._get_timeline_item(timeline_name, item_ref).GetVersionNameList(version_type)  # noqa: E501
+        result = self._get_timeline_item(timeline_name, item_ref).GetVersionNameList(
+            version_type
+        )  # noqa: E501
         return list(result) if result else []
 
-    def add_color_version(self, timeline_name: str, item_ref: dict[str, Any], version_name: str, version_type: int) -> bool:  # noqa: E501
+    def add_color_version(
+        self,
+        timeline_name: str,
+        item_ref: dict[str, Any],
+        version_name: str,
+        version_type: int,
+    ) -> bool:  # noqa: E501
         """Add a new color version to a timeline item."""
         return bool(
-            self._get_timeline_item(timeline_name, item_ref).AddVersion(version_name, version_type)  # noqa: E501
+            self._get_timeline_item(timeline_name, item_ref).AddVersion(
+                version_name, version_type
+            )  # noqa: E501
         )
 
-    def load_color_version(self, timeline_name: str, item_ref: dict[str, Any], version_name: str, version_type: int) -> bool:  # noqa: E501
+    def load_color_version(
+        self,
+        timeline_name: str,
+        item_ref: dict[str, Any],
+        version_name: str,
+        version_type: int,
+    ) -> bool:  # noqa: E501
         """Load a color version by name."""
         return bool(
-            self._get_timeline_item(timeline_name, item_ref).LoadVersionByName(version_name, version_type)  # noqa: E501
+            self._get_timeline_item(timeline_name, item_ref).LoadVersionByName(
+                version_name, version_type
+            )  # noqa: E501
         )
 
-    def delete_color_version(self, timeline_name: str, item_ref: dict[str, Any], version_name: str, version_type: int) -> bool:  # noqa: E501
+    def delete_color_version(
+        self,
+        timeline_name: str,
+        item_ref: dict[str, Any],
+        version_name: str,
+        version_type: int,
+    ) -> bool:  # noqa: E501
         """Permanently delete a color version by name."""
         return bool(
-            self._get_timeline_item(timeline_name, item_ref).DeleteVersionByName(version_name, version_type)  # noqa: E501
+            self._get_timeline_item(timeline_name, item_ref).DeleteVersionByName(
+                version_name, version_type
+            )  # noqa: E501
         )
 
-    def rename_color_version(self, timeline_name: str, item_ref: dict[str, Any], old_name: str, new_name: str, version_type: int) -> bool:  # noqa: E501
+    def rename_color_version(
+        self,
+        timeline_name: str,
+        item_ref: dict[str, Any],
+        old_name: str,
+        new_name: str,
+        version_type: int,
+    ) -> bool:  # noqa: E501
         """Rename a color version."""
         return bool(
-            self._get_timeline_item(timeline_name, item_ref).RenameVersionByName(old_name, new_name, version_type)  # noqa: E501
+            self._get_timeline_item(timeline_name, item_ref).RenameVersionByName(
+                old_name, new_name, version_type
+            )  # noqa: E501
         )
 
     # --- Fusion comps ---
 
-    def list_fusion_comps(self, timeline_name: str, item_ref: dict[str, Any]) -> list[str]:  # noqa: E501
+    def list_fusion_comps(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> list[str]:  # noqa: E501
         """List Fusion composition names on a timeline item."""  # noqa: E501
-        result = self._get_timeline_item(timeline_name, item_ref).GetFusionCompNameList()  # noqa: E501
+        result = self._get_timeline_item(
+            timeline_name, item_ref
+        ).GetFusionCompNameList()  # noqa: E501
         return list(result) if result else []
 
     def add_fusion_comp(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:
@@ -2028,37 +2165,63 @@ class DaVinciResolveClient:
         result = self._get_timeline_item(timeline_name, item_ref).AddFusionComp()
         return bool(result)
 
-    def load_fusion_comp(self, timeline_name: str, item_ref: dict[str, Any], comp_name: str) -> bool:  # noqa: E501
+    def load_fusion_comp(
+        self, timeline_name: str, item_ref: dict[str, Any], comp_name: str
+    ) -> bool:  # noqa: E501
         """Load a Fusion composition by name."""
-        result = self._get_timeline_item(timeline_name, item_ref).LoadFusionCompByName(comp_name)  # noqa: E501
+        result = self._get_timeline_item(timeline_name, item_ref).LoadFusionCompByName(
+            comp_name
+        )  # noqa: E501
         return bool(result)
 
-    def import_fusion_comp(self, timeline_name: str, item_ref: dict[str, Any], file_path: str) -> bool:  # noqa: E501
+    def import_fusion_comp(
+        self, timeline_name: str, item_ref: dict[str, Any], file_path: str
+    ) -> bool:  # noqa: E501
         """Import a Fusion composition from a file."""
-        result = self._get_timeline_item(timeline_name, item_ref).ImportFusionComp(file_path)  # noqa: E501
+        result = self._get_timeline_item(timeline_name, item_ref).ImportFusionComp(
+            file_path
+        )  # noqa: E501
         return bool(result)
 
-    def export_fusion_comp(self, timeline_name: str, item_ref: dict[str, Any], file_path: str, comp_index: int) -> bool:  # noqa: E501
+    def export_fusion_comp(
+        self,
+        timeline_name: str,
+        item_ref: dict[str, Any],
+        file_path: str,
+        comp_index: int,
+    ) -> bool:  # noqa: E501
         """Export a Fusion composition to a file."""
         return bool(
-            self._get_timeline_item(timeline_name, item_ref).ExportFusionComp(file_path, comp_index)  # noqa: E501
+            self._get_timeline_item(timeline_name, item_ref).ExportFusionComp(
+                file_path, comp_index
+            )  # noqa: E501
         )
 
-    def delete_fusion_comp(self, timeline_name: str, item_ref: dict[str, Any], comp_name: str) -> bool:  # noqa: E501
+    def delete_fusion_comp(
+        self, timeline_name: str, item_ref: dict[str, Any], comp_name: str
+    ) -> bool:  # noqa: E501
         """Permanently delete a Fusion comp by name."""
         return bool(
-            self._get_timeline_item(timeline_name, item_ref).DeleteFusionCompByName(comp_name)  # noqa: E501
+            self._get_timeline_item(timeline_name, item_ref).DeleteFusionCompByName(
+                comp_name
+            )  # noqa: E501
         )
 
-    def rename_fusion_comp(self, timeline_name: str, item_ref: dict[str, Any], old_name: str, new_name: str) -> bool:  # noqa: E501
+    def rename_fusion_comp(
+        self, timeline_name: str, item_ref: dict[str, Any], old_name: str, new_name: str
+    ) -> bool:  # noqa: E501
         """Rename a Fusion composition."""
         return bool(
-            self._get_timeline_item(timeline_name, item_ref).RenameFusionCompByName(old_name, new_name)  # noqa: E501
+            self._get_timeline_item(timeline_name, item_ref).RenameFusionCompByName(
+                old_name, new_name
+            )  # noqa: E501
         )
 
     # --- Node graph / grade ---
 
-    def get_item_node_graph(self, timeline_name: str, item_ref: dict[str, Any], layer_index: int) -> dict[str, Any]:  # noqa: E501
+    def get_item_node_graph(
+        self, timeline_name: str, item_ref: dict[str, Any], layer_index: int
+    ) -> dict[str, Any]:  # noqa: E501
         """Get node-count info for a timeline item's color node graph."""
         item = self._get_timeline_item(timeline_name, item_ref)
         graph = item.GetNodeGraph(layer_index)
@@ -2066,21 +2229,36 @@ class DaVinciResolveClient:
             return {}
         return {"node_count": graph.GetNumNodes()}
 
-    def copy_grades(self, timeline_name: str, item_ref: dict[str, Any], target_item_refs: list[dict[str, Any]]) -> bool:  # noqa: E501
+    def copy_grades(
+        self,
+        timeline_name: str,
+        item_ref: dict[str, Any],
+        target_item_refs: list[dict[str, Any]],
+    ) -> bool:  # noqa: E501
         """Copy grades from one timeline item to others."""
         tl = self._get_timeline_by_name(timeline_name)
         source_item = self._get_timeline_item(timeline_name, item_ref)
         targets = self._resolve_timeline_items(tl, target_item_refs)
         return bool(source_item.CopyGrades(targets))
 
-    def set_cdl(self, timeline_name: str, item_ref: dict[str, Any], cdl_map: dict[str, Any]) -> bool:  # noqa: E501
+    def set_cdl(
+        self, timeline_name: str, item_ref: dict[str, Any], cdl_map: dict[str, Any]
+    ) -> bool:  # noqa: E501
         """Set CDL values on a timeline item."""
         return bool(self._get_timeline_item(timeline_name, item_ref).SetCDL(cdl_map))
 
-    def export_item_lut(self, timeline_name: str, item_ref: dict[str, Any], export_type: int, file_path: str) -> bool:  # noqa: E501
+    def export_item_lut(
+        self,
+        timeline_name: str,
+        item_ref: dict[str, Any],
+        export_type: int,
+        file_path: str,
+    ) -> bool:  # noqa: E501
         """Export the LUT for a timeline item."""
         return bool(
-            self._get_timeline_item(timeline_name, item_ref).ExportLUT(export_type, file_path)  # noqa: E501
+            self._get_timeline_item(timeline_name, item_ref).ExportLUT(
+                export_type, file_path
+            )  # noqa: E501
         )
 
     def update_sidecar(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:
@@ -2089,13 +2267,17 @@ class DaVinciResolveClient:
 
     # --- Linked items / track info ---
 
-    def get_linked_items(self, timeline_name: str, item_ref: dict[str, Any]) -> list[dict[str, Any]]:  # noqa: E501
+    def get_linked_items(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> list[dict[str, Any]]:  # noqa: E501
         """Get items linked to a timeline item."""
         item = self._get_timeline_item(timeline_name, item_ref)
         linked = item.GetLinkedItems() or []
         return [{"name": li.GetName()} for li in linked]
 
-    def get_item_track(self, timeline_name: str, item_ref: dict[str, Any]) -> dict[str, Any]:  # noqa: E501
+    def get_item_track(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> dict[str, Any]:  # noqa: E501
         """Get the track type and index of a timeline item."""  # noqa: E501
         item = self._get_timeline_item(timeline_name, item_ref)
         result = item.GetTrackTypeAndIndex()
@@ -2103,50 +2285,88 @@ class DaVinciResolveClient:
             return {}
         return {"track_type": result[0], "track_index": result[1]}
 
-    def get_item_audio_channel_mapping(self, timeline_name: str, item_ref: dict[str, Any]) -> str:  # noqa: E501
+    def get_item_audio_channel_mapping(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> str:  # noqa: E501
         """Get audio channel mapping for a timeline item as a JSON string."""
-        result = self._get_timeline_item(timeline_name, item_ref).GetSourceAudioChannelMapping()  # noqa: E501
+        result = self._get_timeline_item(
+            timeline_name, item_ref
+        ).GetSourceAudioChannelMapping()  # noqa: E501
         return str(result) if result else ""
 
     # --- Color group ---
 
-    def get_item_color_group(self, timeline_name: str, item_ref: dict[str, Any]) -> str | None:  # noqa: E501
+    def get_item_color_group(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> str | None:  # noqa: E501
         """Get the color group assigned to a timeline item."""  # noqa: E501
         item = self._get_timeline_item(timeline_name, item_ref)
         group = item.GetColorGroup()
         return group.GetName() if group else None
 
-    def assign_to_color_group(self, timeline_name: str, item_ref: dict[str, Any], group_name: str) -> bool:  # noqa: E501
+    def assign_to_color_group(
+        self, timeline_name: str, item_ref: dict[str, Any], group_name: str
+    ) -> bool:  # noqa: E501
         """Assign a timeline item to a color group."""
         item = self._get_timeline_item(timeline_name, item_ref)
         group = self._get_color_group_for_item(group_name)
         return bool(item.AssignToColorGroup(group))
 
-    def remove_from_color_group(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:  # noqa: E501
+    def remove_from_color_group(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> bool:  # noqa: E501
         """Remove a timeline item from its color group."""  # noqa: E501
-        return bool(self._get_timeline_item(timeline_name, item_ref).RemoveFromColorGroup())  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).RemoveFromColorGroup()
+        )  # noqa: E501
 
     # --- Cache ---
 
-    def get_item_color_cache_enabled(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:  # noqa: E501
+    def get_item_color_cache_enabled(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> bool:  # noqa: E501
         """Check whether color output cache is enabled."""
-        return bool(self._get_timeline_item(timeline_name, item_ref).GetIsColorOutputCacheEnabled())  # noqa: E501
+        return bool(
+            self._get_timeline_item(
+                timeline_name, item_ref
+            ).GetIsColorOutputCacheEnabled()
+        )  # noqa: E501
 
-    def set_item_color_cache(self, timeline_name: str, item_ref: dict[str, Any], cache_value: int) -> bool:  # noqa: E501
+    def set_item_color_cache(
+        self, timeline_name: str, item_ref: dict[str, Any], cache_value: int
+    ) -> bool:  # noqa: E501
         """Set color output cache mode."""
-        return bool(self._get_timeline_item(timeline_name, item_ref).SetColorOutputCache(cache_value))  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).SetColorOutputCache(
+                cache_value
+            )
+        )  # noqa: E501
 
-    def get_item_fusion_cache_enabled(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:  # noqa: E501
+    def get_item_fusion_cache_enabled(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> bool:  # noqa: E501
         """Check whether Fusion output cache is enabled."""
-        return bool(self._get_timeline_item(timeline_name, item_ref).GetIsFusionOutputCacheEnabled())  # noqa: E501
+        return bool(
+            self._get_timeline_item(
+                timeline_name, item_ref
+            ).GetIsFusionOutputCacheEnabled()
+        )  # noqa: E501
 
-    def set_item_fusion_cache(self, timeline_name: str, item_ref: dict[str, Any], cache_value: int) -> bool:  # noqa: E501
+    def set_item_fusion_cache(
+        self, timeline_name: str, item_ref: dict[str, Any], cache_value: int
+    ) -> bool:  # noqa: E501
         """Set Fusion output cache mode."""
-        return bool(self._get_timeline_item(timeline_name, item_ref).SetFusionOutputCache(cache_value))  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).SetFusionOutputCache(
+                cache_value
+            )
+        )  # noqa: E501
 
     # --- Media pool item / node colors ---
 
-    def get_item_media_pool_item(self, timeline_name: str, item_ref: dict[str, Any]) -> dict[str, Any] | None:  # noqa: E501
+    def get_item_media_pool_item(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> dict[str, Any] | None:  # noqa: E501
         """Get the media pool item associated with a timeline item."""
         item = self._get_timeline_item(timeline_name, item_ref)
         mpi = item.GetMediaPoolItem()
@@ -2154,9 +2374,13 @@ class DaVinciResolveClient:
             return None
         return {"clip_id": mpi.GetUniqueId(), "name": mpi.GetName()}
 
-    def reset_item_node_colors(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:  # noqa: E501
+    def reset_item_node_colors(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> bool:  # noqa: E501
         """Reset all node colors on a timeline item."""  # noqa: E501
-        return bool(self._get_timeline_item(timeline_name, item_ref).ResetAllNodeColors())  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).ResetAllNodeColors()
+        )  # noqa: E501
 
     # ------------------------------------------------------------------
     # Domain 8: AI & Studio Features
@@ -2169,9 +2393,13 @@ class DaVinciResolveClient:
         item = self._get_timeline_item(timeline_name, item_ref)
         return bool(item.CreateMagicMask(mode))
 
-    def regenerate_magic_mask(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:  # noqa: E501
+    def regenerate_magic_mask(
+        self, timeline_name: str, item_ref: dict[str, Any]
+    ) -> bool:  # noqa: E501
         """Regenerate the magic mask on a timeline item (Studio only)."""
-        return bool(self._get_timeline_item(timeline_name, item_ref).RegenerateMagicMask())  # noqa: E501
+        return bool(
+            self._get_timeline_item(timeline_name, item_ref).RegenerateMagicMask()
+        )  # noqa: E501
 
     def stabilize_clip(self, timeline_name: str, item_ref: dict[str, Any]) -> bool:
         """Stabilize a timeline item (Studio only)."""
@@ -2181,7 +2409,9 @@ class DaVinciResolveClient:
         """Apply Smart Reframe to a timeline item (Studio only)."""
         return bool(self._get_timeline_item(timeline_name, item_ref).SmartReframe())
 
-    def create_subtitles_from_audio(self, timeline_name: str, settings: dict[str, Any]) -> bool:  # noqa: E501
+    def create_subtitles_from_audio(
+        self, timeline_name: str, settings: dict[str, Any]
+    ) -> bool:  # noqa: E501
         """Generate subtitles from audio for a timeline (Studio only)."""
         tl = self._get_timeline_by_name(timeline_name)
         return bool(tl.CreateSubtitlesFromAudio(settings))
@@ -2208,7 +2438,9 @@ class DaVinciResolveClient:
         """Clear audio classification for a clip (Studio only)."""
         return bool(self._get_clip_by_id(clip_id).ClearAudioClassification())
 
-    def transcribe_folder_audio(self, folder_path: str, use_speaker_detection: bool) -> bool:  # noqa: E501
+    def transcribe_folder_audio(
+        self, folder_path: str, use_speaker_detection: bool
+    ) -> bool:  # noqa: E501
         """Transcribe audio for all clips in a folder (Studio + Extras)."""
         folder = self._get_folder_by_path(folder_path)
         return bool(folder.TranscribeAudio(use_speaker_detection))
