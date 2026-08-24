@@ -1418,3 +1418,125 @@ class DaVinciResolveClient:
         if not tl:
             return None
         return {"name": tl.GetName()}
+
+    # ------------------------------------------------------------------
+    # Domain 9: System, Fairlight & Storage
+    # ------------------------------------------------------------------
+
+    def _get_media_storage(self) -> Any:
+        self._ensure_connected()
+        if not self._resolve:
+            raise DaVinciResolveError("Not connected")
+        storage = self._resolve.GetMediaStorage()
+        if not storage:
+            raise DaVinciResolveError("Failed to get MediaStorage")
+        return storage
+
+    def get_layout_presets(self) -> list[str]:
+        """Get the list of available UI layout preset names."""
+        self._ensure_connected()
+        if not self._resolve:
+            return []
+        result = self._resolve.GetLayoutPresetList()
+        return list(result) if result else []
+
+    def load_layout_preset(self, preset_name: str) -> bool:
+        """Load a UI layout preset by name."""
+        self._ensure_connected()
+        if not self._resolve:
+            return False
+        return bool(self._resolve.LoadLayoutPreset(preset_name))
+
+    def save_layout_preset(self, preset_name: str) -> bool:
+        """Save the current UI layout as a named preset."""
+        self._ensure_connected()
+        if not self._resolve:
+            return False
+        return bool(self._resolve.SaveLayoutPreset(preset_name))
+
+    def delete_layout_preset(self, preset_name: str) -> bool:
+        """Permanently delete a layout preset."""
+        self._ensure_connected()
+        if not self._resolve:
+            return False
+        return bool(self._resolve.DeleteLayoutPreset(preset_name))
+
+    def export_layout_preset(self, preset_name: str, file_path: str) -> bool:
+        """Export a layout preset to a file."""
+        self._ensure_connected()
+        if not self._resolve:
+            return False
+        return bool(self._resolve.ExportLayoutPreset(preset_name, file_path))
+
+    def import_layout_preset(self, file_path: str, preset_name: str) -> bool:
+        """Import a layout preset from a file."""
+        self._ensure_connected()
+        if not self._resolve:
+            return False
+        return bool(self._resolve.ImportLayoutPreset(file_path, preset_name))
+
+    def get_fairlight_presets(self) -> list[str]:
+        """Get the list of available Fairlight audio preset names."""
+        self._ensure_connected()
+        if not self._resolve:
+            return []
+        result = self._resolve.GetFairlightPresets()
+        return list(result) if result else []
+
+    def apply_fairlight_preset(self, preset_name: str) -> bool:
+        """Apply a Fairlight preset to the current timeline."""
+        project = self._ensure_project()
+        return bool(project.ApplyFairlightPresetToCurrentTimeline(preset_name))
+
+    def get_keyframe_mode(self) -> int:
+        """Get the current keyframe mode (0=all, 1=color, 2=sizing)."""
+        self._ensure_connected()
+        if not self._resolve:
+            return 0
+        return int(self._resolve.GetKeyframeMode())
+
+    def set_keyframe_mode(self, keyframe_mode: int) -> bool:
+        """Set keyframe mode."""
+        self._ensure_connected()
+        if not self._resolve:
+            return False
+        return bool(self._resolve.SetKeyframeMode(keyframe_mode))
+
+    def insert_audio_at_playhead(
+        self, media_path: str, start_offset: int, duration: int
+    ) -> bool:
+        """Insert audio from a file at the current playhead on the Fairlight page."""
+        project = self._ensure_project()
+        return bool(
+            project.InsertAudioToCurrentTrackAtPlayhead(media_path, start_offset, duration)  # noqa: E501
+        )
+
+    def get_mounted_volumes(self) -> list[str]:
+        """Get the list of mounted volumes visible to Resolve."""
+        storage = self._get_media_storage()
+        result = storage.GetMountedVolumeList()
+        return list(result) if result else []
+
+    def get_storage_subfolders(self, folder_path: str) -> list[str]:
+        """List subfolders in a media storage path."""
+        storage = self._get_media_storage()
+        result = storage.GetSubFolderList(folder_path)
+        return list(result) if result else []
+
+    def get_storage_files(self, folder_path: str) -> list[str]:
+        """List files in a media storage path."""
+        storage = self._get_media_storage()
+        result = storage.GetFileList(folder_path)
+        return list(result) if result else []
+
+    def add_storage_items_to_pool(self, items: list[str]) -> bool:
+        """Add files or folders from media storage to the media pool."""
+        storage = self._get_media_storage()
+        return bool(storage.AddItemListToMediaPool(items))
+
+    def disable_background_tasks(self) -> bool:
+        """Disable Resolve background tasks for the current session."""
+        self._ensure_connected()
+        if not self._resolve:
+            return False
+        return bool(self._resolve.DisableBackgroundTasksForCurrentResolveSession())
