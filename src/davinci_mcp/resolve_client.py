@@ -851,7 +851,7 @@ class DaVinciResolveClient:
         for clip in clips:
             clip_info = {
                 "name": clip.GetName(),
-                "duration": clip.GetDuration(),
+                "duration": clip.GetClipProperty("Duration") or "Unknown",
                 "fps": clip.GetClipProperty("FPS") or "Unknown",
             }
             result.append(clip_info)
@@ -1119,3 +1119,302 @@ class DaVinciResolveClient:
         media_pool = self._get_media_pool()
         clip = self._get_clip_by_id(clip_id)
         return bool(media_pool.SetSelectedClip(clip))
+
+    # ------------------------------------------------------------------
+    # Domain 7: Render & Delivery
+    # ------------------------------------------------------------------
+
+    def get_render_formats(self) -> dict[str, Any]:
+        """Get available render formats as {format: file_extension}."""
+        project = self._ensure_project()
+        result = project.GetRenderFormats()
+        return dict(result) if result else {}
+
+    def get_render_codecs(self, render_format: str) -> dict[str, Any]:
+        """Get available codecs for a render format."""
+        project = self._ensure_project()
+        result = project.GetRenderCodecs(render_format)
+        return dict(result) if result else {}
+
+    def get_render_resolutions(self, render_format: str, codec: str) -> list[dict[str, Any]]:  # noqa: E501
+        """Get available render resolutions for a format and codec."""
+        project = self._ensure_project()
+        result = project.GetRenderResolutions(render_format, codec)
+        return [dict(r) for r in result] if result else []
+
+    def get_current_render_format(self) -> dict[str, Any]:
+        """Get the currently selected render format and codec."""
+        project = self._ensure_project()
+        result = project.GetCurrentRenderFormatAndCodec()
+        return dict(result) if result else {}
+
+    def set_render_format_and_codec(self, render_format: str, codec: str) -> bool:
+        """Set the current render format and codec."""
+        project = self._ensure_project()
+        return bool(project.SetCurrentRenderFormatAndCodec(render_format, codec))
+
+    def get_render_mode(self) -> int:
+        """Get the current render mode (0=individual clips, 1=single clip)."""
+        project = self._ensure_project()
+        return int(project.GetCurrentRenderMode())
+
+    def set_render_mode(self, render_mode: int) -> bool:
+        """Set the render mode."""
+        project = self._ensure_project()
+        return bool(project.SetCurrentRenderMode(render_mode))
+
+    def set_render_settings(self, settings: dict[str, Any]) -> bool:
+        """Apply render settings from a dict."""
+        project = self._ensure_project()
+        return bool(project.SetRenderSettings(settings))
+
+    def get_render_preset_list(self) -> list[str]:
+        """Get the list of available render preset names."""
+        project = self._ensure_project()
+        result = project.GetRenderPresetList()
+        return list(result) if result else []
+
+    def load_render_preset(self, preset_name: str) -> bool:
+        """Load a render preset by name."""
+        project = self._ensure_project()
+        return bool(project.LoadRenderPreset(preset_name))
+
+    def save_render_preset(self, preset_name: str) -> bool:
+        """Save the current render settings as a named preset."""
+        project = self._ensure_project()
+        return bool(project.SaveAsNewRenderPreset(preset_name))
+
+    def delete_render_preset(self, preset_name: str) -> bool:
+        """Permanently delete a render preset."""
+        project = self._ensure_project()
+        return bool(project.DeleteRenderPreset(preset_name))
+
+    def get_quick_export_presets(self) -> list[str]:
+        """Get available Quick Export render preset names."""
+        project = self._ensure_project()
+        result = project.GetQuickExportRenderPresets()
+        return list(result) if result else []
+
+    def render_with_quick_export(self, preset_name: str, params: dict[str, Any]) -> bool:  # noqa: E501
+        """Render using a Quick Export preset."""
+        project = self._ensure_project()
+        return bool(project.RenderWithQuickExport(preset_name, params))
+
+    def add_render_job(self) -> str | None:
+        """Add the current timeline/settings as a render job. Returns job ID."""
+        project = self._ensure_project()
+        job_id = project.AddRenderJob()
+        return str(job_id) if job_id else None
+
+    def delete_render_job(self, job_id: str) -> bool:
+        """Permanently delete a render job by ID."""
+        project = self._ensure_project()
+        return bool(project.DeleteRenderJob(job_id))
+
+    def delete_all_render_jobs(self) -> bool:
+        """Delete all render jobs in the queue."""
+        project = self._ensure_project()
+        return bool(project.DeleteAllRenderJobs())
+
+    def get_render_job_list(self) -> list[dict[str, Any]]:
+        """Get the list of all render jobs."""
+        project = self._ensure_project()
+        result = project.GetRenderJobList()
+        return [dict(j) for j in result] if result else []
+
+    def get_render_job_status(self, job_id: str) -> dict[str, Any]:
+        """Get status and completion percentage of a render job."""
+        project = self._ensure_project()
+        result = project.GetRenderJobStatus(job_id)
+        return dict(result) if result else {}
+
+    def start_rendering(self, job_ids: list[str], interactive: bool) -> bool:
+        """Start rendering one or more jobs."""
+        project = self._ensure_project()
+        if job_ids:
+            return bool(project.StartRendering(job_ids, interactive))
+        return bool(project.StartRendering(isInteractiveMode=interactive))
+
+    def stop_rendering(self) -> None:
+        """Stop the current render operation."""
+        project = self._ensure_project()
+        project.StopRendering()
+
+    def is_rendering_in_progress(self) -> bool:
+        """Check whether a render is currently in progress."""
+        project = self._ensure_project()
+        return bool(project.IsRenderingInProgress())
+
+    def get_project_setting(self, setting_name: str) -> Any:
+        """Get a project setting. Pass empty string for all settings."""
+        project = self._ensure_project()
+        if setting_name:
+            return project.GetSetting(setting_name)
+        return project.GetSetting()
+
+    def set_project_setting(self, setting_name: str, setting_value: str) -> bool:
+        """Set a project setting value."""
+        project = self._ensure_project()
+        return bool(project.SetSetting(setting_name, setting_value))
+
+    def get_burn_in_preset_list(self) -> list[str]:
+        """Get the list of available burn-in preset names."""
+        if not self._resolve:
+            return []
+        result = self._resolve.GetBurnInPresetList()
+        return list(result) if result else []
+
+    def load_project_burn_in_preset(self, preset_name: str) -> bool:
+        """Load a burn-in preset for the current project."""
+        project = self._ensure_project()
+        return bool(project.LoadBurnInPreset(preset_name))
+
+    # ------------------------------------------------------------------
+    # Domain 4: Clip Properties & Metadata
+    # ------------------------------------------------------------------
+
+    def get_clip_name(self, clip_id: str) -> str:
+        """Get the name of a media pool clip."""
+        return str(self._get_clip_by_id(clip_id).GetName())
+
+    def set_clip_name(self, clip_id: str, name: str) -> bool:
+        """Set the name of a media pool clip."""
+        return bool(self._get_clip_by_id(clip_id).SetName(name))
+
+    def get_clip_properties(self, clip_id: str) -> Any:
+        """Get clip properties (all if no key given)."""
+        clip = self._get_clip_by_id(clip_id)
+        return clip.GetClipProperty()
+
+    def set_clip_property(self, clip_id: str, property_key: str, property_value: str) -> bool:  # noqa: E501
+        """Set a single clip property."""
+        return bool(self._get_clip_by_id(clip_id).SetClipProperty(property_key, property_value))  # noqa: E501
+
+    def get_clip_metadata(self, clip_id: str) -> Any:
+        """Get clip metadata (all if no key given)."""
+        return self._get_clip_by_id(clip_id).GetMetadata()
+
+    def set_clip_metadata(self, clip_id: str, metadata_type: str, metadata_value: str) -> bool:  # noqa: E501
+        """Set a clip metadata field."""
+        return bool(self._get_clip_by_id(clip_id).SetMetadata(metadata_type, metadata_value))  # noqa: E501
+
+    def get_clip_third_party_metadata(self, clip_id: str) -> Any:
+        """Get third-party metadata from a clip."""
+        return self._get_clip_by_id(clip_id).GetThirdPartyMetadata()
+
+    def set_clip_third_party_metadata(  # noqa: E501
+        self, clip_id: str, metadata_type: str, metadata_value: str
+    ) -> bool:
+        """Set a third-party metadata field on a clip."""
+        return bool(
+            self._get_clip_by_id(clip_id).SetThirdPartyMetadata(metadata_type, metadata_value)  # noqa: E501
+        )
+
+    def get_clip_color(self, clip_id: str) -> str:
+        """Get the color label of a clip."""
+        return str(self._get_clip_by_id(clip_id).GetClipColor())
+
+    def set_clip_color(self, clip_id: str, color_name: str) -> bool:
+        """Set the color label of a clip."""
+        return bool(self._get_clip_by_id(clip_id).SetClipColor(color_name))
+
+    def clear_clip_color(self, clip_id: str) -> bool:
+        """Clear the color label of a clip."""
+        return bool(self._get_clip_by_id(clip_id).ClearClipColor())
+
+    def add_clip_flag(self, clip_id: str, color: str) -> bool:
+        """Add a color flag to a clip."""
+        return bool(self._get_clip_by_id(clip_id).AddFlag(color))
+
+    def get_clip_flags(self, clip_id: str) -> list[str]:
+        """Get the list of color flags on a clip."""
+        result = self._get_clip_by_id(clip_id).GetFlagList()
+        return list(result) if result else []
+
+    def clear_clip_flags(self, clip_id: str, color: str) -> bool:
+        """Clear clip flags by color ('All' clears all)."""
+        return bool(self._get_clip_by_id(clip_id).ClearFlags(color))
+
+    def add_clip_marker(
+        self,
+        clip_id: str,
+        frame_id: int,
+        color: str,
+        marker_name: str,
+        note: str,
+        duration: int,
+        custom_data: str,
+    ) -> bool:
+        """Add a marker to a clip at a specific source frame."""
+        return bool(
+            self._get_clip_by_id(clip_id).AddMarker(
+                frame_id, color, marker_name, note, duration, custom_data
+            )
+        )
+
+    def get_clip_markers(self, clip_id: str) -> dict[str, Any]:
+        """Get all markers on a clip."""
+        result = self._get_clip_by_id(clip_id).GetMarkers()
+        return dict(result) if result else {}
+
+    def delete_clip_markers_by_color(self, clip_id: str, color: str) -> bool:
+        """Delete clip markers by color ('All' clears all)."""
+        return bool(self._get_clip_by_id(clip_id).DeleteMarkersByColor(color))
+
+    def delete_clip_marker_at_frame(self, clip_id: str, frame_num: int) -> bool:
+        """Delete the clip marker at a specific frame."""
+        return bool(self._get_clip_by_id(clip_id).DeleteMarkerAtFrame(frame_num))
+
+    def get_clip_audio_mapping(self, clip_id: str) -> str:
+        """Get the audio channel mapping for a clip as a JSON string."""
+        result = self._get_clip_by_id(clip_id).GetAudioMapping()
+        return str(result) if result else ""
+
+    def get_clip_mark_in_out(self, clip_id: str) -> dict[str, Any]:
+        """Get the in/out marks set on a clip."""
+        result = self._get_clip_by_id(clip_id).GetMarkInOut()
+        return dict(result) if result else {}
+
+    def set_clip_mark_in_out(
+        self, clip_id: str, mark_in: int, mark_out: int, mark_type: str
+    ) -> bool:
+        """Set in/out marks on a clip."""
+        return bool(
+            self._get_clip_by_id(clip_id).SetMarkInOut(mark_in, mark_out, mark_type)
+        )
+
+    def clear_clip_mark_in_out(self, clip_id: str, mark_type: str) -> bool:
+        """Clear in/out marks from a clip."""
+        return bool(self._get_clip_by_id(clip_id).ClearMarkInOut(mark_type))
+
+    def link_proxy_media(self, clip_id: str, file_path: str) -> bool:
+        """Link a proxy media file to a clip."""
+        return bool(self._get_clip_by_id(clip_id).LinkProxyMedia(file_path))
+
+    def unlink_proxy_media(self, clip_id: str) -> bool:
+        """Unlink the proxy media from a clip."""
+        return bool(self._get_clip_by_id(clip_id).UnlinkProxyMedia())
+
+    def link_full_resolution_media(self, clip_id: str, file_path: str) -> bool:
+        """Link a full-resolution media file to a clip."""
+        return bool(self._get_clip_by_id(clip_id).LinkFullResolutionMedia(file_path))
+
+    def replace_clip(self, clip_id: str, file_path: str) -> bool:
+        """Replace the underlying asset of a clip."""
+        return bool(self._get_clip_by_id(clip_id).ReplaceClip(file_path))
+
+    def replace_clip_preserve_subclip(self, clip_id: str, file_path: str) -> bool:
+        """Replace a clip's asset, preserving subclip marks."""
+        return bool(self._get_clip_by_id(clip_id).ReplaceClipPreserveSubClip(file_path))
+
+    def get_clip_unique_id(self, clip_id: str) -> str:
+        """Get the UUID of a clip."""
+        return str(self._get_clip_by_id(clip_id).GetUniqueId())
+
+    def get_clip_timeline(self, clip_id: str) -> dict[str, Any] | None:
+        """Get the timeline associated with a clip (if it is a timeline clip)."""
+        clip = self._get_clip_by_id(clip_id)
+        tl = clip.GetTimeline()
+        if not tl:
+            return None
+        return {"name": tl.GetName()}
