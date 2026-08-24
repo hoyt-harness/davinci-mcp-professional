@@ -1540,3 +1540,259 @@ class DaVinciResolveClient:
         if not self._resolve:
             return False
         return bool(self._resolve.DisableBackgroundTasksForCurrentResolveSession())
+
+    # ------------------------------------------------------------------
+    # Domain 6: Color Grading
+    # ------------------------------------------------------------------
+
+    def _get_timeline_graph(self, timeline_name: str) -> Any:
+        """Get the node graph for the named timeline."""
+        tl = self._get_timeline_by_name(timeline_name)
+        graph = tl.GetNodeGraph()
+        if not graph:
+            raise DaVinciResolveError(f"No node graph on timeline '{timeline_name}'")
+        return graph
+
+    def _get_gallery(self) -> Any:
+        project = self._ensure_project()
+        gallery = project.GetGallery()
+        if not gallery:
+            raise DaVinciResolveError("Failed to get Gallery")
+        return gallery
+
+    def _get_album_by_name(self, album_name: str) -> Any:
+        """Walk gallery still albums and return the one matching album_name."""
+        gallery = self._get_gallery()
+        albums = gallery.GetGalleryStillAlbums() or []
+        for album in albums:
+            if album.GetLabel() == album_name:
+                return album
+        raise ValueError(f"Gallery still album '{album_name}' not found")
+
+    def _get_still_by_index(self, album_name: str, still_index: int) -> Any:
+        """Return the GalleryStill at still_index (1-based) within the named album."""
+        album = self._get_album_by_name(album_name)
+        stills = album.GetStills() or []
+        if still_index < 1 or still_index > len(stills):
+            raise ValueError(
+                f"still_index {still_index} out of range (album has {len(stills)} stills)"  # noqa: E501
+            )
+        return stills[still_index - 1]
+
+    def _get_color_group_by_name(self, group_name: str) -> Any:
+        project = self._ensure_project()
+        groups = project.GetColorGroupsList() or []
+        for g in groups:
+            if g.GetName() == group_name:
+                return g
+        raise ValueError(f"Color group '{group_name}' not found")
+
+    # --- Graph / node operations ---
+
+    def get_graph_node_count(self, timeline_name: str) -> int:
+        """Get the number of nodes in a timeline's node graph."""
+        return int(self._get_timeline_graph(timeline_name).GetNumNodes())
+
+    def get_graph_node_label(self, timeline_name: str, node_index: int) -> str:
+        """Get the label of a graph node."""
+        return str(self._get_timeline_graph(timeline_name).GetNodeLabel(node_index))
+
+    def get_graph_node_tools(self, timeline_name: str, node_index: int) -> list[str]:
+        """Get the list of tool names active in a graph node."""
+        result = self._get_timeline_graph(timeline_name).GetToolsInNode(node_index)
+        return list(result) if result else []
+
+    def get_graph_node_lut(self, timeline_name: str, node_index: int) -> str:
+        """Get the LUT path assigned to a graph node."""
+        return str(self._get_timeline_graph(timeline_name).GetLUT(node_index))
+
+    def set_graph_node_lut(self, timeline_name: str, node_index: int, lut_path: str) -> bool:  # noqa: E501
+        """Assign a LUT file to a graph node."""
+        return bool(self._get_timeline_graph(timeline_name).SetLUT(node_index, lut_path))  # noqa: E501
+
+    def get_graph_node_cache_mode(self, timeline_name: str, node_index: int) -> int:
+        """Get the cache mode of a graph node."""
+        return int(self._get_timeline_graph(timeline_name).GetNodeCacheMode(node_index))
+
+    def set_graph_node_enabled(self, timeline_name: str, node_index: int, enabled: bool) -> bool:  # noqa: E501
+        """Enable or disable a graph node."""
+        return bool(self._get_timeline_graph(timeline_name).SetNodeEnabled(node_index, enabled))  # noqa: E501
+
+    def set_graph_node_cache_mode(self, timeline_name: str, node_index: int, cache_mode: int) -> bool:  # noqa: E501
+        """Set the cache mode of a graph node."""
+        return bool(
+            self._get_timeline_graph(timeline_name).SetNodeCacheMode(node_index, cache_mode)  # noqa: E501
+        )
+
+    def apply_grade_from_drx(self, timeline_name: str, drx_path: str, grade_mode: int) -> bool:  # noqa: E501
+        """Apply a grade from a .drx file."""
+        return bool(self._get_timeline_graph(timeline_name).ApplyGradeFromDRX(drx_path, grade_mode))  # noqa: E501
+
+    def apply_arri_cdl_lut(self, timeline_name: str) -> bool:
+        """Apply ARRI CDL LUT to a timeline's graph."""
+        return bool(self._get_timeline_graph(timeline_name).ApplyArriCdlLut())
+
+    def reset_all_grades(self, timeline_name: str) -> bool:
+        """Reset all grades in a timeline's node graph."""
+        return bool(self._get_timeline_graph(timeline_name).ResetAllGrades())
+
+    # --- Gallery stills — albums ---
+
+    def get_gallery_albums(self) -> list[str]:
+        """Get the list of gallery still album names."""
+        gallery = self._get_gallery()
+        albums = gallery.GetGalleryStillAlbums() or []
+        return [a.GetLabel() for a in albums]
+
+    def get_gallery_powergrade_albums(self) -> list[str]:
+        """Get the list of gallery PowerGrade album names."""
+        gallery = self._get_gallery()
+        albums = gallery.GetGalleryPowerGradeAlbums() or []
+        return [a.GetLabel() for a in albums]
+
+    def get_current_still_album(self) -> str | None:
+        """Get the name of the currently active still album."""
+        gallery = self._get_gallery()
+        album = gallery.GetCurrentStillAlbum()
+        return album.GetLabel() if album else None
+
+    def create_still_album(self) -> bool:
+        """Create a new gallery still album."""
+        gallery = self._get_gallery()
+        result = gallery.CreateGalleryStillAlbum()
+        return bool(result)
+
+    def create_powergrade_album(self) -> bool:
+        """Create a new gallery PowerGrade album."""
+        gallery = self._get_gallery()
+        result = gallery.CreateGalleryPowerGradeAlbum()
+        return bool(result)
+
+    # --- Gallery stills — grab / list ---
+
+    def grab_still(self, timeline_name: str) -> bool:
+        """Grab a still from the current clip on the Color page."""
+        tl = self._get_timeline_by_name(timeline_name)
+        result = tl.GrabStill()
+        return bool(result)
+
+    def grab_all_stills(self, timeline_name: str, still_frame_source: int) -> bool:
+        """Grab stills from all clips in a timeline."""
+        tl = self._get_timeline_by_name(timeline_name)
+        result = tl.GrabAllStills(still_frame_source)
+        return bool(result)
+
+    def get_stills(self, album_name: str) -> list[dict[str, Any]]:
+        """Get stills in an album as [{still_index, label}]."""
+        album = self._get_album_by_name(album_name)
+        stills = album.GetStills() or []
+        return [
+            {"still_index": i + 1, "label": album.GetLabel(still)}
+            for i, still in enumerate(stills)
+        ]
+
+    def export_stills(
+        self,
+        album_name: str,
+        still_indices: list[int],
+        folder_path: str,
+        file_prefix: str,
+        format: str,
+    ) -> bool:
+        """Export stills from an album."""
+        album = self._get_album_by_name(album_name)
+        all_stills = album.GetStills() or []
+        stills = [
+            all_stills[i - 1]
+            for i in still_indices
+            if 1 <= i <= len(all_stills)
+        ]
+        return bool(album.ExportStills(stills, folder_path, file_prefix, format))
+
+    def import_stills(self, album_name: str, file_paths: list[str]) -> bool:
+        """Import still files into a gallery album."""
+        album = self._get_album_by_name(album_name)
+        return bool(album.ImportStills(file_paths))
+
+    def delete_stills(self, album_name: str, still_indices: list[int]) -> bool:
+        """Permanently delete stills from an album by index."""
+        album = self._get_album_by_name(album_name)
+        all_stills = album.GetStills() or []
+        stills = [
+            all_stills[i - 1]
+            for i in still_indices
+            if 1 <= i <= len(all_stills)
+        ]
+        return bool(album.DeleteStills(stills))
+
+    def get_still_label(self, album_name: str, still_index: int) -> str:
+        """Get the label of a still by index."""
+        still = self._get_still_by_index(album_name, still_index)
+        album = self._get_album_by_name(album_name)
+        return str(album.GetLabel(still))
+
+    def set_still_label(self, album_name: str, still_index: int, label: str) -> bool:
+        """Set the label of a still by index."""
+        still = self._get_still_by_index(album_name, still_index)
+        album = self._get_album_by_name(album_name)
+        return bool(album.SetLabel(still, label))
+
+    # --- Color groups ---
+
+    def get_color_groups(self) -> list[str]:
+        """Get the list of color group names."""
+        project = self._ensure_project()
+        groups = project.GetColorGroupsList() or []
+        return [g.GetName() for g in groups]
+
+    def create_color_group(self, group_name: str) -> bool:
+        """Create a new color group."""
+        project = self._ensure_project()
+        result = project.AddColorGroup(group_name)
+        return bool(result)
+
+    def delete_color_group(self, group_name: str) -> bool:
+        """Delete a color group (clips become ungrouped)."""
+        project = self._ensure_project()
+        group = self._get_color_group_by_name(group_name)
+        return bool(project.DeleteColorGroup(group))
+
+    def rename_color_group(self, group_name: str, new_name: str) -> bool:
+        """Rename a color group."""
+        group = self._get_color_group_by_name(group_name)
+        return bool(group.SetName(new_name))
+
+    def get_clips_in_color_group(self, group_name: str, timeline_name: str) -> list[dict[str, Any]]:  # noqa: E501
+        """Get timeline items assigned to a color group."""
+        group = self._get_color_group_by_name(group_name)
+        tl = self._get_timeline_by_name(timeline_name)
+        items = group.GetClipsInTimeline(tl) or []
+        return [{"name": item.GetName()} for item in items]
+
+    def get_color_group_pre_graph(self, group_name: str) -> dict[str, Any]:
+        """Get the pre-clip node graph for a color group."""
+        group = self._get_color_group_by_name(group_name)
+        graph = group.GetPreClipNodeGraph()
+        if not graph:
+            return {}
+        return {"node_count": graph.GetNumNodes()}
+
+    def get_color_group_post_graph(self, group_name: str) -> dict[str, Any]:
+        """Get the post-clip node graph for a color group."""
+        group = self._get_color_group_by_name(group_name)
+        graph = group.GetPostClipNodeGraph()
+        if not graph:
+            return {}
+        return {"node_count": graph.GetNumNodes()}
+
+    # --- Project-level color utilities ---
+
+    def refresh_lut_list(self) -> bool:
+        """Refresh the LUT list from disk."""
+        project = self._ensure_project()
+        return bool(project.RefreshLUTList())
+
+    def export_current_frame_as_still(self, file_path: str) -> bool:
+        """Export the current frame as a still image file."""
+        project = self._ensure_project()
+        return bool(project.ExportCurrentFrameAsStill(file_path))

@@ -69,12 +69,19 @@ Callers identify Resolve objects using these stable reference types:
 | MediaPoolItem | `clip_id: UUID string` | From `GetUniqueId()`. Returned by list operations. Server walks folder tree to resolve. |
 | TimelineItem | `{track_type, track_index, item_index}` | `GetItemListInTrack(track_type, track_index)[item_index-1]`. 1-based. Within current timeline. |
 | ColorGroup | `name: string` | Walk `Project.GetColorGroupsList()` until name matches |
+| GalleryStillAlbum | `album_name: string` | Walk `Gallery.GetGalleryStillAlbums()` until name matches. `GetLabel()` returns the album name. |
+| GalleryStill | `{album_name: string, still_index: int}` | 1-based index within the album's `GetStills()` list. Re-walked per call. No UUID exists on GalleryStill. |
 
 List operations always return both IDs and human-readable identifiers. Callers store the ID from
 a list response and pass it back to subsequent single-item operations.
 
 No reverse lookup exists in the Resolve API. The server walks the graph fresh on every call —
 there is no FindByUniqueId() or equivalent.
+
+GalleryStillAlbum names come from `GalleryStillAlbum.GetLabel()`. GalleryStill objects are
+addressed by index into the album's stills list — indices are only stable within a session and
+should be re-fetched after any mutation (import, delete). PowerGrade albums follow the same
+scheme; the domain uses a separate `album_type` parameter to distinguish them.
 
 ## VI. Error Taxonomy
 

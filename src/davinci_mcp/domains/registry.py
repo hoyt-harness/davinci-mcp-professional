@@ -31,6 +31,7 @@ class DomainModule(Protocol):
 
 
 from .clip_properties import ClipPropertiesDomain  # noqa: E402
+from .color_grading import ColorGradingDomain  # noqa: E402
 from .media_pool import MediaPoolDomain  # noqa: E402
 from .project_management import ProjectManagementDomain  # noqa: E402
 from .render_delivery import RenderDeliveryDomain  # noqa: E402
@@ -44,4 +45,5 @@ DOMAIN_REGISTRY: dict[str, DomainModule] = {
     "render_delivery": RenderDeliveryDomain(),
     "clip_properties": ClipPropertiesDomain(),
     "system_fairlight_storage": SystemFairlightStorageDomain(),
+    "color_grading": ColorGradingDomain(),
 }
