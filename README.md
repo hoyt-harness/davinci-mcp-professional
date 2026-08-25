@@ -33,6 +33,36 @@ deliberately, only for the domains your current workflow actually needs.
 
 ---
 
+## Who This Is For
+
+This server is built for **independent creators and boutique studios** where AI
+API costs are real and context overhead matters.
+
+**Compared to [davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp):**
+
+`davinci-resolve-mcp` is a well-maintained alternative with 353 tool definitions
+loaded into the AI's context at every session start. For a well-resourced
+production environment — a studio running Claude on dedicated infrastructure
+with token budgets absorbed into overhead — that approach is solid and the
+dense tool coverage is immediately useful.
+
+This server makes a different architectural choice: 6 kernel tools at session
+start, domains activated on demand, context cost proportional to the work at
+hand. The full API surface (289 tools across 9 domains) is available, but none
+of it loads until you ask for it.
+
+| | `davinci-resolve-mcp` | `davinci-mcp-professional` |
+|---|---|---|
+| Tools at session start | 353 | **6** |
+| Total tools available | 353 | 289 |
+| Domain activation | — | On demand |
+
+If you're an independent creator or a small shop where every Claude API call
+has a cost, this architecture was designed for you. Professional-grade Resolve
+integration without professional-budget infrastructure requirements.
+
+---
+
 ## Prerequisites
 
 - [DaVinci Resolve Studio](https://www.blackmagicdesign.com/products/davinciresolve)
