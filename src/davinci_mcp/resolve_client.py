@@ -955,18 +955,28 @@ class DaVinciResolveClient:
         return bool(media_pool.SetCurrentFolder(folder))
 
     def get_folder_clips(self, folder_path: str) -> list[dict[str, Any]]:
-        """List clips in a specific folder."""
+        """List clips in a specific folder.
+
+        Skips timeline items — they appear in GetClipList() but do not
+        support GetUniqueId() (FusionScript returns None for unsupported
+        methods rather than raising AttributeError).
+        """
         folder = self._get_folder_by_path(folder_path)
         clips = folder.GetClipList() or []
-        return [
-            {
-                "clip_id": c.GetUniqueId(),
-                "name": c.GetName(),
-                "duration": c.GetDuration(),
-                "fps": c.GetClipProperty("FPS") or "Unknown",
-            }
-            for c in clips
-        ]
+        result = []
+        for c in clips:
+            get_uid = c.GetUniqueId
+            if get_uid is None:
+                continue
+            result.append(
+                {
+                    "clip_id": get_uid(),
+                    "name": c.GetName(),
+                    "duration": c.GetClipProperty("Duration"),
+                    "fps": c.GetClipProperty("FPS") or "Unknown",
+                }
+            )
+        return result
 
     def get_folder_subfolders(self, folder_path: str) -> list[dict[str, Any]]:
         """List subfolders of a folder."""
