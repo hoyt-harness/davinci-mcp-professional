@@ -63,17 +63,13 @@ where `PythonXYZ` matches the system-installed version.
 
 ### Upstream Reference
 
-The MCP Python SDK is the upstream dependency for protocol implementation.
-A local reference copy is available at:
+The MCP Python SDK is the upstream dependency for protocol implementation
+(installed via uv from PyPI). The MCP specification repository is at:
 
-    D:\dev\ARTIFICIAL_INTELLIGENCE\MCP\_MCP-Tools-Dev\python-sdk
+    D:\Engineering\_MCP-Tools-Dev\modelcontextprotocol
 
-The upstream MCP specification repository is at:
-
-    D:\dev\ARTIFICIAL_INTELLIGENCE\MCP\_MCP-Tools-Dev\modelcontextprotocol
-
-Audit this project's MCP usage and dependency versions against these
-references when making protocol-level changes.
+Audit this project's MCP usage and dependency versions against this reference
+when making protocol-level changes.
 
 ## Common Commands
 
@@ -105,51 +101,101 @@ doxygen Doxyfile
 
 ## Architecture
 
-Data flow: **CLI -> MCP Server -> Resolve Client -> DaVinci Resolve scripting API**
+Data flow: **CLI → MCP Server (kernel dispatch) → Domain → Resolve Client → DaVinci Resolve scripting API**
 
 ```
 src/davinci_mcp/
-├── cli.py              # Entry point: prerequisite checks, colored output, click commands
-├── server.py           # MCP protocol: routes tool calls and resource reads
-├── resolve_client.py   # Wraps DaVinci Resolve Python API; owns connection lifecycle
-├── types.py            # Runtime-checkable Protocol types (DaVinciProject, DaVinciTimeline, etc.)
+├── cli.py                    # Entry point: prerequisite checks, colored output, click commands
+├── server.py                 # MCP protocol: kernel dispatch, domain routing, tool list management
+├── resolve_client.py         # Wraps DaVinci Resolve Python API; owns connection lifecycle
+├── types.py                  # Runtime-checkable Protocol types (DaVinciProject, DaVinciTimeline, etc.)
 ├── tools/
-│   └── __init__.py     # All 13 MCP tool definitions (name, description, inputSchema)
+│   └── __init__.py           # Kernel tool definitions only (6 tools always available)
+├── domains/
+│   ├── registry.py           # DomainModule protocol + DOMAIN_REGISTRY dict
+│   ├── project_management.py # Domain 1 — 23 tools
+│   ├── timeline_operations.py# Domain 2 — 51 tools
+│   ├── media_pool.py         # Domain 3 — 28 tools
+│   ├── clip_properties.py    # Domain 4 — 29 tools
+│   ├── timeline_item_editing.py # Domain 5 — 59 tools
+│   ├── color_grading.py      # Domain 6 — 33 tools
+│   ├── render_delivery.py    # Domain 7 — 26 tools
+│   ├── ai_studio.py          # Domain 8 — 18 tools (Studio only)
+│   └── system_fairlight_storage.py # Domain 9 — 16 tools
 ├── resources/
-│   └── __init__.py     # All 7 MCP resource definitions (resolve://... URIs)
+│   └── __init__.py           # All 7 MCP resource definitions (resolve://... URIs)
 └── utils/
     ├── __init__.py
-    └── platform.py     # Platform detection, PYTHONPATH setup, process checking
+    └── platform.py           # Platform detection, PYTHONPATH setup, process checking
 ```
 
 ### Key Architectural Facts
 
-- `server.py` implements `list_tools`, `call_tool`, `list_resources`,
-  `read_resource` — all async. Tool dispatch and resource reads delegate
-  to `resolve_client.py`.
-- `resolve_client.py` uses lazy loading: current project fetched on demand
+**Kernel + domain model.** At session start, only 6 kernel tools are visible to
+the MCP client. Calling `activate_domain("project_management")` fires a
+`notifications/tools/list_changed` event; the client refetches the tool list and
+that domain's tools become available — no restart needed. `deactivate_domain`
+removes them again.
+
+- **`server.py`** owns the `DaVinciMCPServer` class: routing tables
+  (`_tool_to_domain`, `_inactive_tool_to_domain`), `_rebuild_routing_tables()`
+  (called on every activation/deactivation), and the four-case dispatch (FR-008):
+  kernel tool → domain active → domain inactive (hint to activate) → unknown.
+- **`domains/registry.py`** defines the `DomainModule` protocol and the
+  `DOMAIN_REGISTRY` dict. Adding a new domain: implement the protocol, add one
+  entry to `DOMAIN_REGISTRY` — no other server file changes required.
+- Each domain module exposes `get_tools() → list[Tool]` and
+  `async dispatch(tool_name, arguments, client) → Any`.
+- **`resolve_client.py`** uses lazy loading: current project fetched on demand
   and cached per-request. Raises from a custom exception hierarchy
-  (`DaVinciResolveError` -> `DaVinciResolveNotRunningError`,
+  (`DaVinciResolveError` → `DaVinciResolveNotRunningError`,
   `DaVinciResolveConnectionError`).
-- `tools/__init__.py` and `resources/__init__.py` are pure data (lists of
-  MCP tool/resource definitions). Adding a new tool: add definition in
-  `tools/__init__.py`, add dispatch in `server.py`, implement in
-  `resolve_client.py`.
-- `types.py` uses `typing.Protocol` with `runtime_checkable` so Resolve
-  objects can be type-checked without importing the Resolve module (which
-  may not be present at type-check time).
-- `utils/platform.py` handles OS differences: Windows uses `tasklist` for
+- **`tools/__init__.py`** contains kernel tool definitions only. Domain tool
+  definitions live in their respective domain modules.
+- **`types.py`** uses `typing.Protocol` with `runtime_checkable` so Resolve
+  objects can be type-checked without importing the Resolve module.
+- **`utils/platform.py`** handles OS differences: Windows uses `tasklist` for
   process detection and `ProgramData` paths; macOS/Linux use `pgrep` and
   standard POSIX paths.
 
+### FusionScript ABI Behavior
+
+DaVinci Resolve's Python bindings (FusionScript) silently return `None` for
+method attribute lookups on objects that don't support those methods — no
+`AttributeError` is raised. Calling the result crashes: `'NoneType' object is
+not callable`. Always guard before calling any method that may be unsupported
+on a given object type:
+
+```python
+get_uid = item.GetUniqueId   # None if unsupported, not AttributeError
+if get_uid is not None:
+    uid = get_uid()
+```
+
+This is especially relevant when iterating `GetClipList()` on a media pool
+folder: the list may contain both `MediaPoolItem` objects (regular clips, which
+support `GetUniqueId`) and timeline objects (which do not).
+
 ### MCP Tool/Resource Inventory
 
-**Tools (13):** `get_version`, `get_current_page`, `switch_page`,
-`list_projects`, `get_current_project`, `open_project`, `create_project`,
-`list_timelines`, `get_current_timeline`, `create_timeline`,
-`switch_timeline`, `list_media_clips`, `import_media`.
+**Kernel tools (6 — always visible):** `activate_domain`, `deactivate_domain`,
+`list_domains`, `get_version`, `get_current_page`, `switch_page`.
 
-**Resources (7):** `resolve://version`, `resolve://current-page`,
+**Domain tools (283 — loaded on demand):**
+
+| Domain | Key | Tool count |
+|--------|-----|-----------|
+| Project Management | `project_management` | 23 |
+| Timeline Operations | `timeline_operations` | 51 |
+| Media Pool | `media_pool` | 28 |
+| Clip Properties | `clip_properties` | 29 |
+| Timeline Item Editing | `timeline_item_editing` | 59 |
+| Color Grading | `color_grading` | 33 |
+| Render & Delivery | `render_delivery` | 26 |
+| AI & Studio *(Studio edition only)* | `ai_studio` | 18 |
+| System / Fairlight / Storage | `system_fairlight_storage` | 16 |
+
+**Resources (7 — always available):** `resolve://version`, `resolve://current-page`,
 `resolve://projects`, `resolve://current-project`, `resolve://timelines`,
 `resolve://current-timeline`, `resolve://media-clips`.
 
