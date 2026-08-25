@@ -84,6 +84,12 @@ Current domains:
 | `project_management` | 23 | Open/save/close/rename/delete projects, export/import/archive/restore, folder navigation, database switching |
 | `timeline_operations` | 51 | Settings, timecode, tracks, markers, items, export/import, generators, Fusion clips, Dolby Vision |
 | `media_pool` | 28 | Folder inspection and management, clip operations, relink, mattes, stereo clips |
+| `clip_properties` | 29 | Clip name, properties, metadata, third-party metadata, color labels, flags, markers, audio mapping, mark in/out, proxy links, UUID |
+| `timeline_item_editing` | 59 | Item timing, spatial/composite properties, enable/color/flags, markers, takes, color versions, Fusion comps, node graph, grade copy, CDL/LUT, sidecar, linked items, color group assignment, cache control |
+| `color_grading` | 33 | Node graph inspection, LUT management, gallery stills (albums, grab, export/import/labels), color groups, LUT refresh |
+| `render_delivery` | 26 | Render format/codec/resolution, render settings, presets, render job lifecycle, project settings, burn-in presets |
+| `ai_studio` | 18 | Magic masks, stabilization, smart reframe, subtitles from audio, scene cut detection, transcription, audio classification, IntelliSearch/Slate, motion blur removal, voice isolation, speech generation *(Studio edition only)* |
+| `system_fairlight_storage` | 16 | UI layout presets, Fairlight audio presets, keyframe mode, audio insertion, media storage browsing, background tasks |
 
 ### Object reference scheme (constitution Article V)
 
@@ -184,10 +190,16 @@ davinci-mcp-professional/
 │   ├── tools/__init__.py           # Kernel tool definitions (6 tools)
 │   ├── domains/
 │   │   ├── __init__.py
-│   │   ├── registry.py             # DomainModule protocol + DOMAIN_REGISTRY
-│   │   ├── project_management.py   # Domain 1: 23 tools
-│   │   ├── timeline_operations.py  # Domain 2: 51 tools
-│   │   └── media_pool.py           # Domain 3: 28 tools
+│   │   ├── registry.py                    # DomainModule protocol + DOMAIN_REGISTRY
+│   │   ├── project_management.py          # Domain 1: 23 tools
+│   │   ├── timeline_operations.py         # Domain 2: 51 tools
+│   │   ├── media_pool.py                  # Domain 3: 28 tools
+│   │   ├── clip_properties.py             # Domain 4: 29 tools
+│   │   ├── timeline_item_editing.py       # Domain 5: 59 tools
+│   │   ├── color_grading.py               # Domain 6: 33 tools
+│   │   ├── render_delivery.py             # Domain 7: 26 tools
+│   │   ├── ai_studio.py                   # Domain 8: 18 tools (Studio only)
+│   │   └── system_fairlight_storage.py    # Domain 9: 16 tools
 │   ├── resources/__init__.py       # 7 MCP resource definitions
 │   └── utils/
 │       ├── __init__.py
@@ -198,7 +210,13 @@ davinci-mcp-professional/
 │   ├── test_kernel.py              # Kernel architecture: dispatch, routing, notification
 │   ├── test_domain1.py             # Domain 1 (project management) parametrized dispatch
 │   ├── test_domain2.py             # Domain 2 (timeline operations) parametrized dispatch
-│   └── test_domain3.py             # Domain 3 (media pool) parametrized dispatch
+│   ├── test_domain3.py             # Domain 3 (media pool) parametrized dispatch
+│   ├── test_domain4.py             # Domain 4 (clip properties) parametrized dispatch
+│   ├── test_domain5.py             # Domain 5 (timeline item editing) parametrized dispatch
+│   ├── test_domain6.py             # Domain 6 (color grading) parametrized dispatch
+│   ├── test_domain7.py             # Domain 7 (render & delivery) parametrized dispatch
+│   ├── test_domain8.py             # Domain 8 (AI & Studio) parametrized dispatch
+│   └── test_domain9.py             # Domain 9 (system/Fairlight/storage) parametrized dispatch
 ├── specs/
 │   └── 001-kernel-activation/      # Spec and plan for the kernel architecture
 ├── doxygen/                        # Doxygen-generated HTML (not tracked in git)
