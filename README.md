@@ -1,11 +1,11 @@
 # DaVinci MCP Professional
 
 An enterprise-grade Model Context Protocol (MCP) server that exposes the full
-DaVinci Resolve scripting API to AI assistants. This project is a hard fork of
-[davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp) by
-@samuelgursky, rewritten and maintained independently.
+DaVinci Resolve scripting API to AI assistants. This project was inspired by the
+[davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp) project
+by @samuelgursky, even though it is now a significantly different architecture.
 
-Supported MCP clients: **Claude Desktop**, **Claude Code**, Gemini CLI, ChatGPT.
+Compatible with any AI system that supports modern MCP specifications.
 
 ---
 
@@ -38,23 +38,22 @@ deliberately, only for the domains your current workflow actually needs.
 This server is built for **independent creators and boutique studios** where AI
 API costs are real and context overhead matters.
 
-**Compared to [davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp):**
+**Compared to other popular MCP servers for DaVinci Resolve:**
 
-`davinci-resolve-mcp` is a well-maintained alternative with 353 tool definitions
-loaded into the AI's context at every session start. For a well-resourced
-production environment — a studio running Claude on dedicated infrastructure
-with token budgets absorbed into overhead — that approach is solid and the
-dense tool coverage is immediately useful.
+Most alternatives load every available tool definition into the AI's context at
+session start. For a well-resourced production environment — a studio running
+Claude on dedicated infrastructure with token budgets absorbed into overhead —
+that approach is solid and the dense tool coverage is immediately useful.
 
 This server makes a different architectural choice: 6 kernel tools at session
 start, domains activated on demand, context cost proportional to the work at
 hand. The full API surface (289 tools across 9 domains) is available, but none
 of it loads until you ask for it.
 
-| | `davinci-resolve-mcp` | `davinci-mcp-professional` |
+| | Typical MCP server | `davinci-mcp-professional` |
 |---|---|---|
-| Tools at session start | 353 | **6** |
-| Total tools available | 353 | 289 |
+| Tools at session start | All at once | **6** |
+| Total tools available | Fixed | 289 (9 domains) |
 | Domain activation | — | On demand |
 
 If you're an independent creator or a small shop where every Claude API call
