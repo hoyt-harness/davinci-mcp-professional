@@ -1572,11 +1572,31 @@ class DaVinciResolveClient:
     # ------------------------------------------------------------------
 
     def _get_timeline_graph(self, timeline_name: str) -> Any:
-        """Get the node graph for the named timeline."""
+        """Get the timeline-level node graph (adjustment layer) for the named timeline.
+
+        Use _get_current_clip_graph for per-clip Color page node operations.
+        """
         tl = self._get_timeline_by_name(timeline_name)
         graph = tl.GetNodeGraph()
         if not graph:
             raise DaVinciResolveError(f"No node graph on timeline '{timeline_name}'")
+        return graph
+
+    def _get_current_clip_graph(self, timeline_name: str, layer_index: int = 1) -> Any:
+        """Get the node graph of the currently active clip on the Color page.
+
+        Uses layer_index 1 (default grade version) unless specified otherwise.
+        Raises DaVinciResolveError when no clip is selected or the graph is absent.
+        """
+        tl = self._get_timeline_by_name(timeline_name)
+        item = tl.GetCurrentVideoItem()
+        if not item:
+            raise DaVinciResolveError(
+                f"No current video item on Color page for timeline '{timeline_name}'"
+            )
+        graph = item.GetNodeGraph(layer_index)
+        if not graph:
+            raise DaVinciResolveError("Failed to get node graph for current clip")
         return graph
 
     def _get_gallery(self) -> Any:
@@ -1587,11 +1607,14 @@ class DaVinciResolveClient:
         return gallery
 
     def _get_album_by_name(self, album_name: str) -> Any:
-        """Walk gallery still albums and return the one matching album_name."""
+        """Walk gallery still albums and return the one matching album_name.
+
+        Normalizes None labels (the default Resolve album has no label) to "".
+        """
         gallery = self._get_gallery()
         albums = gallery.GetGalleryStillAlbums() or []
         for album in albums:
-            if album.GetLabel() == album_name:
+            if (album.GetLabel() or "") == album_name:
                 return album
         raise ValueError(f"Gallery still album '{album_name}' not found")
 
@@ -1616,48 +1639,54 @@ class DaVinciResolveClient:
     # --- Graph / node operations ---
 
     def get_graph_node_count(self, timeline_name: str) -> int:
-        """Get the number of nodes in a timeline's node graph."""
-        return int(self._get_timeline_graph(timeline_name).GetNumNodes())
+        """Get the number of nodes in the current clip's node graph."""
+        return int(self._get_current_clip_graph(timeline_name).GetNumNodes())
 
     def get_graph_node_label(self, timeline_name: str, node_index: int) -> str:
-        """Get the label of a graph node."""
-        return str(self._get_timeline_graph(timeline_name).GetNodeLabel(node_index))
+        """Get the label of a node in the current clip's node graph."""
+        label = self._get_current_clip_graph(timeline_name).GetNodeLabel(node_index)
+        return str(label) if label else ""
 
     def get_graph_node_tools(self, timeline_name: str, node_index: int) -> list[str]:
-        """Get the list of tool names active in a graph node."""
-        result = self._get_timeline_graph(timeline_name).GetToolsInNode(node_index)
+        """Get the list of tool names active in a node of the current clip's graph."""
+        result = self._get_current_clip_graph(timeline_name).GetToolsInNode(node_index)
         return list(result) if result else []
 
     def get_graph_node_lut(self, timeline_name: str, node_index: int) -> str:
-        """Get the LUT path assigned to a graph node."""
-        return str(self._get_timeline_graph(timeline_name).GetLUT(node_index))
+        """Get the LUT path assigned to a node in the current clip's graph."""
+        lut = self._get_current_clip_graph(timeline_name).GetLUT(node_index)
+        return str(lut) if lut else ""
 
     def set_graph_node_lut(
         self, timeline_name: str, node_index: int, lut_path: str
     ) -> bool:  # noqa: E501
-        """Assign a LUT file to a graph node."""
+        """Assign a LUT file to a node in the current clip's graph."""
         return bool(
-            self._get_timeline_graph(timeline_name).SetLUT(node_index, lut_path)
+            self._get_current_clip_graph(timeline_name).SetLUT(node_index, lut_path)
         )  # noqa: E501
 
     def get_graph_node_cache_mode(self, timeline_name: str, node_index: int) -> int:
-        """Get the cache mode of a graph node."""
-        return int(self._get_timeline_graph(timeline_name).GetNodeCacheMode(node_index))
+        """Get the cache mode of a node in the current clip's graph."""
+        return int(
+            self._get_current_clip_graph(timeline_name).GetNodeCacheMode(node_index)
+        )
 
     def set_graph_node_enabled(
         self, timeline_name: str, node_index: int, enabled: bool
     ) -> bool:  # noqa: E501
-        """Enable or disable a graph node."""
+        """Enable or disable a node in the current clip's graph."""
         return bool(
-            self._get_timeline_graph(timeline_name).SetNodeEnabled(node_index, enabled)
-        )  # noqa: E501
+            self._get_current_clip_graph(timeline_name).SetNodeEnabled(
+                node_index, enabled
+            )
+        )
 
     def set_graph_node_cache_mode(
         self, timeline_name: str, node_index: int, cache_mode: int
     ) -> bool:  # noqa: E501
-        """Set the cache mode of a graph node."""
+        """Set the cache mode of a node in the current clip's graph."""
         return bool(
-            self._get_timeline_graph(timeline_name).SetNodeCacheMode(
+            self._get_current_clip_graph(timeline_name).SetNodeCacheMode(
                 node_index, cache_mode
             )  # noqa: E501
         )
@@ -1683,22 +1712,25 @@ class DaVinciResolveClient:
     # --- Gallery stills — albums ---
 
     def get_gallery_albums(self) -> list[str]:
-        """Get the list of gallery still album names."""
+        """Get the list of gallery still album names.
+
+        The default Resolve album has no label; normalizes None to "".
+        """
         gallery = self._get_gallery()
         albums = gallery.GetGalleryStillAlbums() or []
-        return [a.GetLabel() for a in albums]
+        return [a.GetLabel() or "" for a in albums]
 
     def get_gallery_powergrade_albums(self) -> list[str]:
         """Get the list of gallery PowerGrade album names."""
         gallery = self._get_gallery()
         albums = gallery.GetGalleryPowerGradeAlbums() or []
-        return [a.GetLabel() for a in albums]
+        return [a.GetLabel() or "" for a in albums]
 
     def get_current_still_album(self) -> str | None:
         """Get the name of the currently active still album."""
         gallery = self._get_gallery()
         album = gallery.GetCurrentStillAlbum()
-        return album.GetLabel() if album else None
+        return (album.GetLabel() or "") if album else None
 
     def create_still_album(self) -> bool:
         """Create a new gallery still album."""
@@ -2239,6 +2271,17 @@ class DaVinciResolveClient:
             return {}
         return {"node_count": graph.GetNumNodes()}
 
+    def set_item_node_lut(
+        self,
+        timeline_name: str,
+        item_ref: dict[str, Any],
+        node_index: int,
+        lut_path: str,
+    ) -> bool:
+        """Assign a LUT file to a specific node on a timeline item."""
+        item = self._get_timeline_item(timeline_name, item_ref)
+        return bool(item.SetLUT(node_index, lut_path))
+
     def copy_grades(
         self,
         timeline_name: str,
@@ -2426,10 +2469,20 @@ class DaVinciResolveClient:
         tl = self._get_timeline_by_name(timeline_name)
         return bool(tl.CreateSubtitlesFromAudio(settings))
 
-    def detect_scene_cuts(self, timeline_name: str) -> bool:
-        """Detect scene cuts in a timeline (Studio only)."""
+    def detect_scene_cuts(self, timeline_name: str) -> dict[str, Any]:
+        """Detect scene cuts in a timeline (Studio only).
+
+        Returns the count of new clips created by the detection pass.
+        Compares V1 item count before and after so the caller can distinguish
+        "ran successfully but found no cuts" from "found N cuts".
+        """
         tl = self._get_timeline_by_name(timeline_name)
-        return bool(tl.DetectSceneCuts())
+        before = len(tl.GetItemListInTrack("video", 1) or [])
+        result = tl.DetectSceneCuts()
+        if not result:
+            return {"status": "failed", "cuts_found": 0}
+        after = len(tl.GetItemListInTrack("video", 1) or [])
+        return {"status": "ok", "cuts_found": max(0, after - before)}
 
     def transcribe_clip_audio(self, clip_id: str, use_speaker_detection: bool) -> bool:
         """Transcribe audio for a media pool clip (Studio + Extras)."""

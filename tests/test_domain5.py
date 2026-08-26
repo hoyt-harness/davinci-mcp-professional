@@ -104,6 +104,7 @@ _TI_DISPATCH: list[tuple] = [
     ("export_fusion_comp",  "export_fusion_comp",  {"timeline_name": _TL, "item_ref": _REF, "file_path": "/p/c.setting", "comp_index": 0}, (_TL, _REF, "/p/c.setting", 0)),  # noqa: E501
     # --- node graph / grade ---
     ("get_item_node_graph", "get_item_node_graph", {"timeline_name": _TL, "item_ref": _REF, "layer_index": 1},     (_TL, _REF, 1)),
+    ("set_item_node_lut",   "set_item_node_lut",   {"timeline_name": _TL, "item_ref": _REF, "node_index": 1, "lut_path": "/p/a.cube"}, (_TL, _REF, 1, "/p/a.cube")),  # noqa: E501
     ("copy_grades",         "copy_grades",         {"timeline_name": _TL, "item_ref": _REF, "target_item_refs": [_REF]}, (_TL, _REF, [_REF])),  # noqa: E501
     ("set_cdl",             "set_cdl",             {"timeline_name": _TL, "item_ref": _REF, "cdl_map": {"NodeIndex": 1}}, (_TL, _REF, {"NodeIndex": 1})),  # noqa: E501
     ("export_item_lut",     "export_item_lut",     {"timeline_name": _TL, "item_ref": _REF, "export_type": 0, "file_path": "/p/l.cube"}, (_TL, _REF, 0, "/p/l.cube")),  # noqa: E501

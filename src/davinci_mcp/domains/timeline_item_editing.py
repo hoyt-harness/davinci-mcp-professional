@@ -461,6 +461,25 @@ class TimelineItemEditingDomain:
                 ["layer_index"],
             ),
             types.Tool(
+                name="set_item_node_lut",
+                description="Assign a LUT file to a specific node on a timeline item",
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        **_tl_props,
+                        "node_index": {
+                            "type": "integer",
+                            "description": "Node index (1-based)",
+                        },
+                        "lut_path": {
+                            "type": "string",
+                            "description": "Absolute path to the .cube LUT file",
+                        },
+                    },
+                    "required": _req + ["node_index", "lut_path"],
+                },
+            ),
+            types.Tool(
                 name="copy_grades",
                 description="Copy grades from one timeline item to others",
                 inputSchema={
@@ -818,6 +837,14 @@ class TimelineItemEditingDomain:
             return client.get_item_node_graph(
                 tl, item_ref, int(arguments.get("layer_index", 1))
             )  # noqa: E501
+        elif tool_name == "set_item_node_lut":
+            result = client.set_item_node_lut(
+                tl,
+                item_ref,
+                int(arguments.get("node_index", 1)),
+                arguments.get("lut_path", ""),
+            )
+            return "LUT set" if result else "Failed to set LUT"
         elif tool_name == "copy_grades":
             result = client.copy_grades(
                 tl, item_ref, arguments.get("target_item_refs", [])

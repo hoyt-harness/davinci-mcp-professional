@@ -387,10 +387,13 @@ class AIStudioDomain:
             result = client.create_subtitles_from_audio(
                 tl, arguments.get("settings", {})
             )  # noqa: E501
-            return "Subtitles created" if result else "Failed to create subtitles"
+            return "Subtitles created" if result else (
+                "Failed to create subtitles. Requires DaVinci Resolve Studio with "
+                "AI Speech Recognition installed "
+                "(Help → Download DaVinci Resolve AI Models)."
+            )
         elif tool_name == "detect_scene_cuts":
-            result = client.detect_scene_cuts(tl)
-            return "Scene cuts detected" if result else "Failed"
+            return client.detect_scene_cuts(tl)
 
         # --- clip transcription / audio classification ---
         elif tool_name == "transcribe_clip_audio":
