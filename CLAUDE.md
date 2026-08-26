@@ -225,15 +225,6 @@ Coding Standards** (https://www.gnu.org/prep/standards/).
 
 ## Documentation
 
-### Doxygen
-
-The project uses Doxygen for API documentation. Configuration is in `Doxyfile`
-at the repo root. Generated HTML output goes to `doxygen/` at the repo root and is tracked
-in git.
-
-When the project version changes or source code is modified, update
-`PROJECT_NUMBER` in `Doxyfile` and regenerate with `doxygen Doxyfile`.
-
 ### Project Documentation
 
 Root-level Markdown files follow GNU conventions:
