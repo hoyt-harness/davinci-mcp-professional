@@ -116,3 +116,6 @@ target-version = "py310"
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "C4", "PERF"]
 ignore = ["PERF203"]
+
+[tool.positronikal-check]
+exclude-paths = ["doxygen"]

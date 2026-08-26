@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['refresh_5flut_5flist_0',['refresh_lut_list',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#ab4991c335d66ddca25d92fed93493739',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['refresh_5fmedia_5fpool_5ffolders_1',['refresh_media_pool_folders',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#ab33a34c0c54693deeacff96d2e278ba3',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['regenerate_5fmagic_5fmask_2',['regenerate_magic_mask',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#adda0884fc2787803210cc44ae4682ed4',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['relink_5fclips_3',['relink_clips',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a2b386f4cb6a07790738c0089afbaeb91',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['remove_5ffrom_5fcolor_5fgroup_4',['remove_from_color_group',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a5978ff754bba69e76578040fc2ecfcb4',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['remove_5fmotion_5fblur_5',['remove_motion_blur',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a8d649bd87a6220305814b37a82565ee7',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['rename_5fcolor_5fgroup_6',['rename_color_group',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a197f696a08b5a07211705caf4767eb05',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['rename_5fcolor_5fversion_7',['rename_color_version',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a3ab05c230acb9cb4ba37d494285bc086',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['rename_5ffusion_5fcomp_8',['rename_fusion_comp',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#ad68fb4a9bd85f9ad5db37eeced044e5b',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['rename_5fproject_9',['rename_project',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#ab0485354153f395b59a34efe81c426cb',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['rename_5ftimeline_10',['rename_timeline',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#ad509e29194991f8c586e3386de6facd8',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['render_5fwith_5fquick_5fexport_11',['render_with_quick_export',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#afbcb8be209b28ada6f1fb9551f71c5a3',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['replace_5fclip_12',['replace_clip',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a903300e1534b27b0dd250ca44660ea2b',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['replace_5fclip_5fpreserve_5fsubclip_13',['replace_clip_preserve_subclip',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#ae4c849eadff1d58aa8dbb60cc7215a54',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['reset_5fall_5fgrades_14',['reset_all_grades',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a3a469bdbcf95d45f9d9d6d9d5bf487a6',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['reset_5fintellisearch_15',['reset_intellisearch',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#afc3184b7a397ef1446a60c14fb056a61',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['reset_5fitem_5fnode_5fcolors_16',['reset_item_node_colors',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a9043720d9223c3a973cd010fef932054',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['restore_5fproject_17',['restore_project',['../classdavinci__mcp_1_1resolve__client_1_1DaVinciResolveClient.html#a49c0bd253aef335a3e261b11b4dc9855',1,'davinci_mcp::resolve_client::DaVinciResolveClient']]],
+  ['restoreproject_18',['RestoreProject',['../classdavinci__mcp_1_1types_1_1DaVinciProjectManager.html#acafb8acef7b98f41608e991d027b960d',1,'davinci_mcp::types::DaVinciProjectManager']]],
+  ['run_19',['run',['../classdavinci__mcp_1_1server_1_1DaVinciMCPServer.html#a354b3a0fb9ee426a04567e1b8da87d79',1,'davinci_mcp::server::DaVinciMCPServer']]]
+];

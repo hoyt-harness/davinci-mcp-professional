@@ -7,10 +7,10 @@
 
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "DaVinci MCP Professional"
-PROJECT_NUMBER         = "v3.0.0"
+PROJECT_NUMBER         = "v4.0.0"
 PROJECT_BRIEF          = "A modern, professional Model Context Protocol server for DaVinci Resolve integration"
 PROJECT_LOGO           = 
-OUTPUT_DIRECTORY       = docs
+OUTPUT_DIRECTORY       = .
 CREATE_SUBDIRS         = NO
 ALLOW_UNICODE_NAMES    = NO
 OUTPUT_LANGUAGE        = English
@@ -181,7 +181,7 @@ IGNORE_PREFIX          =
 #---------------------------------------------------------------------------
 
 GENERATE_HTML          = YES
-HTML_OUTPUT            = html
+HTML_OUTPUT            = doxygen
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = 
 HTML_FOOTER            = 

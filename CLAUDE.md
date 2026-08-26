@@ -228,7 +228,7 @@ Coding Standards** (https://www.gnu.org/prep/standards/).
 ### Doxygen
 
 The project uses Doxygen for API documentation. Configuration is in `Doxyfile`
-at the repo root. Generated HTML output goes to `docs/html/` and is tracked
+at the repo root. Generated HTML output goes to `doxygen/` at the repo root and is tracked
 in git.
 
 When the project version changes or source code is modified, update
