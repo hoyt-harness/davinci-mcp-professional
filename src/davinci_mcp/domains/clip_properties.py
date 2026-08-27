@@ -502,7 +502,8 @@ class ClipPropertiesDomain:
 
         # --- color label ---
         elif tool_name == "get_clip_color":
-            return client.get_clip_color(clip_id)
+            color = client.get_clip_color(clip_id)
+            return color if color else "(none)"
         elif tool_name == "set_clip_color":
             result = client.set_clip_color(clip_id, arguments.get("color_name", ""))
             return "Color set" if result else "Failed to set color"
