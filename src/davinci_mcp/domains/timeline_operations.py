@@ -217,7 +217,10 @@ class TimelineOperationsDomain:
             ),
             types.Tool(
                 name="set_current_timecode",
-                description="Move the playhead to a timecode position",
+                description=(
+                    "Move the playhead to a timecode position. "
+                    "Only works on the currently active timeline — call switch_timeline first if needed."  # noqa: E501
+                ),
                 inputSchema={
                     "type": "object",
                     "properties": {

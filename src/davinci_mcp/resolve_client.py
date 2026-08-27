@@ -530,7 +530,7 @@ class DaVinciResolveClient:
     ) -> bool:
         """Set a timeline setting."""
         tl = self._get_timeline_by_name(name)
-        return bool(tl.SetSetting(setting_name, setting_value))
+        return bool(tl.SetSetting(setting_name, str(setting_value)))
 
     def get_start_timecode(self, name: str) -> str:
         """Get the start timecode of a timeline."""
@@ -732,8 +732,13 @@ class DaVinciResolveClient:
         self, name: str, file_name: str, export_type: str, export_subtype: str
     ) -> bool:
         """Export a timeline to AAF/EDL/XML/FCPXML/OTIO/DRT/ALE/HDR/DolbyVision."""
+        self._ensure_connected()
         tl = self._get_timeline_by_name(name)
-        return bool(tl.Export(file_name, export_type, export_subtype))
+        export_type_val = getattr(self._resolve, export_type, None)
+        if export_type_val is None:
+            return False
+        export_subtype_val = getattr(self._resolve, export_subtype, None)
+        return bool(tl.Export(file_name, export_type_val, export_subtype_val))
 
     def import_into_timeline(
         self, name: str, file_path: str, import_options: dict[str, Any]
