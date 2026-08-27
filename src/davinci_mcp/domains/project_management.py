@@ -495,7 +495,7 @@ class ProjectManagementDomain:
             return "Navigated to root folder" if result else "Navigation failed"
         elif tool_name == "goto_parent_folder":
             result = client.goto_parent_folder()
-            return "Navigated to parent folder" if result else "Navigation failed"
+            return "Navigated to parent folder" if result else "Already at root folder"
 
         # --- database management ---
         elif tool_name == "list_databases":

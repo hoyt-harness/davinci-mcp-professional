@@ -244,8 +244,10 @@ class DaVinciResolveClient:
 
     def save_project(self) -> bool:
         """Save the current project."""
-        project = self._ensure_project()
-        return bool(project.SaveProject())
+        self._ensure_connected()
+        if not self._project_manager:
+            return False
+        return bool(self._project_manager.SaveProject())
 
     def close_project(self) -> bool:
         """Close the current project (unsaved changes are lost)."""
@@ -348,7 +350,8 @@ class DaVinciResolveClient:
         if not self._project_manager:
             return ""
         name = self._project_manager.GetCurrentFolder()
-        return str(name) if name else ""
+        folder_name = str(name) if name else ""
+        return folder_name or "(root)"
 
     def open_project_folder(self, folder_name: str) -> bool:
         """Open a project folder."""
