@@ -68,7 +68,7 @@ class MediaPoolDomain:
                     "properties": {
                         "folder_path": {
                             "type": "string",
-                            "description": "Slash-separated path from root, e.g. 'Master/B-Roll'",  # noqa: E501
+                            "description": "Path from root's children, slash-separated; e.g. 'B-Roll' or 'B-Roll/Outdoor'. Use 'Master' or '/' for root.",  # noqa: E501
                         },
                     },
                     "required": ["folder_path"],
@@ -82,7 +82,7 @@ class MediaPoolDomain:
                     "properties": {
                         "folder_path": {
                             "type": "string",
-                            "description": "Slash-separated path from root, e.g. 'Master/B-Roll'",  # noqa: E501
+                            "description": "Path from root's children, slash-separated; e.g. 'B-Roll' or 'B-Roll/Outdoor'. Use 'Master' or '/' for root.",  # noqa: E501
                         },
                     },
                     "required": ["folder_path"],
@@ -96,7 +96,7 @@ class MediaPoolDomain:
                     "properties": {
                         "folder_path": {
                             "type": "string",
-                            "description": "Slash-separated path from root",
+                            "description": "Path from root's children, slash-separated; e.g. 'B-Roll' or 'B-Roll/Outdoor'. Use 'Master' or '/' for root.",  # noqa: E501
                         },
                     },
                     "required": ["folder_path"],
@@ -104,12 +104,12 @@ class MediaPoolDomain:
             ),
             types.Tool(
                 name="get_selected_pool_clips",
-                description="Get the clips currently selected in the media pool",
+                description="Get the clips currently selected in the media pool. Note: MediaPool.GetSelectedClips() is undocumented in FusionScript and returns empty in Resolve 21 — treat this as best-effort.",  # noqa: E501
                 inputSchema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="set_selected_pool_clip",
-                description="Set a clip as the selected clip in the media pool",
+                description="Set a clip as the selected clip in the media pool (sets the source viewer clip). Note: selection state cannot be verified via get_selected_pool_clips in Resolve 21.",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {
@@ -245,7 +245,7 @@ class MediaPoolDomain:
             ),
             types.Tool(
                 name="create_timeline_from_clips",
-                description="Create a new timeline from a list of media pool clips",
+                description="Create a new timeline from a list of media pool clips. Timeline is placed in the current media pool folder (use set_current_media_pool_folder to control placement).",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {

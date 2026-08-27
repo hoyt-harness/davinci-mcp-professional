@@ -63,8 +63,8 @@ _MP_DISPATCH: list[tuple] = [
     (
         "get_folder_clips",
         "get_folder_clips",
-        {"folder_path": "Master/B-Roll"},
-        ("Master/B-Roll",),
+        {"folder_path": "B-Roll"},
+        ("B-Roll",),
     ),
     (
         "get_folder_subfolders",
