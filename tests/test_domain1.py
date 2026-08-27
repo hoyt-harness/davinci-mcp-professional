@@ -18,9 +18,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from davinci_mcp.domains.registry import DOMAIN_REGISTRY
 from davinci_mcp.server import DaVinciMCPServer
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -50,7 +48,9 @@ def _run(coro):
     return asyncio.get_event_loop().run_until_complete(coro)
 
 
-def _make_server_with_domain_active(domain_name: str) -> tuple[DaVinciMCPServer, MagicMock]:
+def _make_server_with_domain_active(
+    domain_name: str,
+) -> tuple[DaVinciMCPServer, MagicMock]:
     """Return (server, mock_client) with the named domain activated."""
     mock_client = _make_mock_client()
     with patch("davinci_mcp.server.DaVinciResolveClient", return_value=mock_client):
@@ -69,49 +69,85 @@ def _make_server_with_domain_active(domain_name: str) -> tuple[DaVinciMCPServer,
 
 _PM_DISPATCH: list[tuple] = [
     # --- original migrated tools ---
-    ("list_projects",       "list_projects",            {},                         ()),
-    ("get_current_project", "get_current_project_name", {},                         ()),
-    ("open_project",        "open_project",             {"name": "MyProj"},         ("MyProj",)),
-    ("create_project",      "create_project",           {"name": "NewProj"},        ("NewProj",)),
+    ("list_projects", "list_projects", {}, ()),
+    ("get_current_project", "get_current_project_name", {}, ()),
+    ("open_project", "open_project", {"name": "MyProj"}, ("MyProj",)),
+    ("create_project", "create_project", {"name": "NewProj"}, ("NewProj",)),
     # --- new project tools ---
-    ("save_project",        "save_project",             {},                         ()),
-    ("rename_project",      "rename_project",           {"new_name": "Renamed"},    ("Renamed",)),
-    ("get_project_attributes", "get_project_attributes", {},                        ()),
+    ("save_project", "save_project", {}, ()),
+    ("rename_project", "rename_project", {"new_name": "Renamed"}, ("Renamed",)),
+    ("get_project_attributes", "get_project_attributes", {}, ()),
     # --- folder navigation ---
-    ("list_project_folders",    "list_project_folders",    {},                      ()),
-    ("get_current_project_folder", "get_current_project_folder", {},               ()),
-    ("create_project_folder",   "create_project_folder",   {"folder_name": "Bin"}, ("Bin",)),
-    ("open_project_folder",     "open_project_folder",     {"folder_name": "Bin"}, ("Bin",)),
-    ("goto_root_folder",        "goto_root_folder",        {},                      ()),
-    ("goto_parent_folder",      "goto_parent_folder",      {},                      ()),
+    ("list_project_folders", "list_project_folders", {}, ()),
+    ("get_current_project_folder", "get_current_project_folder", {}, ()),
+    (
+        "create_project_folder",
+        "create_project_folder",
+        {"folder_name": "Bin"},
+        ("Bin",),
+    ),
+    ("open_project_folder", "open_project_folder", {"folder_name": "Bin"}, ("Bin",)),
+    ("goto_root_folder", "goto_root_folder", {}, ()),
+    ("goto_parent_folder", "goto_parent_folder", {}, ()),
     # --- archive / export / import ---
-    ("export_project",  "export_project",
-     {"name": "P", "file_path": "/out/p.drp", "with_stills_and_luts": False},
-     ("P", "/out/p.drp", False)),
-    ("import_project",  "import_project",
-     {"file_path": "/in/p.drp", "project_name": "Imported"},
-     ("/in/p.drp", "Imported")),
-    ("restore_project", "restore_project",
-     {"file_path": "/in/p.dra", "project_name": "Restored", "confirm": True},
-     ("/in/p.dra", "Restored")),
+    (
+        "export_project",
+        "export_project",
+        {"name": "P", "file_path": "/out/p.drp", "with_stills_and_luts": False},
+        ("P", "/out/p.drp", False),
+    ),
+    (
+        "import_project",
+        "import_project",
+        {"file_path": "/in/p.drp", "project_name": "Imported"},
+        ("/in/p.drp", "Imported"),
+    ),
+    (
+        "restore_project",
+        "restore_project",
+        {"file_path": "/in/p.dra", "project_name": "Restored", "confirm": True},
+        ("/in/p.dra", "Restored"),
+    ),
     # --- databases ---
-    ("list_databases",      "list_databases",      {},                                        ()),
-    ("get_current_database","get_current_database",{},                                        ()),
-    ("set_current_database","set_current_database",
-     {"db_info": {"DbType": "Disk", "DbName": "Local"}, "confirm": True},
-     ({"DbType": "Disk", "DbName": "Local"},)),
+    ("list_databases", "list_databases", {}, ()),
+    ("get_current_database", "get_current_database", {}, ()),
+    (
+        "set_current_database",
+        "set_current_database",
+        {"db_info": {"DbType": "Disk", "DbName": "Local"}, "confirm": True},
+        ({"DbType": "Disk", "DbName": "Local"},),
+    ),
 ]
 
 # Destructive tools require confirm=True; table rows use it directly.
 # The negative case (missing confirm) is tested in TestDestructiveGate.
 _PM_DESTRUCTIVE: list[tuple] = [
-    ("close_project",         "close_project",         {"confirm": True},                    ()),
-    ("delete_project",        "delete_project",        {"name": "OldProj", "confirm": True}, ("OldProj",)),
-    ("delete_project_folder", "delete_project_folder", {"folder_name": "Bin", "confirm": True}, ("Bin",)),
-    ("archive_project",       "archive_project",
-     {"name": "P", "file_path": "/arc/p.dra",
-      "src_media": True, "render_cache": False, "proxy_media": False, "confirm": True},
-     ("P", "/arc/p.dra", True, False, False)),
+    ("close_project", "close_project", {"confirm": True}, ()),
+    (
+        "delete_project",
+        "delete_project",
+        {"name": "OldProj", "confirm": True},
+        ("OldProj",),
+    ),
+    (
+        "delete_project_folder",
+        "delete_project_folder",
+        {"folder_name": "Bin", "confirm": True},
+        ("Bin",),
+    ),
+    (
+        "archive_project",
+        "archive_project",
+        {
+            "name": "P",
+            "file_path": "/arc/p.dra",
+            "src_media": True,
+            "render_cache": False,
+            "proxy_media": False,
+            "confirm": True,
+        },
+        ("P", "/arc/p.dra", True, False, False),
+    ),
 ]
 
 
@@ -121,8 +157,9 @@ _PM_DESTRUCTIVE: list[tuple] = [
 
 
 class TestDomain1Dispatch:
-    @pytest.mark.parametrize("tool,method,args,call_args",
-                             _PM_DISPATCH + _PM_DESTRUCTIVE)
+    @pytest.mark.parametrize(
+        "tool,method,args,call_args", _PM_DISPATCH + _PM_DESTRUCTIVE
+    )
     def test_dispatches_to_client(self, tool, method, args, call_args):
         server, client = _make_server_with_domain_active("project_management")
         getattr(client, method).return_value = True
@@ -143,17 +180,28 @@ class TestDomain1Dispatch:
 
 
 class TestDestructiveGate:
-    @pytest.mark.parametrize("tool,args_without_confirm", [
-        ("close_project",         {}),
-        ("close_project",         {"confirm": False}),
-        ("delete_project",        {"name": "P"}),
-        ("delete_project",        {"name": "P", "confirm": False}),
-        ("delete_project_folder", {"folder_name": "Bin"}),
-        ("archive_project",       {"name": "P", "file_path": "/f",
-                                   "src_media": True, "render_cache": False, "proxy_media": False}),
-        ("restore_project",       {"file_path": "/f", "project_name": "R"}),
-        ("set_current_database",  {"db_info": {"DbType": "Disk", "DbName": "L"}}),
-    ])
+    @pytest.mark.parametrize(
+        "tool,args_without_confirm",
+        [
+            ("close_project", {}),
+            ("close_project", {"confirm": False}),
+            ("delete_project", {"name": "P"}),
+            ("delete_project", {"name": "P", "confirm": False}),
+            ("delete_project_folder", {"folder_name": "Bin"}),
+            (
+                "archive_project",
+                {
+                    "name": "P",
+                    "file_path": "/f",
+                    "src_media": True,
+                    "render_cache": False,
+                    "proxy_media": False,
+                },
+            ),
+            ("restore_project", {"file_path": "/f", "project_name": "R"}),
+            ("set_current_database", {"db_info": {"DbType": "Disk", "DbName": "L"}}),
+        ],
+    )
     def test_destructive_rejected_without_confirm(self, tool, args_without_confirm):
         server, _ = _make_server_with_domain_active("project_management")
         result = _run(server._dispatch_tool(tool, args_without_confirm))

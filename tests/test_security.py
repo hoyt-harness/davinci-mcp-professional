@@ -36,7 +36,8 @@ class TestSecurity:
         """Check for potential hardcoded secrets in source code."""
         project_root = Path(__file__).parent.parent
         python_files = [
-            p for p in project_root.rglob("*.py")
+            p
+            for p in project_root.rglob("*.py")
             if not _excluded(p) and "test_" not in p.name
         ]
 
@@ -59,7 +60,7 @@ class TestSecurity:
                         lines = content.split("\n")
                         for i, line in enumerate(lines):
                             if pattern in line and not line.strip().startswith("#"):
-                                violations.append(f"{py_file}:{i+1} - {line.strip()}")
+                                violations.append(f"{py_file}:{i + 1} - {line.strip()}")
             except UnicodeDecodeError:
                 continue
 
@@ -146,7 +147,8 @@ class TestSecurity:
         """Check for potentially dangerous imports."""
         project_root = Path(__file__).parent.parent
         python_files = [
-            p for p in project_root.rglob("*.py")
+            p
+            for p in project_root.rglob("*.py")
             if not _excluded(p) and "test_" not in p.name
         ]
 
@@ -170,7 +172,7 @@ class TestSecurity:
                     for dangerous in dangerous_imports:
                         if dangerous in line and not line.strip().startswith("#"):
                             violations.append(  # noqa: PERF401
-                                f"{py_file}:{i+1} - Potentially dangerous: "
+                                f"{py_file}:{i + 1} - Potentially dangerous: "
                                 f"{line.strip()}"
                             )
             except UnicodeDecodeError:
@@ -227,7 +229,7 @@ class TestSecurity:
                     parts = line.split("=" if "=" in line else ":")
                     if len(parts) > 1 and parts[1].strip():
                         violations.append(
-                            f"{config_file}:{i+1} - Potential secret: {line.strip()}"
+                            f"{config_file}:{i + 1} - Potential secret: {line.strip()}"
                         )
             except UnicodeDecodeError:
                 continue

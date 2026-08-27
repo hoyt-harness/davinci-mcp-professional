@@ -45,15 +45,9 @@ def temp_config_file(tmp_path: Path) -> Path:
 # Configure pytest markers
 def pytest_configure(config: Config) -> None:
     """Configure custom pytest markers."""
-    config.addinivalue_line(
-        "markers", "security: mark test as security-related"
-    )
-    config.addinivalue_line(
-        "markers", "integration: mark test as integration test"
-    )
-    config.addinivalue_line(
-        "markers", "slow: mark test as slow running"
-    )
+    config.addinivalue_line("markers", "security: mark test as security-related")
+    config.addinivalue_line("markers", "integration: mark test as integration test")
+    config.addinivalue_line("markers", "slow: mark test as slow running")
 
 
 # Skip tests that require external dependencies if not available

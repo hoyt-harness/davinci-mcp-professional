@@ -41,7 +41,9 @@ def _run(coro):
     return asyncio.get_event_loop().run_until_complete(coro)
 
 
-def _make_server_with_domain_active(domain_name: str) -> tuple[DaVinciMCPServer, MagicMock]:
+def _make_server_with_domain_active(
+    domain_name: str,
+) -> tuple[DaVinciMCPServer, MagicMock]:
     mock_client = _make_mock_client()
     with patch("davinci_mcp.server.DaVinciResolveClient", return_value=mock_client):
         server = DaVinciMCPServer()
@@ -58,31 +60,106 @@ _DOMAIN = "ai_studio"
 
 _AI_DISPATCH: list[tuple] = [
     # --- timeline item AI tools ---
-    ("create_magic_mask",     "create_magic_mask",     {"timeline_name": _TL, "item_ref": _REF, "mode": "F"}, (_TL, _REF, "F")),  # noqa: E501
-    ("regenerate_magic_mask", "regenerate_magic_mask", {"timeline_name": _TL, "item_ref": _REF},              (_TL, _REF)),
-    ("stabilize_clip",        "stabilize_clip",        {"timeline_name": _TL, "item_ref": _REF},              (_TL, _REF)),
-    ("smart_reframe_clip",    "smart_reframe_clip",    {"timeline_name": _TL, "item_ref": _REF},              (_TL, _REF)),
+    (
+        "create_magic_mask",
+        "create_magic_mask",
+        {"timeline_name": _TL, "item_ref": _REF, "mode": "F"},
+        (_TL, _REF, "F"),
+    ),  # noqa: E501
+    (
+        "regenerate_magic_mask",
+        "regenerate_magic_mask",
+        {"timeline_name": _TL, "item_ref": _REF},
+        (_TL, _REF),
+    ),
+    (
+        "stabilize_clip",
+        "stabilize_clip",
+        {"timeline_name": _TL, "item_ref": _REF},
+        (_TL, _REF),
+    ),
+    (
+        "smart_reframe_clip",
+        "smart_reframe_clip",
+        {"timeline_name": _TL, "item_ref": _REF},
+        (_TL, _REF),
+    ),
     # --- timeline AI tools ---
-    ("create_subtitles_from_audio", "create_subtitles_from_audio", {"timeline_name": _TL, "settings": {}},   (_TL, {})),
-    ("detect_scene_cuts",     "detect_scene_cuts",     {"timeline_name": _TL},                                (_TL,)),
+    (
+        "create_subtitles_from_audio",
+        "create_subtitles_from_audio",
+        {"timeline_name": _TL, "settings": {}},
+        (_TL, {}),
+    ),
+    ("detect_scene_cuts", "detect_scene_cuts", {"timeline_name": _TL}, (_TL,)),
     # --- clip transcription ---
-    ("transcribe_clip_audio",       "transcribe_clip_audio",       {"clip_id": _CID, "use_speaker_detection": False}, (_CID, False)),  # noqa: E501
-    ("clear_transcription",         "clear_transcription",         {"clip_id": _CID, "confirm": True},        (_CID,)),
-    ("classify_clip_audio",         "classify_clip_audio",         {"clip_id": _CID},                         (_CID,)),
-    ("clear_audio_classification",  "clear_audio_classification",  {"clip_id": _CID, "confirm": True},        (_CID,)),
+    (
+        "transcribe_clip_audio",
+        "transcribe_clip_audio",
+        {"clip_id": _CID, "use_speaker_detection": False},
+        (_CID, False),
+    ),  # noqa: E501
+    (
+        "clear_transcription",
+        "clear_transcription",
+        {"clip_id": _CID, "confirm": True},
+        (_CID,),
+    ),
+    ("classify_clip_audio", "classify_clip_audio", {"clip_id": _CID}, (_CID,)),
+    (
+        "clear_audio_classification",
+        "clear_audio_classification",
+        {"clip_id": _CID, "confirm": True},
+        (_CID,),
+    ),
     # --- folder AI tools ---
-    ("transcribe_folder_audio",     "transcribe_folder_audio",     {"folder_path": _FP, "use_speaker_detection": False}, (_FP, False)),  # noqa: E501
-    ("analyze_for_intellisearch",   "analyze_for_intellisearch",   {"folder_path": _FP, "identify_faces": True, "is_better_mode": False}, (_FP, True, False)),  # noqa: E501
-    ("analyze_for_slate",           "analyze_for_slate",           {"folder_path": _FP, "marker_color": "Blue"}, (_FP, "Blue")),  # noqa: E501
+    (
+        "transcribe_folder_audio",
+        "transcribe_folder_audio",
+        {"folder_path": _FP, "use_speaker_detection": False},
+        (_FP, False),
+    ),  # noqa: E501
+    (
+        "analyze_for_intellisearch",
+        "analyze_for_intellisearch",
+        {"folder_path": _FP, "identify_faces": True, "is_better_mode": False},
+        (_FP, True, False),
+    ),  # noqa: E501
+    (
+        "analyze_for_slate",
+        "analyze_for_slate",
+        {"folder_path": _FP, "marker_color": "Blue"},
+        (_FP, "Blue"),
+    ),  # noqa: E501
     # --- remove motion blur ---
-    ("remove_motion_blur",          "remove_motion_blur",          {"clip_id": _CID, "deblur_options": {}},    (_CID, {})),
+    (
+        "remove_motion_blur",
+        "remove_motion_blur",
+        {"clip_id": _CID, "deblur_options": {}},
+        (_CID, {}),
+    ),
     # --- voice isolation ---
-    ("set_voice_isolation",       "set_voice_isolation",       {"timeline_name": _TL, "track_index": 1, "state": {}}, (_TL, 1, {})),  # noqa: E501
-    ("set_item_voice_isolation",  "set_item_voice_isolation",  {"timeline_name": _TL, "item_ref": _REF, "state": {}}, (_TL, _REF, {})),  # noqa: E501
+    (
+        "set_voice_isolation",
+        "set_voice_isolation",
+        {"timeline_name": _TL, "track_index": 1, "state": {}},
+        (_TL, 1, {}),
+    ),  # noqa: E501
+    (
+        "set_item_voice_isolation",
+        "set_item_voice_isolation",
+        {"timeline_name": _TL, "item_ref": _REF, "state": {}},
+        (_TL, _REF, {}),
+    ),  # noqa: E501
     # --- generate speech ---
-    ("generate_speech",           "generate_speech",           {"settings": {}, "timecode": "01:00:00:00"},    ({}, "01:00:00:00")),
+    (
+        "generate_speech",
+        "generate_speech",
+        {"settings": {}, "timecode": "01:00:00:00"},
+        ({}, "01:00:00:00"),
+    ),
     # --- reset intellisearch ---
-    ("reset_intellisearch",       "reset_intellisearch",       {"confirm": True},                              ()),
+    ("reset_intellisearch", "reset_intellisearch", {"confirm": True}, ()),
 ]
 
 _AI_DESTRUCTIVE: list[tuple] = [

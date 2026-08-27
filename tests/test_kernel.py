@@ -16,12 +16,10 @@ from contextlib import contextmanager
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import pytest
 import mcp.types as types
 
 from davinci_mcp.domains.registry import DOMAIN_REGISTRY, DomainModule
 from davinci_mcp.server import DaVinciMCPServer
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -99,7 +97,9 @@ class TestDomainRegistry:
 
 class TestToolListComposition:
     def _server_with_mock_client(self) -> DaVinciMCPServer:
-        with patch("davinci_mcp.server.DaVinciResolveClient", return_value=_make_mock_client()):
+        with patch(
+            "davinci_mcp.server.DaVinciResolveClient", return_value=_make_mock_client()
+        ):
             return DaVinciMCPServer()
 
     def test_initial_tool_list_is_kernel_only(self) -> None:
@@ -172,7 +172,9 @@ class TestToolListComposition:
 
 class TestActivationFlow:
     def _server(self) -> DaVinciMCPServer:
-        with patch("davinci_mcp.server.DaVinciResolveClient", return_value=_make_mock_client()):
+        with patch(
+            "davinci_mcp.server.DaVinciResolveClient", return_value=_make_mock_client()
+        ):
             return DaVinciMCPServer()
 
     def test_activate_known_domain_returns_status(self) -> None:
@@ -232,7 +234,9 @@ class TestActivationFlow:
 
 class TestNotificationFiring:
     def _server(self) -> DaVinciMCPServer:
-        with patch("davinci_mcp.server.DaVinciResolveClient", return_value=_make_mock_client()):
+        with patch(
+            "davinci_mcp.server.DaVinciResolveClient", return_value=_make_mock_client()
+        ):
             return DaVinciMCPServer()
 
     def test_activate_fires_notification(self) -> None:
@@ -280,7 +284,9 @@ class TestNotificationFiring:
 
 class TestDispatchRouting:
     def _server(self) -> DaVinciMCPServer:
-        with patch("davinci_mcp.server.DaVinciResolveClient", return_value=_make_mock_client()):
+        with patch(
+            "davinci_mcp.server.DaVinciResolveClient", return_value=_make_mock_client()
+        ):
             return DaVinciMCPServer()
 
     def test_dispatch_kernel_tool(self) -> None:
@@ -300,13 +306,18 @@ class TestDispatchRouting:
 
             result = _run(server._dispatch_tool("list_projects", {}))
 
-        domain.dispatch.assert_called_once_with("list_projects", {}, server.resolve_client)
+        domain.dispatch.assert_called_once_with(
+            "list_projects", {}, server.resolve_client
+        )
         assert result == "dispatched:pm"
 
     def test_dispatch_inactive_domain_tool_returns_helpful_error(self) -> None:
         domain = _make_mock_domain("pm", ["pm_only_tool"])
         with patch.dict(DOMAIN_REGISTRY, {"pm": domain}, clear=False):
-            with patch("davinci_mcp.server.DaVinciResolveClient", return_value=_make_mock_client()):
+            with patch(
+                "davinci_mcp.server.DaVinciResolveClient",
+                return_value=_make_mock_client(),
+            ):
                 server = DaVinciMCPServer()
             result = _run(server._dispatch_tool("pm_only_tool", {}))
 
@@ -338,12 +349,17 @@ class TestCapabilityFlag:
             if isinstance(node, ast.Call):
                 func = node.func
                 func_name = (
-                    func.attr if isinstance(func, ast.Attribute) else
-                    func.id if isinstance(func, ast.Name) else ""
+                    func.attr
+                    if isinstance(func, ast.Attribute)
+                    else func.id
+                    if isinstance(func, ast.Name)
+                    else ""
                 )
                 if func_name == "NotificationOptions":
                     for kw in node.keywords:
-                        if kw.arg == "tools_changed" and isinstance(kw.value, ast.Constant):
+                        if kw.arg == "tools_changed" and isinstance(
+                            kw.value, ast.Constant
+                        ):
                             if kw.value.value is True:
                                 found = True
         assert found, (
