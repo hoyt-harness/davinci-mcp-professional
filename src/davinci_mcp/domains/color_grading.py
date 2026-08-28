@@ -128,7 +128,7 @@ class ColorGradingDomain:
                 name="apply_grade_from_drx",
                 description=(
                     "Apply a grade from a .drx file to the timeline's node graph. "
-                    "grade_mode: 0=no keyframes, 1=source TC aligned, 2=start frames aligned. "
+                    "grade_mode: 0=no keyframes, 1=source TC, 2=start. "
                     "Returns False if Timeline.ApplyGradeFromDRX() is unavailable in this Resolve version (API limitation, Resolve 21)."  # noqa: E501
                 ),
                 inputSchema={
