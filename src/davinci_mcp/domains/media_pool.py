@@ -35,7 +35,7 @@ class MediaPoolDomain:
             ),
             types.Tool(
                 name="import_media",
-                description="Import a media file into the media pool root folder",
+                description="Import a media file into the currently selected media pool folder",
                 inputSchema={
                     "type": "object",
                     "properties": {
