@@ -168,7 +168,7 @@ class TimelineOperationsDomain:
             ),
             types.Tool(
                 name="set_timeline_setting",
-                description="Set a timeline setting value. Note: Timeline.SetSetting() has very limited write support in Resolve 21 — most settings are effectively read-only via the API and will return 'Update failed'.",
+                description="Set a timeline setting value. Note: Timeline.SetSetting() has very limited write support in Resolve 21 — most settings are effectively read-only via the API and will return 'Update failed'.",  # noqa: E501
                 inputSchema={
                     "type": "object",
                     "properties": {
@@ -513,7 +513,7 @@ class TimelineOperationsDomain:
                 description=(
                     f"{_DESTRUCTIVE}Delete clips from a timeline. "
                     f"{_COORDS_WARNING} Requires confirm=true. "
-                    "Note: generator clips (Solid Color, Fusion Composition) cannot be deleted via this API in Resolve 21 — only real media clips."
+                    "Note: generator clips (Solid Color, Fusion Composition) cannot be deleted via this API in Resolve 21 — only real media clips."  # noqa: E501
                 ),
                 inputSchema={
                     "type": "object",

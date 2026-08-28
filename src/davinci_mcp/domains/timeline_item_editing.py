@@ -517,6 +517,7 @@ class TimelineItemEditingDomain:
                 name="export_item_lut",
                 description=(
                     "Export the LUT for a timeline item. "
+                    "Requires Color page to be active. "
                     "export_type: 0=17pt cube, 1=33pt cube, 2=65pt cube, "
                     "3=Panasonic VLUT."
                 ),

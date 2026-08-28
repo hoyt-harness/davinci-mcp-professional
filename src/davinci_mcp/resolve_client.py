@@ -1653,7 +1653,7 @@ class DaVinciResolveClient:
     def get_graph_node_label(self, timeline_name: str, node_index: int) -> str:
         """Get the label of a node in the current clip's node graph."""
         label = self._get_current_clip_graph(timeline_name).GetNodeLabel(node_index)
-        return str(label) if label else ""
+        return str(label) if label else "(none)"
 
     def get_graph_node_tools(self, timeline_name: str, node_index: int) -> list[str]:
         """Get the list of tool names active in a node of the current clip's graph."""
@@ -1663,7 +1663,7 @@ class DaVinciResolveClient:
     def get_graph_node_lut(self, timeline_name: str, node_index: int) -> str:
         """Get the LUT path assigned to a node in the current clip's graph."""
         lut = self._get_current_clip_graph(timeline_name).GetLUT(node_index)
-        return str(lut) if lut else ""
+        return str(lut) if lut else "(none)"
 
     def set_graph_node_lut(
         self, timeline_name: str, node_index: int, lut_path: str
@@ -1701,17 +1701,15 @@ class DaVinciResolveClient:
 
     def apply_grade_from_drx(
         self, timeline_name: str, drx_path: str, grade_mode: int
-    ) -> bool:  # noqa: E501
+    ) -> bool:
         """Apply a grade from a .drx file."""
-        return bool(
-            self._get_timeline_graph(timeline_name).ApplyGradeFromDRX(
-                drx_path, grade_mode
-            )
-        )  # noqa: E501
+        tl = self._get_timeline_by_name(timeline_name)
+        return bool(tl.ApplyGradeFromDRX(drx_path, grade_mode))
 
     def apply_arri_cdl_lut(self, timeline_name: str) -> bool:
-        """Apply ARRI CDL LUT to a timeline's graph."""
-        return bool(self._get_timeline_graph(timeline_name).ApplyArriCdlLut())
+        """Apply ARRI CDL LUT to a timeline."""
+        tl = self._get_timeline_by_name(timeline_name)
+        return bool(tl.ApplyArriCdlLut())
 
     def reset_all_grades(self, timeline_name: str) -> bool:
         """Reset all grades in a timeline's node graph."""
@@ -1734,11 +1732,14 @@ class DaVinciResolveClient:
         albums = gallery.GetGalleryPowerGradeAlbums() or []
         return [a.GetLabel() or "" for a in albums]
 
-    def get_current_still_album(self) -> str | None:
+    def get_current_still_album(self) -> str:
         """Get the name of the currently active still album."""
         gallery = self._get_gallery()
         album = gallery.GetCurrentStillAlbum()
-        return (album.GetLabel() or "") if album else None
+        if not album:
+            return "(none)"
+        label = album.GetLabel()
+        return str(label) if label else "(none)"
 
     def create_still_album(self) -> bool:
         """Create a new gallery still album."""
@@ -1805,7 +1806,8 @@ class DaVinciResolveClient:
         """Get the label of a still by index."""
         still = self._get_still_by_index(album_name, still_index)
         album = self._get_album_by_name(album_name)
-        return str(album.GetLabel(still))
+        label = album.GetLabel(still)
+        return str(label) if label else "(none)"
 
     def set_still_label(self, album_name: str, still_index: int, label: str) -> bool:
         """Set the label of a still by index."""
@@ -1993,8 +1995,9 @@ class DaVinciResolveClient:
         )  # noqa: E501
 
     def get_item_color(self, timeline_name: str, item_ref: dict[str, Any]) -> str:
-        """Get the color label of a timeline item."""  # noqa: E501
-        return str(self._get_timeline_item(timeline_name, item_ref).GetClipColor())
+        """Get the color label of a timeline item."""
+        color = self._get_timeline_item(timeline_name, item_ref).GetClipColor()
+        return str(color) if color else "(none)"
 
     def set_item_color(
         self, timeline_name: str, item_ref: dict[str, Any], color_name: str
