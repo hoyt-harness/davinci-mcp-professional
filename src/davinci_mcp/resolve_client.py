@@ -1704,12 +1704,18 @@ class DaVinciResolveClient:
     ) -> bool:
         """Apply a grade from a .drx file."""
         tl = self._get_timeline_by_name(timeline_name)
-        return bool(tl.ApplyGradeFromDRX(drx_path, grade_mode))
+        fn = tl.ApplyGradeFromDRX  # None if unsupported (FusionScript ABI)
+        if fn is None:
+            return False
+        return bool(fn(drx_path, grade_mode))
 
     def apply_arri_cdl_lut(self, timeline_name: str) -> bool:
         """Apply ARRI CDL LUT to a timeline."""
         tl = self._get_timeline_by_name(timeline_name)
-        return bool(tl.ApplyArriCdlLut())
+        fn = tl.ApplyArriCdlLut  # None if unsupported (FusionScript ABI)
+        if fn is None:
+            return False
+        return bool(fn())
 
     def reset_all_grades(self, timeline_name: str) -> bool:
         """Reset all grades in a timeline's node graph."""
