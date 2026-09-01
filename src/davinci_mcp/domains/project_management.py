@@ -34,17 +34,17 @@ class ProjectManagementDomain:
             types.Tool(
                 name="list_projects",
                 description="List all available projects in the current database folder",  # noqa: E501
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="get_current_project",
                 description="Get the name of the currently open project",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="open_project",
                 description="Open a project by name",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {
@@ -58,7 +58,7 @@ class ProjectManagementDomain:
             types.Tool(
                 name="create_project",
                 description="Create a new project with the given name",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {
@@ -75,12 +75,12 @@ class ProjectManagementDomain:
             types.Tool(
                 name="save_project",
                 description="Save the current project",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="rename_project",
                 description="Rename the currently open project",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "new_name": {
@@ -97,7 +97,7 @@ class ProjectManagementDomain:
                     "Get attributes of all projects in the current folder "
                     "(lastModifiedDate, creationDate, notes, liveCollaborationMode)"
                 ),
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             # ----------------------------------------------------------------
             # Destructive project operations
@@ -108,7 +108,7 @@ class ProjectManagementDomain:
                     f"{_DESTRUCTIVE}Close the current project. "
                     "Unsaved changes are lost. Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "confirm": {
@@ -125,7 +125,7 @@ class ProjectManagementDomain:
                     f"{_DESTRUCTIVE}Permanently delete a project by name. "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {
@@ -146,7 +146,7 @@ class ProjectManagementDomain:
             types.Tool(
                 name="export_project",
                 description="Export a project to a .drp file",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {
@@ -168,7 +168,7 @@ class ProjectManagementDomain:
             types.Tool(
                 name="import_project",
                 description="Import a project from a .drp file",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "file_path": {
@@ -189,7 +189,7 @@ class ProjectManagementDomain:
                     f"{_DESTRUCTIVE}Archive a project to a .dra file with optional media. "  # noqa: E501
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {
@@ -233,7 +233,7 @@ class ProjectManagementDomain:
                     f"{_DESTRUCTIVE}Restore a project from a .dra archive. "
                     "Will overwrite if a project with the same name exists. Requires confirm=true."  # noqa: E501
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "file_path": {
@@ -258,17 +258,17 @@ class ProjectManagementDomain:
             types.Tool(
                 name="list_project_folders",
                 description="List project subfolders in the current folder",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="get_current_project_folder",
                 description="Get the name of the current project folder",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="create_project_folder",
                 description="Create a project subfolder in the current folder",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_name": {
@@ -285,7 +285,7 @@ class ProjectManagementDomain:
                     f"{_DESTRUCTIVE}Delete a project folder and all projects it contains. "  # noqa: E501
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_name": {
@@ -303,7 +303,7 @@ class ProjectManagementDomain:
             types.Tool(
                 name="open_project_folder",
                 description="Navigate into a project subfolder",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_name": {
@@ -317,12 +317,12 @@ class ProjectManagementDomain:
             types.Tool(
                 name="goto_root_folder",
                 description="Navigate to the root project folder",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="goto_parent_folder",
                 description="Navigate to the parent project folder",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             # ----------------------------------------------------------------
             # Database management
@@ -330,12 +330,12 @@ class ProjectManagementDomain:
             types.Tool(
                 name="list_databases",
                 description="List all available project databases",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="get_current_database",
                 description="Get info about the current project database",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="set_current_database",
@@ -343,7 +343,7 @@ class ProjectManagementDomain:
                     f"{_DESTRUCTIVE}Switch to a different project database. "
                     "Closes the current project. Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "db_info": {

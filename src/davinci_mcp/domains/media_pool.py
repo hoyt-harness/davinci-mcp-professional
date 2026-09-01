@@ -31,12 +31,12 @@ class MediaPoolDomain:
             types.Tool(
                 name="list_media_clips",
                 description="List all clips in the media pool root folder",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="import_media",
                 description="Import a media file into the current media pool folder",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "file_path": {
@@ -53,17 +53,17 @@ class MediaPoolDomain:
             types.Tool(
                 name="get_media_pool_root_folder",
                 description="Get info about the media pool root folder",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="get_current_media_pool_folder",
                 description="Get the currently selected media pool folder",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="set_current_media_pool_folder",
                 description="Set the currently selected media pool folder",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_path": {
@@ -77,7 +77,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="get_folder_clips",
                 description="List clips in a specific media pool folder",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_path": {
@@ -91,7 +91,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="get_folder_subfolders",
                 description="List subfolders of a media pool folder",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_path": {
@@ -105,12 +105,12 @@ class MediaPoolDomain:
             types.Tool(
                 name="get_selected_pool_clips",
                 description="Get the clips currently selected in the media pool. Note: MediaPool.GetSelectedClips() is undocumented in FusionScript and returns empty in Resolve 21 — treat this as best-effort.",  # noqa: E501
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="set_selected_pool_clip",
                 description="Set a clip as the selected clip in the media pool (sets the source viewer clip). Note: selection state cannot be verified via get_selected_pool_clips in Resolve 21.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {
@@ -124,7 +124,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="refresh_media_pool_folders",
                 description="Refresh media pool folders (use in collaboration mode)",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             # ----------------------------------------------------------------
             # Folder management
@@ -132,7 +132,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="create_media_pool_folder",
                 description="Create a subfolder inside an existing media pool folder",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_path": {
@@ -147,7 +147,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="delete_media_pool_folders",
                 description=f"{_DESTRUCTIVE}Delete media pool folders and all clips they contain. Requires confirm=true.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_paths": {
@@ -170,7 +170,7 @@ class MediaPoolDomain:
                     "Re-list clips after this call — clip_id references remain valid but folder context changes. "  # noqa: E501
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_ids": {
@@ -190,7 +190,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="move_folders",
                 description="Move media pool folders to a different parent folder",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_paths": {
@@ -212,7 +212,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="delete_media_pool_clips",
                 description=f"{_DESTRUCTIVE}Permanently delete clips from the media pool. Requires confirm=true.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_ids": {
@@ -231,7 +231,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="append_clips_to_timeline",
                 description="Append media pool clips to the current timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_ids": {
@@ -246,7 +246,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="create_timeline_from_clips",
                 description="Create a new timeline from a list of media pool clips. Timeline is placed in the current media pool folder (use set_current_media_pool_folder to control placement).",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string", "description": "New timeline name"},
@@ -262,7 +262,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="import_timeline_from_file",
                 description="Import a timeline from an EDL, AAF, XML, FCPXML, DRT, ADL, or OTIO file",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "file_path": {
@@ -280,7 +280,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="export_clip_metadata",
                 description="Export clip metadata to a CSV file. Pass empty clip_ids list to export all clips.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "file_name": {
@@ -299,7 +299,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="relink_clips",
                 description="Relink offline clips to a new media folder",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_ids": {
@@ -318,7 +318,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="unlink_clips",
                 description=f"{_DESTRUCTIVE}Unlink clips from their source media files. Requires confirm=true.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_ids": {
@@ -334,7 +334,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="auto_sync_audio",
                 description="Auto-sync audio clips to video clips by waveform or timecode",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_ids": {
@@ -355,7 +355,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="import_folder_from_file",
                 description="Import a folder from a .drb bin file",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "file_path": {
@@ -376,7 +376,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="get_clip_matte_list",
                 description="Get the list of matte file paths attached to a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -390,7 +390,7 @@ class MediaPoolDomain:
                     f"{_DESTRUCTIVE}Add matte files to a clip. "
                     "Modifies the clip's matte list permanently. Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -412,7 +412,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="delete_clip_mattes",
                 description=f"{_DESTRUCTIVE}Remove matte files from a clip. Requires confirm=true.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -429,7 +429,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="add_timeline_mattes",
                 description="Add timeline matte files to the media pool",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "file_paths": {
@@ -447,7 +447,7 @@ class MediaPoolDomain:
             types.Tool(
                 name="create_stereo_clip",
                 description="Create a stereo clip from two existing clips (DaVinci Resolve Studio only)",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "left_clip_id": {

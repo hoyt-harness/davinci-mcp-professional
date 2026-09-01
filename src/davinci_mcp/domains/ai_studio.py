@@ -53,7 +53,7 @@ class AIStudioDomain:
             types.Tool(
                 name="create_magic_mask",
                 description=f"{_STUDIO}Create a magic mask on a timeline item. mode: F/B/BI.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_ITEM_REF,
@@ -68,7 +68,7 @@ class AIStudioDomain:
             types.Tool(
                 name="regenerate_magic_mask",
                 description=f"{_STUDIO}Regenerate the magic mask on a timeline item.",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": _ITEM_REF,
                     "required": ["timeline_name", "item_ref"],
@@ -77,7 +77,7 @@ class AIStudioDomain:
             types.Tool(
                 name="stabilize_clip",
                 description=f"{_STUDIO}Stabilize a timeline item.",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": _ITEM_REF,
                     "required": ["timeline_name", "item_ref"],
@@ -86,7 +86,7 @@ class AIStudioDomain:
             types.Tool(
                 name="smart_reframe_clip",
                 description=f"{_STUDIO}Apply Smart Reframe to a timeline item.",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": _ITEM_REF,
                     "required": ["timeline_name", "item_ref"],
@@ -102,7 +102,7 @@ class AIStudioDomain:
                     "settings keys: presetName, audioTrackRange, exportHearingImpaired, "  # noqa: E501
                     "maxLines, maxCharsPerLine, autoClipBoundaries, targetLanguage."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "timeline_name": {
@@ -120,7 +120,7 @@ class AIStudioDomain:
             types.Tool(
                 name="detect_scene_cuts",
                 description=f"{_STUDIO}Detect scene cuts in a timeline.",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "timeline_name": {
@@ -137,7 +137,7 @@ class AIStudioDomain:
             types.Tool(
                 name="transcribe_clip_audio",
                 description=f"{_EXTRAS}Transcribe audio for a media pool clip.",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -155,7 +155,7 @@ class AIStudioDomain:
                     f"{_DESTRUCTIVE}{_STUDIO}Clear the transcription for a clip. "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -167,7 +167,7 @@ class AIStudioDomain:
             types.Tool(
                 name="classify_clip_audio",
                 description=f"{_EXTRAS}Classify audio content for a media pool clip.",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -181,7 +181,7 @@ class AIStudioDomain:
                     f"{_DESTRUCTIVE}{_STUDIO}Clear audio classification for a clip. "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -196,7 +196,7 @@ class AIStudioDomain:
             types.Tool(
                 name="transcribe_folder_audio",
                 description=f"{_EXTRAS}Transcribe audio for all clips in a media pool folder.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_path": {"type": "string", "description": "Folder path"},
@@ -214,7 +214,7 @@ class AIStudioDomain:
                     f"{_EXTRAS}Analyze clips in a folder for IntelliSearch. "
                     "Requires AI Extras download."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_path": {"type": "string", "description": "Folder path"},
@@ -236,7 +236,7 @@ class AIStudioDomain:
                     f"{_EXTRAS}Analyze clips in a folder for Slate ID. "
                     "Requires AI Slate ID Extras download."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_path": {"type": "string", "description": "Folder path"},
@@ -257,7 +257,7 @@ class AIStudioDomain:
                     f"{_STUDIO}Remove motion blur from a clip. "
                     "Returns new MediaPoolItem info."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -278,7 +278,7 @@ class AIStudioDomain:
                     f"{_STUDIO}Set voice isolation state for an audio track. "
                     "state keys: VoiceIsolationState, amount (0-100)."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "timeline_name": {
@@ -303,7 +303,7 @@ class AIStudioDomain:
                     f"{_STUDIO}Set voice isolation state for a timeline item. "
                     "state keys: VoiceIsolationState, amount (0-100)."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_ITEM_REF,
@@ -325,7 +325,7 @@ class AIStudioDomain:
                     "settings keys: text, voiceType, language, pitch, speed, etc. "
                     "Requires AI Speech Generator Extras."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "settings": {
@@ -349,7 +349,7 @@ class AIStudioDomain:
                     f"{_DESTRUCTIVE}{_STUDIO}Reset IntelliSearch analysis for the current "  # noqa: E501
                     "project. Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "confirm": {"type": "boolean", "description": "Must be true."},

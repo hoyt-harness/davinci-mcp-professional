@@ -31,7 +31,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="get_clip_name",
                 description="Get the name of a media pool clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -42,7 +42,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="set_clip_name",
                 description="Set the name of a media pool clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -66,7 +66,7 @@ class ClipPropertiesDomain:
                     "S3D Sync, Scene, Sharpness, Shot, Slate TC, Start, Start TC, "
                     "Super Scale, Take, V-FLIP, Video Codec, Camera Type."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -81,7 +81,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="set_clip_property",
                 description="Set a single clip property by key",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -99,7 +99,7 @@ class ClipPropertiesDomain:
                 description=(
                     "Get clip metadata. Returns all metadata when metadata_type is omitted."  # noqa: E501
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -114,7 +114,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="set_clip_metadata",
                 description="Set a clip metadata field",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -127,7 +127,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="get_clip_third_party_metadata",
                 description="Get third-party metadata from a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -138,7 +138,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="set_clip_third_party_metadata",
                 description="Set a third-party metadata field on a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -154,7 +154,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="get_clip_color",
                 description="Get the color label of a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -165,7 +165,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="set_clip_color",
                 description="Set the color label of a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -177,7 +177,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="clear_clip_color",
                 description="Clear the color label of a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -191,7 +191,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="add_clip_flag",
                 description="Add a color flag to a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -203,7 +203,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="get_clip_flags",
                 description="Get the list of color flags on a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -214,7 +214,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="clear_clip_flags",
                 description='Clear clip flags by color. Use "All" to clear all.',
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -229,7 +229,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="add_clip_marker",
                 description="Add a marker to a clip at a specific source frame",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -257,7 +257,7 @@ class ClipPropertiesDomain:
                     "Get all markers on a clip as "
                     "{frameId: {color, duration, note, name, customData}}"
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -271,7 +271,7 @@ class ClipPropertiesDomain:
                     f"{_DESTRUCTIVE}Delete clip markers by color. "
                     'Use "All" to delete all. Requires confirm=true.'
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -287,7 +287,7 @@ class ClipPropertiesDomain:
                     f"{_DESTRUCTIVE}Delete the clip marker at a specific frame. "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -306,7 +306,7 @@ class ClipPropertiesDomain:
                     "Get the audio channel mapping for a clip as a JSON string: "
                     "embedded channels, linked audio, and track mapping."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -317,7 +317,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="get_clip_mark_in_out",
                 description="Get the in/out marks set on a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -328,7 +328,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="set_clip_mark_in_out",
                 description="Set in/out marks on a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -345,7 +345,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="clear_clip_mark_in_out",
                 description="Clear in/out marks from a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -363,7 +363,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="link_proxy_media",
                 description="Link a proxy media file to a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -375,7 +375,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="unlink_proxy_media",
                 description="Unlink the proxy media from a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -386,7 +386,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="link_full_resolution_media",
                 description="Link a full-resolution media file to a clip",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -401,7 +401,7 @@ class ClipPropertiesDomain:
                     f"{_DESTRUCTIVE}Replace the underlying asset of a clip. "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -417,7 +417,7 @@ class ClipPropertiesDomain:
                     f"{_DESTRUCTIVE}Replace a clip's asset, preserving subclip marks. "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -433,7 +433,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="get_clip_unique_id",
                 description="Get the UUID of a clip (stable identifier for subsequent calls)",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},
@@ -444,7 +444,7 @@ class ClipPropertiesDomain:
             types.Tool(
                 name="get_clip_timeline",
                 description="Get the timeline associated with a clip (if it is a timeline clip)",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "clip_id": {"type": "string", "description": "Clip UUID"},

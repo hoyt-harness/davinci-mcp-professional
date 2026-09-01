@@ -58,7 +58,7 @@ class TimelineItemEditingDomain:
             return types.Tool(
                 name=name,
                 description=desc,
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": props,
                     "required": _req + (req_extra or []),
@@ -176,7 +176,7 @@ class TimelineItemEditingDomain:
             types.Tool(
                 name="add_item_marker",
                 description="Add a marker to a timeline item at a source frame",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -208,7 +208,7 @@ class TimelineItemEditingDomain:
                     f"{_DESTRUCTIVE}Delete item markers by color. "
                     'Use "All" to delete all. Requires confirm=true.'
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -224,7 +224,7 @@ class TimelineItemEditingDomain:
                     f"{_DESTRUCTIVE}Delete item marker at a specific frame. "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -240,7 +240,7 @@ class TimelineItemEditingDomain:
             types.Tool(
                 name="add_take",
                 description="Add a media pool clip as a take to a timeline item",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -282,7 +282,7 @@ class TimelineItemEditingDomain:
                 description=(
                     f"{_DESTRUCTIVE}Delete a take by 1-based index. Requires confirm=true."  # noqa: E501
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -314,7 +314,7 @@ class TimelineItemEditingDomain:
             types.Tool(
                 name="add_color_version",
                 description="Add a new color version to a timeline item",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -333,7 +333,7 @@ class TimelineItemEditingDomain:
             types.Tool(
                 name="load_color_version",
                 description="Load a color version by name",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -354,7 +354,7 @@ class TimelineItemEditingDomain:
                 description=(
                     f"{_DESTRUCTIVE}Delete a color version by name. Requires confirm=true."  # noqa: E501
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -374,7 +374,7 @@ class TimelineItemEditingDomain:
             types.Tool(
                 name="rename_color_version",
                 description="Rename a color version",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -410,7 +410,7 @@ class TimelineItemEditingDomain:
             types.Tool(
                 name="export_fusion_comp",
                 description="Export a Fusion composition to a file",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -428,7 +428,7 @@ class TimelineItemEditingDomain:
                 description=(
                     f"{_DESTRUCTIVE}Delete a Fusion comp by name. Requires confirm=true."  # noqa: E501
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -441,7 +441,7 @@ class TimelineItemEditingDomain:
             types.Tool(
                 name="rename_fusion_comp",
                 description="Rename a Fusion composition on a timeline item",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -463,7 +463,7 @@ class TimelineItemEditingDomain:
             types.Tool(
                 name="set_item_node_lut",
                 description="Assign a LUT file to a specific node on a timeline item",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -482,7 +482,7 @@ class TimelineItemEditingDomain:
             types.Tool(
                 name="copy_grades",
                 description="Copy grades from one timeline item to others",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -501,7 +501,7 @@ class TimelineItemEditingDomain:
                     "Set CDL values on a timeline item. "
                     "cdl_map keys: NodeIndex, Slope, Offset, Power, Saturation."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,
@@ -521,7 +521,7 @@ class TimelineItemEditingDomain:
                     "export_type: 0=17pt cube, 1=33pt cube, 2=65pt cube, "
                     "3=Panasonic VLUT."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl_props,

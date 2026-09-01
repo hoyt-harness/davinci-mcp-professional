@@ -40,7 +40,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_graph_node_count",
                 description="Get the number of nodes in the current timeline's node graph",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": _tl,
                     "required": _req_tl,
@@ -49,7 +49,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_graph_node_label",
                 description="Get the label of a node in the timeline's node graph",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {**_tl, **_ni},
                     "required": _req_tl + ["node_index"],
@@ -58,7 +58,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_graph_node_tools",
                 description="Get the list of tool names active in a graph node",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {**_tl, **_ni},
                     "required": _req_tl + ["node_index"],
@@ -67,7 +67,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_graph_node_lut",
                 description="Get the LUT path assigned to a graph node",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {**_tl, **_ni},
                     "required": _req_tl + ["node_index"],
@@ -76,7 +76,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="set_graph_node_lut",
                 description="Assign a LUT file to a graph node",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl,
@@ -89,7 +89,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_graph_node_cache_mode",
                 description="Get the cache mode of a graph node",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {**_tl, **_ni},
                     "required": _req_tl + ["node_index"],
@@ -98,7 +98,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="set_graph_node_enabled",
                 description="Enable or disable a node in the timeline's node graph",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl,
@@ -111,7 +111,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="set_graph_node_cache_mode",
                 description="Set the cache mode of a graph node",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl,
@@ -131,7 +131,7 @@ class ColorGradingDomain:
                     "grade_mode: 0=no keyframes, 1=source TC, 2=start. "
                     "Returns False if Timeline.ApplyGradeFromDRX() is unavailable in this Resolve version (API limitation, Resolve 21)."  # noqa: E501
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl,
@@ -150,7 +150,7 @@ class ColorGradingDomain:
                     "Apply ARRI CDL LUT to the timeline's node graph. "
                     "Returns False if Timeline.ApplyArriCdlLut() is unavailable in this Resolve version (API limitation, Resolve 21)."  # noqa: E501
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": _tl,
                     "required": _req_tl,
@@ -162,7 +162,7 @@ class ColorGradingDomain:
                     f"{_DESTRUCTIVE}Reset all grades in the timeline's node graph. "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl,
@@ -177,27 +177,27 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_gallery_albums",
                 description="Get the list of gallery still album names",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="get_gallery_powergrade_albums",
                 description="Get the list of gallery PowerGrade album names",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="get_current_still_album",
                 description="Get the name of the currently active still album",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="create_still_album",
                 description="Create a new gallery still album",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="create_powergrade_album",
                 description="Create a new gallery PowerGrade album",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             # ----------------------------------------------------------------
             # Gallery stills — grab / list
@@ -205,7 +205,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="grab_still",
                 description="Grab a still from the current clip on the Color page",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": _tl,
                     "required": _req_tl,
@@ -217,7 +217,7 @@ class ColorGradingDomain:
                     "Grab stills from all clips in the timeline. "
                     "still_frame_source: 1=first frame, 2=middle frame."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_tl,
@@ -235,7 +235,7 @@ class ColorGradingDomain:
                     "Get stills in an album as [{still_index, label}]. "
                     "Use still_index to reference a still in subsequent calls."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": _alb,
                     "required": _req_alb,
@@ -247,7 +247,7 @@ class ColorGradingDomain:
                     "Export stills from an album to a folder. "
                     "format: dpx, cin, tif, jpg, png, ppm, bmp, xpm, drx, srgb."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_alb,
@@ -273,7 +273,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="import_stills",
                 description="Import still files into a gallery album",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_alb,
@@ -292,7 +292,7 @@ class ColorGradingDomain:
                     f"{_DESTRUCTIVE}Delete stills from an album by index. "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_alb,
@@ -309,7 +309,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_still_label",
                 description="Get the label of a still by index within an album",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {**_alb, **_si},
                     "required": _req_alb + ["still_index"],
@@ -318,7 +318,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="set_still_label",
                 description="Set the label of a still by index within an album",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         **_alb,
@@ -334,12 +334,12 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_color_groups",
                 description="Get the list of color group names in the current project",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="create_color_group",
                 description="Create a new color group in the current project",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "group_name": {"type": "string", "description": "Group name"},
@@ -353,7 +353,7 @@ class ColorGradingDomain:
                     f"{_DESTRUCTIVE}Delete a color group (clips become ungrouped). "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "group_name": {"type": "string", "description": "Group name"},
@@ -365,7 +365,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="rename_color_group",
                 description="Rename a color group",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "group_name": {"type": "string", "description": "Current name"},
@@ -377,7 +377,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_clips_in_color_group",
                 description="Get the timeline items assigned to a color group",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "group_name": {"type": "string", "description": "Group name"},
@@ -389,7 +389,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_color_group_pre_graph",
                 description="Get node-count info for a color group's pre-clip node graph",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "group_name": {"type": "string", "description": "Group name"},
@@ -400,7 +400,7 @@ class ColorGradingDomain:
             types.Tool(
                 name="get_color_group_post_graph",
                 description="Get node-count info for a color group's post-clip node graph",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "group_name": {"type": "string", "description": "Group name"},
@@ -414,12 +414,12 @@ class ColorGradingDomain:
             types.Tool(
                 name="refresh_lut_list",
                 description="Refresh the LUT list from disk",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="export_current_frame_as_still",
                 description="Export the current frame as a still image file",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "file_path": {"type": "string", "description": "Output path"},

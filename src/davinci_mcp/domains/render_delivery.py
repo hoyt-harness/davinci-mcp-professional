@@ -31,12 +31,12 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="get_render_formats",
                 description="Get available render formats as {format: file_extension}",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="get_render_codecs",
                 description="Get codecs for a render format as {description: codec}",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "render_format": {"type": "string", "description": "Format"},
@@ -47,7 +47,7 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="get_render_resolutions",
                 description="Get available resolutions for a format and codec",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "render_format": {"type": "string", "description": "Format"},
@@ -59,12 +59,12 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="get_current_render_format",
                 description="Get the currently selected render format and codec",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="set_render_format_and_codec",
                 description="Set the current render format and codec",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "render_format": {"type": "string", "description": "Format"},
@@ -76,12 +76,12 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="get_render_mode",
                 description="Get render mode (0=individual clips, 1=single clip)",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="set_render_mode",
                 description="Set render mode (0=individual clips, 1=single clip)",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "render_mode": {
@@ -103,7 +103,7 @@ class RenderDeliveryDomain:
                     "FormatWidth, FormatHeight, FrameRate, VideoQuality, AudioCodec, "
                     "AudioBitDepth, AudioSampleRate, ExportAlpha, BurnInPreset."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "settings": {
@@ -120,12 +120,12 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="get_render_preset_list",
                 description="Get the list of available render preset names",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="load_render_preset",
                 description="Load a render preset by name",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "preset_name": {"type": "string", "description": "Preset name"},
@@ -136,7 +136,7 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="save_render_preset",
                 description="Save current render settings as a new named preset",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "preset_name": {"type": "string", "description": "New name"},
@@ -150,7 +150,7 @@ class RenderDeliveryDomain:
                     f"{_DESTRUCTIVE}Permanently delete a render preset. "
                     "Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "preset_name": {"type": "string", "description": "Preset"},
@@ -165,7 +165,7 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="get_quick_export_presets",
                 description="Get available Quick Export preset names",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="render_with_quick_export",
@@ -173,7 +173,7 @@ class RenderDeliveryDomain:
                     "Render via a Quick Export preset (supports direct upload to "
                     "YouTube/Vimeo/etc.). params keys vary by preset."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "preset_name": {"type": "string", "description": "Preset name"},
@@ -194,14 +194,14 @@ class RenderDeliveryDomain:
                     "Add the current timeline/settings as a render job. "
                     "Returns the job ID."
                 ),
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="delete_render_job",
                 description=(
                     f"{_DESTRUCTIVE}Delete a render job by ID. Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "job_id": {"type": "string", "description": "Job ID to delete"},
@@ -215,7 +215,7 @@ class RenderDeliveryDomain:
                 description=(
                     f"{_DESTRUCTIVE}Delete all render jobs. Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "confirm": {"type": "boolean", "description": "Must be true."},
@@ -226,12 +226,12 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="get_render_job_list",
                 description="Get the list of all render jobs and their settings",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="get_render_job_status",
                 description="Get the status and completion percentage of a render job",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "job_id": {"type": "string", "description": "Job ID to query"},
@@ -244,7 +244,7 @@ class RenderDeliveryDomain:
                 description=(
                     "Start rendering one or more jobs. Pass [] for job_ids to render all."  # noqa: E501
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "job_ids": {
@@ -263,12 +263,12 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="stop_rendering",
                 description="Stop the current render operation",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="is_rendering_in_progress",
                 description="Check whether a render is currently in progress",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             # ----------------------------------------------------------------
             # Project settings
@@ -280,7 +280,7 @@ class RenderDeliveryDomain:
                     "Common keys: timelineFrameRate, timelineResolutionWidth, "
                     "timelineResolutionHeight, colorScienceMode, videoMonitorFormat."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "setting_name": {
@@ -294,7 +294,7 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="set_project_setting",
                 description="Set a project setting value",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "setting_name": {"type": "string", "description": "Key"},
@@ -309,12 +309,12 @@ class RenderDeliveryDomain:
             types.Tool(
                 name="get_burn_in_preset_list",
                 description="Get the list of available burn-in preset names",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="load_project_burn_in_preset",
                 description="Load a burn-in preset for the current project",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "preset_name": {"type": "string", "description": "Preset name"},

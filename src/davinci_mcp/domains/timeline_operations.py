@@ -65,17 +65,17 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="list_timelines",
                 description="List all timelines in the current project",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="get_current_timeline",
                 description="Get the name of the currently active timeline",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="create_timeline",
                 description="Create a new empty timeline with the given name",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string", "description": "New timeline name"},
@@ -86,7 +86,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="switch_timeline",
                 description="Switch the current timeline by name",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {
@@ -103,7 +103,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="rename_timeline",
                 description="Rename an existing timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {
@@ -118,7 +118,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="delete_timeline",
                 description=f"{_DESTRUCTIVE}Permanently delete a timeline. Requires confirm=true.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {
@@ -133,7 +133,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="duplicate_timeline",
                 description="Duplicate a timeline with a new name",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {
@@ -154,7 +154,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_timeline_settings",
                 description="Get one or all settings of a timeline. Omit setting_name to get all.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string", "description": "Timeline name"},
@@ -169,7 +169,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="set_timeline_setting",
                 description="Set a timeline setting value. Note: Timeline.SetSetting() has very limited write support in Resolve 21 — most settings are effectively read-only via the API and will return 'Update failed'.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string", "description": "Timeline name"},
@@ -185,7 +185,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_start_timecode",
                 description="Get the start timecode of a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -194,7 +194,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="set_start_timecode",
                 description="Set the start timecode of a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -209,7 +209,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_current_timecode",
                 description="Get the current playhead timecode of a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -221,7 +221,7 @@ class TimelineOperationsDomain:
                     "Move the playhead to a timecode position. "
                     "Only works on the currently active timeline — call switch_timeline first if needed."  # noqa: E501
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -236,7 +236,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_timeline_start_frame",
                 description="Get the start frame number of a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -245,7 +245,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_timeline_end_frame",
                 description="Get the end frame number of a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -257,7 +257,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_timeline_marks",
                 description="Get the in/out marks of a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -266,7 +266,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="set_timeline_marks",
                 description="Set in/out marks on a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -289,7 +289,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="clear_timeline_marks",
                 description="Clear in/out marks from a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -307,7 +307,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_track_count",
                 description="Get the number of tracks of a given type in a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -319,7 +319,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="add_track",
                 description="Add a new track to a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -335,7 +335,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="delete_track",
                 description=f"{_DESTRUCTIVE}Delete a track and all its contents. Requires confirm=true.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -352,7 +352,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_track_name",
                 description="Get the name of a timeline track",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -368,7 +368,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="set_track_name",
                 description="Set the name of a timeline track",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -385,7 +385,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_track_subtype",
                 description="Get the audio format subtype of an audio track",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -398,7 +398,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="enable_track",
                 description="Enable or disable a timeline track",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -412,7 +412,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_track_enabled",
                 description="Get whether a timeline track is enabled",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -425,7 +425,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="lock_track",
                 description="Lock or unlock a timeline track",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -439,7 +439,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_track_locked",
                 description="Get whether a timeline track is locked",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -458,7 +458,7 @@ class TimelineOperationsDomain:
                     f"List all items in a timeline track with their coordinates. "
                     f"{_COORDS_WARNING}"
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -475,7 +475,7 @@ class TimelineOperationsDomain:
                     "Returns name and position only. For coordinate-based operations, "
                     "use get_items_in_track to obtain item references."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -484,7 +484,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_current_video_item",
                 description="Get the current video item under the playhead",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -493,7 +493,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_current_clip_thumbnail",
                 description="Get the current clip thumbnail image data from the Color page",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -502,7 +502,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_timeline_media_pool_item",
                 description="Get the media pool item associated with a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -515,7 +515,7 @@ class TimelineOperationsDomain:
                     f"{_COORDS_WARNING} Requires confirm=true. "
                     "Note: generator clips (Solid Color, Fusion Composition) cannot be deleted via this API in Resolve 21 — only real media clips."  # noqa: E501
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -532,7 +532,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="link_clips",
                 description="Link or unlink video and audio clips in a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -548,7 +548,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="add_timeline_marker",
                 description="Add a marker to a timeline at a specific frame",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -585,7 +585,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_timeline_markers",
                 description="Get all markers on a timeline as {frameId: {color, duration, note, name, customData}}",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -597,7 +597,7 @@ class TimelineOperationsDomain:
                     f"{_DESTRUCTIVE}Delete timeline markers by color. "
                     "Use 'All' to clear all markers. Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -613,7 +613,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="delete_timeline_marker_at_frame",
                 description=f"{_DESTRUCTIVE}Delete the timeline marker at a specific frame. Requires confirm=true.",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -629,7 +629,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="export_timeline",
                 description="Export a timeline to AAF, EDL, XML, FCPXML, OTIO, DRT, ALE, HDR, or Dolby Vision",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -652,7 +652,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="import_into_timeline",
                 description="Import content into a timeline from an AAF file with remapping",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -671,7 +671,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="insert_generator",
                 description="Insert a generator clip into a timeline at the current playhead position",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -686,7 +686,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="insert_fusion_generator",
                 description="Insert a Fusion generator into a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -698,7 +698,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="insert_ofx_generator",
                 description="Insert an OFX generator into a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -710,7 +710,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="insert_title",
                 description="Insert a title clip into a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -725,7 +725,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="insert_fusion_title",
                 description="Insert a Fusion title into a timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -737,7 +737,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="insert_fusion_composition",
                 description="Insert a new Fusion composition into a timeline at the current position",  # noqa: E501
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -746,7 +746,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="get_timeline_node_graph",
                 description="Get the color node graph for a timeline (Color page)",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {"name": {"type": "string"}},
                     "required": ["name"],
@@ -758,7 +758,7 @@ class TimelineOperationsDomain:
                     f"{_DESTRUCTIVE}Create a compound clip from selected timeline items. "  # noqa: E501
                     f"{_COORDS_WARNING} Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -778,7 +778,7 @@ class TimelineOperationsDomain:
                     f"{_DESTRUCTIVE}Create a Fusion clip from selected timeline items. "
                     f"{_COORDS_WARNING} Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},
@@ -791,7 +791,7 @@ class TimelineOperationsDomain:
             types.Tool(
                 name="analyze_dolby_vision",
                 description="Run Dolby Vision analysis on timeline items",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "name": {"type": "string"},

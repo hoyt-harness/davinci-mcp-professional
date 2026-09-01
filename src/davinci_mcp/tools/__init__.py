@@ -22,7 +22,7 @@ def get_all_tools() -> list[types.Tool]:
                 f"Available domains: {', '.join(domain_names)}. "
                 "Call list_domains to see current activation status."
             ),
-            inputSchema={
+            input_schema={
                 "type": "object",
                 "properties": {
                     "domain": {
@@ -39,7 +39,7 @@ def get_all_tools() -> list[types.Tool]:
             description=(
                 "Deactivate a domain to remove its tools from the active tool list."
             ),
-            inputSchema={
+            input_schema={
                 "type": "object",
                 "properties": {
                     "domain": {
@@ -56,12 +56,12 @@ def get_all_tools() -> list[types.Tool]:
                 "List all registered domains and their activation status. "
                 "Use this to discover available domains before calling activate_domain."
             ),
-            inputSchema={"type": "object", "properties": {}, "required": []},
+            input_schema={"type": "object", "properties": {}, "required": []},
         ),
         types.Tool(
             name="get_version",
             description="Get DaVinci Resolve version information",
-            inputSchema={"type": "object", "properties": {}, "required": []},
+            input_schema={"type": "object", "properties": {}, "required": []},
         ),
         types.Tool(
             name="get_current_page",
@@ -69,12 +69,12 @@ def get_all_tools() -> list[types.Tool]:
                 "Get the current page open in DaVinci Resolve"
                 " (Edit, Color, Fusion, etc.)"
             ),
-            inputSchema={"type": "object", "properties": {}, "required": []},
+            input_schema={"type": "object", "properties": {}, "required": []},
         ),
         types.Tool(
             name="switch_page",
             description="Switch to a specific page in DaVinci Resolve",
-            inputSchema={
+            input_schema={
                 "type": "object",
                 "properties": {
                     "page": {

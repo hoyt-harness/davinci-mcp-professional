@@ -31,12 +31,12 @@ class SystemFairlightStorageDomain:
             types.Tool(
                 name="get_layout_presets",
                 description="Get the list of available UI layout preset names",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="load_layout_preset",
                 description="Load a UI layout preset by name",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "preset_name": {"type": "string", "description": "Preset name"},
@@ -47,7 +47,7 @@ class SystemFairlightStorageDomain:
             types.Tool(
                 name="save_layout_preset",
                 description="Save the current UI layout as a named preset",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "preset_name": {"type": "string", "description": "Preset name"},
@@ -60,7 +60,7 @@ class SystemFairlightStorageDomain:
                 description=(
                     f"{_DESTRUCTIVE}Delete a layout preset. Requires confirm=true."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "preset_name": {"type": "string", "description": "Preset"},
@@ -72,7 +72,7 @@ class SystemFairlightStorageDomain:
             types.Tool(
                 name="export_layout_preset",
                 description="Export a layout preset to a file",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "preset_name": {"type": "string", "description": "Preset name"},
@@ -84,7 +84,7 @@ class SystemFairlightStorageDomain:
             types.Tool(
                 name="import_layout_preset",
                 description="Import a layout preset from a file",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "file_path": {"type": "string", "description": "Source file"},
@@ -99,12 +99,12 @@ class SystemFairlightStorageDomain:
             types.Tool(
                 name="get_fairlight_presets",
                 description="Get the list of available Fairlight audio preset names",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="apply_fairlight_preset",
                 description="Apply a Fairlight preset to the current timeline",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "preset_name": {"type": "string", "description": "Preset name"},
@@ -118,12 +118,12 @@ class SystemFairlightStorageDomain:
             types.Tool(
                 name="get_keyframe_mode",
                 description="Get the current keyframe mode (0=all, 1=color, 2=sizing)",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="set_keyframe_mode",
                 description="Set keyframe mode (0=all, 1=color, 2=sizing)",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "keyframe_mode": {
@@ -143,7 +143,7 @@ class SystemFairlightStorageDomain:
                     "Insert audio from a file at the current playhead position "
                     "on the Fairlight page. Requires the Fairlight page to be active."
                 ),
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "media_path": {"type": "string", "description": "Audio path"},
@@ -165,12 +165,12 @@ class SystemFairlightStorageDomain:
             types.Tool(
                 name="get_mounted_volumes",
                 description="Get the list of mounted volumes visible to Resolve",
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
             types.Tool(
                 name="get_storage_subfolders",
                 description="List subfolders in a media storage path",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_path": {"type": "string", "description": "Folder path"},
@@ -181,7 +181,7 @@ class SystemFairlightStorageDomain:
             types.Tool(
                 name="get_storage_files",
                 description="List files in a media storage path",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "folder_path": {"type": "string", "description": "Folder path"},
@@ -192,7 +192,7 @@ class SystemFairlightStorageDomain:
             types.Tool(
                 name="add_storage_items_to_pool",
                 description="Add files or folders from media storage to the media pool",
-                inputSchema={
+                input_schema={
                     "type": "object",
                     "properties": {
                         "items": {
@@ -213,7 +213,7 @@ class SystemFairlightStorageDomain:
                     "Disable Resolve background tasks for the current session "
                     "(transcoding, proxy generation, etc.)"
                 ),
-                inputSchema={"type": "object", "properties": {}, "required": []},
+                input_schema={"type": "object", "properties": {}, "required": []},
             ),
         ]
 
