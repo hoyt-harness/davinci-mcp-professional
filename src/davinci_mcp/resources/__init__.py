@@ -3,10 +3,7 @@
 MCP resources for DaVinci Resolve integration.
 """
 
-from typing import cast
-
 import mcp.types as types
-from pydantic import AnyUrl
 
 
 def get_all_resources() -> list[types.Resource]:
@@ -14,48 +11,48 @@ def get_all_resources() -> list[types.Resource]:
     return [
         # System resources
         types.Resource(
-            uri=cast(AnyUrl, "resolve://version"),
+            uri="resolve://version",
             name="DaVinci Resolve Version",
             description="Current version of DaVinci Resolve",
-            mimeType="text/plain",
+            mime_type="text/plain",
         ),
         types.Resource(
-            uri=cast(AnyUrl, "resolve://current-page"),
+            uri="resolve://current-page",
             name="Current Page",
             description="The currently active page in DaVinci Resolve",
-            mimeType="text/plain",
+            mime_type="text/plain",
         ),
         # Project resources
         types.Resource(
-            uri=cast(AnyUrl, "resolve://projects"),
+            uri="resolve://projects",
             name="Available Projects",
             description="List of all available projects in the current database",
-            mimeType="application/json",
+            mime_type="application/json",
         ),
         types.Resource(
-            uri=cast(AnyUrl, "resolve://current-project"),
+            uri="resolve://current-project",
             name="Current Project",
             description="Name of the currently open project",
-            mimeType="text/plain",
+            mime_type="text/plain",
         ),
         # Timeline resources
         types.Resource(
-            uri=cast(AnyUrl, "resolve://timelines"),
+            uri="resolve://timelines",
             name="Available Timelines",
             description="List of all timelines in the current project",
-            mimeType="application/json",
+            mime_type="application/json",
         ),
         types.Resource(
-            uri=cast(AnyUrl, "resolve://current-timeline"),
+            uri="resolve://current-timeline",
             name="Current Timeline",
             description="Name of the current timeline",
-            mimeType="text/plain",
+            mime_type="text/plain",
         ),
         # Media resources
         types.Resource(
-            uri=cast(AnyUrl, "resolve://media-clips"),
+            uri="resolve://media-clips",
             name="Media Pool Clips",
             description="List of all clips in the media pool",
-            mimeType="application/json",
+            mime_type="application/json",
         ),
     ]
