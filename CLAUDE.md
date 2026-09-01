@@ -1,7 +1,5 @@
 # CLAUDE.md
 
-> Vault documentation: `C:\Users\hoyth\Obsidian\Positronikal\03-OPERATIONS\Engineering\davinci-mcp-professional\`
-
 This file provides guidance to Claude Code when working with this repository.
 
 ## Project Overview
@@ -66,7 +64,7 @@ where `PythonXYZ` matches the system-installed version.
 The MCP Python SDK is the upstream dependency for protocol implementation
 (installed via uv from PyPI). The MCP specification repository is at:
 
-    D:\Engineering\_reference\modelcontextprotocol
+    https://github.com/modelcontextprotocol/modelcontextprotocol
 
 Audit this project's MCP usage and dependency versions against this reference
 when making protocol-level changes.

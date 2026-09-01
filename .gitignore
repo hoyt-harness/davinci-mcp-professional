@@ -108,3 +108,4 @@ src/davinci_mcp/_version.py
 # Miscellaneous
 etc/
 launch-inspector.ps1
+.claude/CLAUDE.md
