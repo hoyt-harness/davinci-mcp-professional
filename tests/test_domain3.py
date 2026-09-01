@@ -8,7 +8,6 @@ Written before implementation (Article VIII).
 from __future__ import annotations
 
 import asyncio
-from contextlib import contextmanager
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -22,16 +21,6 @@ def _make_mock_client() -> MagicMock:
     return client
 
 
-@contextmanager
-def _mock_request_ctx():
-    from mcp.server.lowlevel.server import request_ctx
-
-    mock_session = AsyncMock()
-    token = request_ctx.set(MagicMock(session=mock_session))
-    try:
-        yield mock_session
-    finally:
-        request_ctx.reset(token)
 
 
 def _run(coro):
@@ -44,8 +33,8 @@ def _make_server_with_domain_active(
     mock_client = _make_mock_client()
     with patch("davinci_mcp.server.DaVinciResolveClient", return_value=mock_client):
         server = DaVinciMCPServer()
-    with _mock_request_ctx():
-        _run(server._activate_domain(domain_name))
+    mock_ctx = MagicMock(session=AsyncMock())
+    _run(server._activate_domain(mock_ctx, domain_name))
     return server, mock_client
 
 
@@ -213,7 +202,8 @@ class TestDomain3Dispatch:
         server, client = _make_server_with_domain_active("media_pool")
         getattr(client, method).return_value = True
 
-        result = _run(server._dispatch_tool(tool, args))
+        mock_ctx = MagicMock(session=AsyncMock())
+        result = _run(server._dispatch_tool(mock_ctx, tool, args))
 
         assert "Unknown tool" not in str(result)
         assert "activate_domain" not in str(result)
@@ -239,5 +229,6 @@ class TestDomain3DestructiveGate:
     )
     def test_destructive_rejected_without_confirm(self, tool, args_without_confirm):
         server, _ = _make_server_with_domain_active("media_pool")
-        result = _run(server._dispatch_tool(tool, args_without_confirm))
+        mock_ctx = MagicMock(session=AsyncMock())
+        result = _run(server._dispatch_tool(mock_ctx, tool, args_without_confirm))
         assert "DESTRUCTIVE" in str(result) or "confirm" in str(result).lower()

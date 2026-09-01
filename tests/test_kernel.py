@@ -12,7 +12,6 @@ Mock boundary: DaVinciResolveClient + request_ctx contextvar.
 from __future__ import annotations
 
 import asyncio
-from contextlib import contextmanager
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -42,7 +41,7 @@ def _make_mock_domain(name: str, tool_names: list[str]) -> MagicMock:
         types.Tool(
             name=t,
             description=f"Tool {t}",
-            inputSchema={"type": "object", "properties": {}, "required": []},
+            input_schema={"type": "object", "properties": {}, "required": []},
         )
         for t in tool_names
     ]
@@ -50,18 +49,6 @@ def _make_mock_domain(name: str, tool_names: list[str]) -> MagicMock:
     return domain
 
 
-@contextmanager
-def _mock_request_ctx(mock_session: AsyncMock):
-    """Inject a mock request context into the MCP contextvar."""
-    from mcp.server.lowlevel.server import request_ctx
-
-    mock_ctx = MagicMock()
-    mock_ctx.session = mock_session
-    token = request_ctx.set(mock_ctx)
-    try:
-        yield
-    finally:
-        request_ctx.reset(token)
 
 
 def _run(coro: Any) -> Any:
@@ -122,8 +109,8 @@ class TestToolListComposition:
 
         with patch.dict(DOMAIN_REGISTRY, {"test_domain": domain}):
             mock_session = AsyncMock()
-            with _mock_request_ctx(mock_session):
-                _run(server._activate_domain("test_domain"))
+            mock_ctx = MagicMock(session=mock_session)
+            _run(server._activate_domain(mock_ctx, "test_domain"))
 
             tools = _run(server._handle_list_tools())
             names = {t.name for t in tools}
@@ -137,9 +124,9 @@ class TestToolListComposition:
 
         with patch.dict(DOMAIN_REGISTRY, {"test_domain": domain}):
             mock_session = AsyncMock()
-            with _mock_request_ctx(mock_session):
-                _run(server._activate_domain("test_domain"))
-                _run(server._deactivate_domain("test_domain"))
+            mock_ctx = MagicMock(session=mock_session)
+            _run(server._activate_domain(mock_ctx, "test_domain"))
+            _run(server._deactivate_domain(mock_ctx, "test_domain"))
 
             tools = _run(server._handle_list_tools())
             names = {t.name for t in tools}
@@ -153,9 +140,9 @@ class TestToolListComposition:
 
         with patch.dict(DOMAIN_REGISTRY, {"domain_a": domain_a, "domain_b": domain_b}):
             mock_session = AsyncMock()
-            with _mock_request_ctx(mock_session):
-                _run(server._activate_domain("domain_a"))
-                _run(server._activate_domain("domain_b"))
+            mock_ctx = MagicMock(session=mock_session)
+            _run(server._activate_domain(mock_ctx, "domain_a"))
+            _run(server._activate_domain(mock_ctx, "domain_b"))
 
             tools = _run(server._handle_list_tools())
             names = [t.name for t in tools]
@@ -183,8 +170,8 @@ class TestActivationFlow:
 
         with patch.dict(DOMAIN_REGISTRY, {"pm": domain}):
             mock_session = AsyncMock()
-            with _mock_request_ctx(mock_session):
-                result = _run(server._activate_domain("pm"))
+            mock_ctx = MagicMock(session=mock_session)
+            result = _run(server._activate_domain(mock_ctx, "pm"))
 
         assert result["status"] == "activated"
         assert result["domain"] == "pm"
@@ -196,15 +183,16 @@ class TestActivationFlow:
 
         with patch.dict(DOMAIN_REGISTRY, {"pm": domain}):
             mock_session = AsyncMock()
-            with _mock_request_ctx(mock_session):
-                _run(server._activate_domain("pm"))
-                result = _run(server._activate_domain("pm"))
+            mock_ctx = MagicMock(session=mock_session)
+            _run(server._activate_domain(mock_ctx, "pm"))
+            result = _run(server._activate_domain(mock_ctx, "pm"))
 
         assert result["status"] == "already_active"
 
     def test_activate_unknown_domain_returns_error(self) -> None:
         server = self._server()
-        result = _run(server._activate_domain("no_such_domain"))
+        mock_ctx = MagicMock(session=AsyncMock())
+        result = _run(server._activate_domain(mock_ctx, "no_such_domain"))
         assert "error" in result
         assert "no_such_domain" in result["error"]
 
@@ -214,16 +202,17 @@ class TestActivationFlow:
 
         with patch.dict(DOMAIN_REGISTRY, {"pm": domain}):
             mock_session = AsyncMock()
-            with _mock_request_ctx(mock_session):
-                _run(server._activate_domain("pm"))
-                result = _run(server._deactivate_domain("pm"))
+            mock_ctx = MagicMock(session=mock_session)
+            _run(server._activate_domain(mock_ctx, "pm"))
+            result = _run(server._deactivate_domain(mock_ctx, "pm"))
 
         assert result["status"] == "deactivated"
         assert "pm" not in server._active_domains
 
     def test_deactivate_inactive_domain_returns_error(self) -> None:
         server = self._server()
-        result = _run(server._deactivate_domain("pm"))
+        mock_ctx = MagicMock(session=AsyncMock())
+        result = _run(server._deactivate_domain(mock_ctx, "pm"))
         assert "error" in result
 
 
@@ -245,8 +234,8 @@ class TestNotificationFiring:
 
         with patch.dict(DOMAIN_REGISTRY, {"pm": domain}):
             mock_session = AsyncMock()
-            with _mock_request_ctx(mock_session):
-                _run(server._activate_domain("pm"))
+            mock_ctx = MagicMock(session=mock_session)
+            _run(server._activate_domain(mock_ctx, "pm"))
 
         mock_session.send_tool_list_changed.assert_called_once()
 
@@ -256,10 +245,10 @@ class TestNotificationFiring:
 
         with patch.dict(DOMAIN_REGISTRY, {"pm": domain}):
             mock_session = AsyncMock()
-            with _mock_request_ctx(mock_session):
-                _run(server._activate_domain("pm"))
-                mock_session.reset_mock()
-                _run(server._activate_domain("pm"))
+            mock_ctx = MagicMock(session=mock_session)
+            _run(server._activate_domain(mock_ctx, "pm"))
+            mock_session.reset_mock()
+            _run(server._activate_domain(mock_ctx, "pm"))
 
         mock_session.send_tool_list_changed.assert_not_called()
 
@@ -269,10 +258,10 @@ class TestNotificationFiring:
 
         with patch.dict(DOMAIN_REGISTRY, {"pm": domain}):
             mock_session = AsyncMock()
-            with _mock_request_ctx(mock_session):
-                _run(server._activate_domain("pm"))
-                mock_session.reset_mock()
-                _run(server._deactivate_domain("pm"))
+            mock_ctx = MagicMock(session=mock_session)
+            _run(server._activate_domain(mock_ctx, "pm"))
+            mock_session.reset_mock()
+            _run(server._deactivate_domain(mock_ctx, "pm"))
 
         mock_session.send_tool_list_changed.assert_called_once()
 
@@ -291,8 +280,9 @@ class TestDispatchRouting:
 
     def test_dispatch_kernel_tool(self) -> None:
         server = self._server()
+        mock_ctx = MagicMock(session=AsyncMock())
         server.resolve_client.get_version.return_value = "18.0.0"
-        result = _run(server._dispatch_tool("get_version", {}))
+        result = _run(server._dispatch_tool(mock_ctx, "get_version", {}))
         assert result is not None
 
     def test_dispatch_active_domain_tool(self) -> None:
@@ -301,10 +291,10 @@ class TestDispatchRouting:
 
         with patch.dict(DOMAIN_REGISTRY, {"pm": domain}):
             mock_session = AsyncMock()
-            with _mock_request_ctx(mock_session):
-                _run(server._activate_domain("pm"))
+            mock_ctx = MagicMock(session=mock_session)
+            _run(server._activate_domain(mock_ctx, "pm"))
 
-            result = _run(server._dispatch_tool("list_projects", {}))
+            result = _run(server._dispatch_tool(mock_ctx, "list_projects", {}))
 
         domain.dispatch.assert_called_once_with(
             "list_projects", {}, server.resolve_client
@@ -319,14 +309,16 @@ class TestDispatchRouting:
                 return_value=_make_mock_client(),
             ):
                 server = DaVinciMCPServer()
-            result = _run(server._dispatch_tool("pm_only_tool", {}))
+            mock_ctx = MagicMock(session=AsyncMock())
+            result = _run(server._dispatch_tool(mock_ctx, "pm_only_tool", {}))
 
         assert "pm" in result
         assert "activate_domain" in result
 
     def test_dispatch_unknown_tool_returns_error(self) -> None:
         server = self._server()
-        result = _run(server._dispatch_tool("totally_unknown_tool", {}))
+        mock_ctx = MagicMock(session=AsyncMock())
+        result = _run(server._dispatch_tool(mock_ctx, "totally_unknown_tool", {}))
         assert "Unknown tool" in result or "unknown" in result.lower()
 
 

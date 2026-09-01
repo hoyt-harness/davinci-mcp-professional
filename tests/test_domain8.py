@@ -9,7 +9,6 @@ All tools require DaVinci Resolve Studio. Some require additional Extras downloa
 from __future__ import annotations
 
 import asyncio
-from contextlib import contextmanager
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -24,17 +23,6 @@ def _make_mock_client() -> MagicMock:
     return client
 
 
-@contextmanager
-def _mock_request_ctx():
-    from mcp.server.lowlevel.server import request_ctx
-
-    mock_session = AsyncMock()
-    mock_ctx = MagicMock(session=mock_session)
-    token = request_ctx.set(mock_ctx)
-    try:
-        yield mock_session
-    finally:
-        request_ctx.reset(token)
 
 
 def _run(coro):
@@ -47,8 +35,8 @@ def _make_server_with_domain_active(
     mock_client = _make_mock_client()
     with patch("davinci_mcp.server.DaVinciResolveClient", return_value=mock_client):
         server = DaVinciMCPServer()
-    with _mock_request_ctx():
-        _run(server._activate_domain(domain_name))
+    mock_ctx = MagicMock(session=AsyncMock())
+    _run(server._activate_domain(mock_ctx, domain_name))
     return server, mock_client
 
 
@@ -176,8 +164,7 @@ class TestDomain8Dispatch:
     def test_dispatches_to_client(self, tool_name, client_method, mcp_args, call_args):
         server, mock_client = _make_server_with_domain_active(_DOMAIN)
         domain = DOMAIN_REGISTRY[_DOMAIN]
-        with _mock_request_ctx():
-            _run(domain.dispatch(tool_name, mcp_args, mock_client))
+        _run(domain.dispatch(tool_name, mcp_args, mock_client))
         method = getattr(mock_client, client_method)
         method.assert_called_once()
         if call_args:
@@ -186,13 +173,11 @@ class TestDomain8Dispatch:
     def test_reset_intellisearch_with_confirm(self):
         server, mock_client = _make_server_with_domain_active(_DOMAIN)
         domain = DOMAIN_REGISTRY[_DOMAIN]
-        with _mock_request_ctx():
-            _run(domain.dispatch("reset_intellisearch", {"confirm": True}, mock_client))
+        _run(domain.dispatch("reset_intellisearch", {"confirm": True}, mock_client))
         mock_client.reset_intellisearch.assert_called_once_with()
 
     def test_reset_intellisearch_blocked_without_confirm(self):
         server, mock_client = _make_server_with_domain_active(_DOMAIN)
         domain = DOMAIN_REGISTRY[_DOMAIN]
-        with _mock_request_ctx():
-            result = _run(domain.dispatch("reset_intellisearch", {}, mock_client))
+        result = _run(domain.dispatch("reset_intellisearch", {}, mock_client))
         assert "DESTRUCTIVE" in str(result)

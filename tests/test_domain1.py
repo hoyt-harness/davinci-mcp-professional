@@ -13,7 +13,6 @@ at the end of this file's creation and pass after implementation.
 from __future__ import annotations
 
 import asyncio
-from contextlib import contextmanager
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -31,17 +30,6 @@ def _make_mock_client() -> MagicMock:
     return client
 
 
-@contextmanager
-def _mock_request_ctx():
-    from mcp.server.lowlevel.server import request_ctx
-
-    mock_session = AsyncMock()
-    mock_ctx = MagicMock(session=mock_session)
-    token = request_ctx.set(mock_ctx)
-    try:
-        yield mock_session
-    finally:
-        request_ctx.reset(token)
 
 
 def _run(coro):
@@ -55,8 +43,8 @@ def _make_server_with_domain_active(
     mock_client = _make_mock_client()
     with patch("davinci_mcp.server.DaVinciResolveClient", return_value=mock_client):
         server = DaVinciMCPServer()
-    with _mock_request_ctx():
-        _run(server._activate_domain(domain_name))
+    mock_ctx = MagicMock(session=AsyncMock())
+    _run(server._activate_domain(mock_ctx, domain_name))
     return server, mock_client
 
 
@@ -164,7 +152,8 @@ class TestDomain1Dispatch:
         server, client = _make_server_with_domain_active("project_management")
         getattr(client, method).return_value = True
 
-        result = _run(server._dispatch_tool(tool, args))
+        mock_ctx = MagicMock(session=AsyncMock())
+        result = _run(server._dispatch_tool(mock_ctx, tool, args))
 
         # Should not be an "Unknown tool" or "activate_domain" error
         assert "Unknown tool" not in str(result)
@@ -204,6 +193,7 @@ class TestDestructiveGate:
     )
     def test_destructive_rejected_without_confirm(self, tool, args_without_confirm):
         server, _ = _make_server_with_domain_active("project_management")
-        result = _run(server._dispatch_tool(tool, args_without_confirm))
+        mock_ctx = MagicMock(session=AsyncMock())
+        result = _run(server._dispatch_tool(mock_ctx, tool, args_without_confirm))
         result_str = str(result)
         assert "DESTRUCTIVE" in result_str or "confirm" in result_str.lower()
