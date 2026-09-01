@@ -1,0 +1,7 @@
+{
+  "ai": "claude",
+  "ai_skills": true,
+  "integration": "claude",
+  "script": "ps",
+  "speckit_version": "0.16.1"
+}
