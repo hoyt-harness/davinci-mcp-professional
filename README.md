@@ -83,8 +83,6 @@ integration without professional-budget infrastructure requirements.
 
 ## Installation
 
-### From source
-
 ```bash
 git clone https://github.com/hoyt-harness/davinci-mcp-professional.git
 cd davinci-mcp-professional
@@ -108,19 +106,6 @@ uv sync
 uv venv
 uv sync
 ```
-
-### Standalone Windows executable
-
-Download the pre-built Windows binaries from
-[Releases](https://github.com/hoyt-harness/davinci-mcp-professional/releases).
-No Python installation required.
-
-| Executable | Purpose |
-|---|---|
-| `davinci-mcp-server.exe` | MCP server launched by your AI client. Use this in `claude_desktop_config.json`. |
-| `davinci-mcp.exe` | Interactive CLI with a startup banner and prerequisite checks. Use this to verify connectivity before configuring a client. |
-
----
 
 ## Configuring Claude Desktop
 
@@ -150,19 +135,6 @@ Locate or create `claude_desktop_config.json`:
       "name": "DaVinci MCP Professional",
       "command": "/path/to/davinci-mcp-professional/.venv/bin/python",
       "args": ["/path/to/davinci-mcp-professional/mcp_server.py"]
-    }
-  }
-}
-```
-
-**Standalone Windows executable:**
-```json
-{
-  "mcpServers": {
-    "davinci-resolve": {
-      "name": "DaVinci MCP Professional",
-      "command": "C:\\path\\to\\davinci-mcp-server\\davinci-mcp-server.exe",
-      "args": []
     }
   }
 }

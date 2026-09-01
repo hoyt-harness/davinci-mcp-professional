@@ -180,7 +180,6 @@ template is at `claude_desktop_config_template.json`.
 davinci-mcp-professional/
 ├── mcp_server.py                   # Pure MCP stdio server entry point
 ├── main.py                         # Interactive CLI entry point
-├── build.py                        # PyInstaller build script
 ├── src/davinci_mcp/
 │   ├── __init__.py                 # Package init; version from hatch-vcs
 │   ├── cli.py                      # click CLI, prerequisite checks, banner
@@ -315,22 +314,6 @@ The pre-push hook runs `hooks/ci-check.sh` automatically on `git push`. It
 must pass before any push reaches GitHub. If a push fails locally but passes
 on GitHub, the local and remote environments differ — investigate before
 proceeding.
-
----
-
-## PyInstaller Builds
-
-```bash
-uv sync --extra build      # install PyInstaller into the venv
-uv run python build.py     # build both targets
-```
-
-Output:
-
-```
-dist/davinci-mcp-server/davinci-mcp-server.exe   # MCP server (for AI clients)
-dist/davinci-mcp/davinci-mcp.exe                 # Interactive CLI (for humans)
-```
 
 ---
 

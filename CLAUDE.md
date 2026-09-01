@@ -239,11 +239,6 @@ Root-level Markdown files follow GNU conventions:
 
 ## Distribution
 
-### PyInstaller
-
-The project supports PyInstaller for building standalone executables.
-Windows binaries are provided in GitHub releases.
-
 ### Claude Desktop / Cursor Integration
 
 Users running from source configure Claude Desktop via
