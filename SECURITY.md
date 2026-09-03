@@ -9,12 +9,18 @@
 
 ## Reporting a Vulnerability
 
-We take security vulnerabilities seriously. If you discover a security issue, please report it to us by following these steps:
+We take security vulnerabilities seriously. If you discover a security issue,
+please report it through one of these channels:
 
-1. On GitHub, navigate to the main page of the repository.
+**GitHub (preferred):**
+
+1. Navigate to the main page of the repository.
 2. Under the repository name, click the **Security** tab.
 3. Click **Report a vulnerability** to open the advisory form.
 4. Fill in the form with as much detail as possible.
+
+**Email:** admin@positronikal.tech — use this if you prefer not to use GitHub
+or if the vulnerability affects multiple Positronikal projects.
 
 We will do our best to respond to your report within 48 hours.
 

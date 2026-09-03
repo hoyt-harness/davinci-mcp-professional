@@ -11,7 +11,7 @@
   by `ruff` (88 character line length). Run `uv run ruff check src/ tests/` and
   `uv run ruff format src/ tests/` before committing.
 - Add tests for new functionality.
-- Update documentation for API changes (`USING.md`, docstrings, Doxygen).
+- Update documentation for API changes (`USING.md`, docstrings).
 - Type annotations are required on all new functions (`uv run pyright`).
 
 ## GIT AND GITHUB:
@@ -43,7 +43,7 @@ means the legal defense burden is on Positronikal to both defend the
 terms of the license and to exercise the right to distribute the
 software. Being a small developer group, our means to fight lengthy
 court battles are limited. Every effort is made, therefore, to prevent
-such an occurrence at all. Send an email to hoyt.harness@gmail.com to
+such an occurrence at all. Send an email to admin@positronikal.tech to
 request a disclaimer form.
 
 ## READ ALSO:
