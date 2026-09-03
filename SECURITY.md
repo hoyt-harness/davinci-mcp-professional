@@ -19,7 +19,7 @@ please report it through one of these channels:
 3. Click **Report a vulnerability** to open the advisory form.
 4. Fill in the form with as much detail as possible.
 
-**Email:** admin@positronikal.tech — use this if you prefer not to use GitHub
+**Email:** hoyt.harness@gmail.com — use this if you prefer not to use GitHub
 or if the vulnerability affects multiple Positronikal projects.
 
 We will do our best to respond to your report within 48 hours.
