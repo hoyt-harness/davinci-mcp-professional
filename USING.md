@@ -218,10 +218,8 @@ davinci-mcp-professional/
 │   └── test_domain9.py             # Domain 9 (system/Fairlight/storage) parametrized dispatch
 ├── specs/
 │   └── 001-kernel-activation/      # Spec and plan for the kernel architecture
-├── doxygen/                        # Doxygen-generated HTML (not tracked in git)
 ├── pyproject.toml
-├── uv.lock
-└── Doxyfile
+└── uv.lock
 ```
 
 ---
@@ -314,19 +312,6 @@ The pre-push hook runs `hooks/ci-check.sh` automatically on `git push`. It
 must pass before any push reaches GitHub. If a push fails locally but passes
 on GitHub, the local and remote environments differ — investigate before
 proceeding.
-
----
-
-## API Documentation
-
-Doxygen-generated API documentation is written to `doxygen/html/` (not tracked
-in git):
-
-```bash
-doxygen Doxyfile                          # regenerate
-start doxygen/html/index.html             # Windows
-open doxygen/html/index.html              # macOS
-```
 
 ---
 
