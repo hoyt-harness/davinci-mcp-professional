@@ -103,6 +103,40 @@ class TestToolListComposition:
         }
         assert names == kernel, f"Expected kernel only, got: {names}"
 
+    def test_env_var_preactivates_domains(self) -> None:
+        domain = _make_mock_domain("test_domain", ["tool_x", "tool_y"])
+        with patch.dict(DOMAIN_REGISTRY, {"test_domain": domain}):
+            with patch(
+                "davinci_mcp.server.DaVinciResolveClient",
+                return_value=_make_mock_client(),
+            ):
+                with patch.dict("os.environ", {"DAVINCI_MCP_DOMAINS": "test_domain"}):
+                    server = DaVinciMCPServer()
+        tools = _run(server._handle_list_tools())
+        names = {t.name for t in tools}
+        assert "tool_x" in names, "Pre-activated domain tool missing from initial list"
+        assert "tool_y" in names, "Pre-activated domain tool missing from initial list"
+        assert "activate_domain" in names, "Kernel tools must still be present"
+
+    def test_env_var_unknown_domain_is_skipped(self) -> None:
+        with patch(
+            "davinci_mcp.server.DaVinciResolveClient",
+            return_value=_make_mock_client(),
+        ):
+            with patch.dict("os.environ", {"DAVINCI_MCP_DOMAINS": "no_such_domain"}):
+                server = DaVinciMCPServer()  # must not raise
+        tools = _run(server._handle_list_tools())
+        names = {t.name for t in tools}
+        kernel = {
+            "activate_domain",
+            "deactivate_domain",
+            "list_domains",
+            "get_version",
+            "get_current_page",
+            "switch_page",
+        }
+        assert names == kernel, "Unknown domain should be silently skipped"
+
     def test_tool_list_after_activation_adds_domain_tools(self) -> None:
         server = self._server_with_mock_client()
         domain = _make_mock_domain("test_domain", ["tool_a", "tool_b"])

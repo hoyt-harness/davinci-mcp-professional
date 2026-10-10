@@ -7,6 +7,7 @@ for DaVinci Resolve integration.
 """
 
 import logging
+import os
 from typing import Any
 
 import mcp.server.stdio
@@ -60,6 +61,22 @@ class DaVinciMCPServer:
         self._active_domains: dict[str, DomainModule] = {}
         self._tool_to_domain: dict[str, str] = {}
         self._inactive_tool_to_domain: dict[str, str] = {}
+
+        # Pre-activate domains listed in DAVINCI_MCP_DOMAINS (comma-separated).
+        # Workaround: MCP clients that don't act on mid-session
+        # notifications/tools/list_changed will only see kernel tools unless
+        # domains are activated before the first tools/list response.
+        for name in (
+            d.strip()
+            for d in os.environ.get("DAVINCI_MCP_DOMAINS", "").split(",")
+            if d.strip()
+        ):
+            if name in DOMAIN_REGISTRY:
+                self._active_domains[name] = DOMAIN_REGISTRY[name]
+                logger.info("Pre-activated domain (env): %s", name)
+            else:
+                logger.warning("DAVINCI_MCP_DOMAINS: unknown domain '%s' — skipped", name)
+
         self._rebuild_routing_tables()
 
         async def handle_list_tools(
