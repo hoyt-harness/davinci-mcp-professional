@@ -75,7 +75,9 @@ class DaVinciMCPServer:
                 self._active_domains[name] = DOMAIN_REGISTRY[name]
                 logger.info("Pre-activated domain (env): %s", name)
             else:
-                logger.warning("DAVINCI_MCP_DOMAINS: unknown domain '%s' — skipped", name)
+                logger.warning(
+                    "DAVINCI_MCP_DOMAINS: unknown domain '%s' — skipped", name
+                )
 
         self._rebuild_routing_tables()
 
