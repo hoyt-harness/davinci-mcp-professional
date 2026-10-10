@@ -319,15 +319,25 @@ proceeding.
 
 **"Python runtime conflict" error**
 
-The venv was created from a uv-managed Python, not the system Python. On
-Windows, DaVinci Resolve requires the venv and the system Python DLL to match.
-Rebuild the venv:
+The venv uses a different Python than the one DaVinci Resolve loaded. This
+happens in two situations:
+
+- *Initial setup:* the venv was created from a uv-managed Python, not the
+  system Python.
+- *After a Resolve upgrade:* Resolve updated to a newer Python version
+  (e.g. 3.13 → 3.14), so the previously correct venv now mismatches.
+
+In both cases, stop the running MCP server process (or kill it via Task
+Manager / `/mcp` reconnect in Claude Code), then rebuild the venv from the
+Python version Resolve currently uses:
 
 ```bash
-py -0p   # find your system Python path
+py -0p   # find your system Python path and version
 uv venv --clear --python "C:\Program Files\Python314\python.exe"
 uv sync
 ```
+
+Then reconnect the MCP client (`/mcp` in Claude Code, or restart your client).
 
 **DaVinci Resolve not found / not running**
 
