@@ -1,0 +1,8 @@
+# uv project configuration — Python projects only.
+# Delete this file if the project is not a Python project.
+# https://docs.astral.sh/uv/reference/settings/
+
+# Supply chain soak window: exclude packages published within the last 7 days.
+# Tier 1 override (critical security patch):
+#   uv lock --upgrade-package <pkg> --exclude-newer "1 hour"
+exclude-newer = "7 days"
