@@ -5,6 +5,4 @@
 # Supply chain soak window: exclude packages published within the last 7 days.
 # Tier 1 override (critical security patch):
 #   uv lock --upgrade-package <pkg> --exclude-newer "1 hour"
-# SUSPENDED 2026-10-26 — certifi emSign CA fix (2026.10.23) is within the window.
-# Reinstate after 2026-10-30.
-# exclude-newer = "7 days"
+exclude-newer = "7 days"
