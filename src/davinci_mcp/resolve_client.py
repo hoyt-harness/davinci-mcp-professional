@@ -489,7 +489,8 @@ class DaVinciResolveClient:
             track_items = timeline.GetItemListInTrack(track_type, track_index) or []
             if item_index < 1 or item_index > len(track_items):
                 raise ValueError(
-                    f"item_index {item_index} out of range for {track_type} track {track_index}"  # noqa: E501
+                    f"item_index {item_index} out of range "
+                    f"for {track_type} track {track_index}"
                 )
             items.append(track_items[item_index - 1])
         return items
@@ -1097,7 +1098,8 @@ class DaVinciResolveClient:
     ) -> bool:
         """Add matte files to a clip."""
         self._ensure_project()
-        media_storage = self._resolve.GetMediaStorage() if self._resolve else None  # type: ignore[union-attr]
+        resolve = self._resolve
+        media_storage = resolve.GetMediaStorage() if resolve else None
         if not media_storage:
             raise DaVinciResolveError("Failed to get MediaStorage")
         clip = self._get_clip_by_id(clip_id)
@@ -1113,7 +1115,8 @@ class DaVinciResolveClient:
 
     def add_timeline_mattes(self, file_paths: list[str]) -> bool:
         """Add timeline matte files to the media pool."""
-        media_storage = self._resolve.GetMediaStorage() if self._resolve else None  # type: ignore[union-attr]
+        resolve = self._resolve
+        media_storage = resolve.GetMediaStorage() if resolve else None
         if not media_storage:
             raise DaVinciResolveError("Failed to get MediaStorage")
         return bool(media_storage.AddTimelineMattesToMediaPool(file_paths))
@@ -1632,7 +1635,8 @@ class DaVinciResolveClient:
         stills = album.GetStills() or []
         if still_index < 1 or still_index > len(stills):
             raise ValueError(
-                f"still_index {still_index} out of range (album has {len(stills)} stills)"  # noqa: E501
+                f"still_index {still_index} out of range "
+                f"(album has {len(stills)} stills)"
             )
         return stills[still_index - 1]
 
@@ -2102,7 +2106,7 @@ class DaVinciResolveClient:
     def get_take_by_index(
         self, timeline_name: str, item_ref: dict[str, Any], idx: int
     ) -> Any:  # noqa: E501
-        """Get take info (startFrame, endFrame, mediaPoolItem) by 1-based index."""  # noqa: E501
+        """Get take info (startFrame, endFrame, mediaPoolItem) by 1-based index."""
         result = self._get_timeline_item(timeline_name, item_ref).GetTakeByIndex(idx)
         if not result:
             return {}

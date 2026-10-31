@@ -2,7 +2,8 @@
 
 # Consolidated prerequisite checking script (PowerShell)
 #
-# This script provides unified prerequisite checking for Spec-Driven Development workflow.
+# This script provides unified prerequisite checking for
+# Spec-Driven Development workflow.
 # It replaces the functionality previously spread across multiple scripts.
 #
 # Usage: ./check-prerequisites.ps1 [OPTIONS]
@@ -89,24 +90,30 @@ if ($PathsOnly) {
 
 # Validate required directories and files
 if (-not (Test-Path $paths.FEATURE_DIR -PathType Container)) {
-    [Console]::Error.WriteLine("ERROR: Feature directory not found: $($paths.FEATURE_DIR)")
+    [Console]::Error.WriteLine(
+        "ERROR: Feature directory not found: $($paths.FEATURE_DIR)")
     $specifyCommand = '/speckit-specify'
-    [Console]::Error.WriteLine("Run $specifyCommand first to create the feature structure.")
+    [Console]::Error.WriteLine(
+        "Run $specifyCommand first to create the feature structure.")
     exit 1
 }
 
 if (-not (Test-Path $paths.IMPL_PLAN -PathType Leaf)) {
-    [Console]::Error.WriteLine("ERROR: plan.md not found in $($paths.FEATURE_DIR)")
+    [Console]::Error.WriteLine(
+        "ERROR: plan.md not found in $($paths.FEATURE_DIR)")
     $planCommand = '/speckit-plan'
-    [Console]::Error.WriteLine("Run $planCommand first to create the implementation plan.")
+    [Console]::Error.WriteLine(
+        "Run $planCommand first to create the implementation plan.")
     exit 1
 }
 
 # Check for tasks.md if required
 if ($RequireTasks -and -not (Test-Path $paths.TASKS -PathType Leaf)) {
-    [Console]::Error.WriteLine("ERROR: tasks.md not found in $($paths.FEATURE_DIR)")
+    [Console]::Error.WriteLine(
+        "ERROR: tasks.md not found in $($paths.FEATURE_DIR)")
     $tasksCommand = '/speckit-tasks'
-    [Console]::Error.WriteLine("Run $tasksCommand first to create the task list.")
+    [Console]::Error.WriteLine(
+        "Run $tasksCommand first to create the task list.")
     exit 1
 }
 
@@ -118,7 +125,9 @@ if (Test-Path $paths.RESEARCH) { $docs += 'research.md' }
 if (Test-Path $paths.DATA_MODEL) { $docs += 'data-model.md' }
 
 # Check contracts directory (only if it exists and has files)
-if ((Test-Path $paths.CONTRACTS_DIR) -and (Get-ChildItem -Path $paths.CONTRACTS_DIR -ErrorAction SilentlyContinue | Select-Object -First 1)) {
+if ((Test-Path $paths.CONTRACTS_DIR) -and (
+        Get-ChildItem -Path $paths.CONTRACTS_DIR `
+            -ErrorAction SilentlyContinue | Select-Object -First 1)) {
     $docs += 'contracts/'
 }
 
@@ -143,9 +152,12 @@ if ($Json) {
 
     # Show status of each potential document
     Test-FileExists -Path $paths.RESEARCH -Description 'research.md' | Out-Null
-    Test-FileExists -Path $paths.DATA_MODEL -Description 'data-model.md' | Out-Null
-    Test-DirHasFiles -Path $paths.CONTRACTS_DIR -Description 'contracts/' | Out-Null
-    Test-FileExists -Path $paths.QUICKSTART -Description 'quickstart.md' | Out-Null
+    Test-FileExists -Path $paths.DATA_MODEL `
+        -Description 'data-model.md' | Out-Null
+    Test-DirHasFiles -Path $paths.CONTRACTS_DIR `
+        -Description 'contracts/' | Out-Null
+    Test-FileExists -Path $paths.QUICKSTART `
+        -Description 'quickstart.md' | Out-Null
 
     if ($IncludeTasks) {
         Test-FileExists -Path $paths.TASKS -Description 'tasks.md' | Out-Null
