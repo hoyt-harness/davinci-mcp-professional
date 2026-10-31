@@ -114,11 +114,13 @@ class DaVinciMCPServer:
             except Exception as e:
                 error_msg = f"Unexpected error: {e}"
                 logger.exception(error_msg)
-                # Stale scripting bridge: 'NoneType' object is not callable
-                # means Resolve's internal handle was invalidated (e.g. after
-                # a project save).  Reset the connection flag so the NEXT call
-                # automatically reconnects instead of failing indefinitely.
-                if "NoneType" in str(e) or "object is not callable" in str(e):
+                # Stale scripting bridge: exactly "'NoneType' object is not
+                # callable" means Resolve's internal handle was invalidated
+                # (e.g. after a project save).  Reset the connection flag so
+                # the NEXT call automatically reconnects instead of failing
+                # indefinitely.  Match the full literal to avoid triggering
+                # on unrelated NoneType errors from domain code.
+                if "'NoneType' object is not callable" in str(e):
                     logger.warning(
                         "Stale Resolve scripting handle detected — "
                         "resetting connection for auto-recovery on next call"
