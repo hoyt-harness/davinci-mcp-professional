@@ -17,8 +17,8 @@ echo "Linting with Ruff..."
 uv run ruff check src/
 uv run ruff format src/ --check
 
-echo "Security vulnerability scan (safety)..."
-uv run safety check --json || echo "Safety check completed with warnings"
+echo "Security vulnerability scan (uv audit)..."
+uv audit --preview-features audit
 
 echo "SAST with Bandit..."
 uv run python -m bandit -r src/ -f json -o bandit-report.json \

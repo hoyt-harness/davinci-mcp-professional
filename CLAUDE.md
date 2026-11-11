@@ -91,7 +91,7 @@ uv run pytest --cov=src/davinci_mcp --cov-report=html
 
 # Security scanning
 uv run bandit -r src/
-uv run safety check
+uv audit --preview-features audit
 
 # Regenerate Doxygen documentation
 doxygen Doxyfile

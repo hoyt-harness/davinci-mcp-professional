@@ -28,7 +28,7 @@ pytest --cov=src/davinci_mcp --cov-report=html
 ## Security Test Categories
 
 1. **Secret Detection**: Scans for hardcoded secrets in code and git history
-2. **Dependency Security**: Checks for known vulnerabilities using safety
+2. **Dependency Security**: Checks for known vulnerabilities using uv audit
 3. **File Permissions**: Ensures sensitive files have appropriate permissions
 4. **Import Security**: Identifies potentially dangerous imports
 5. **Configuration Security**: Scans config files for exposed secrets
@@ -38,7 +38,7 @@ pytest --cov=src/davinci_mcp --cov-report=html
 
 Install test dependencies:
 ```bash
-pip install pytest pytest-cov safety bandit
+pip install pytest pytest-cov bandit
 ```
 
 ## Continuous Integration

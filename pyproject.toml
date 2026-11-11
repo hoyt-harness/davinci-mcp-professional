@@ -58,7 +58,6 @@ dev = [
     "pytest-cov>=5.0.0",
     "mypy>=1.10.0",
     "ruff>=0.4.0",
-    "safety>=3.0.0",
     "bandit>=1.7.8",
     "pip-licenses>=4.4.0",
     "pyright>=1.1.400",
