@@ -1,13 +1,37 @@
 #!/usr/bin/env bash
 # pre-commit: fast, language-native formatting and static analysis (BLOCKING).
-#
-# Language-neutral stub. Replace the body below with the template for this
-# repository's primary language from Git Hooks Standards.md (Go, Python, C,
-# bash/shell, or PowerShell), then append the Secret Scanning and File Size
-# and Binary Restrictions sections from the same document.
-
 set -e
 
-echo "pre-commit: no language-specific checks configured yet."
-echo "  See standards/Git Hooks Standards.md to customize this hook."
+uv run ruff check src/
+uv run ruff format src/ --check
+
+# Secret scanning (gitleaks)
+if command -v gitleaks >/dev/null 2>&1; then
+    if ! gitleaks protect --staged --no-banner; then
+        echo "Secret scanning failed. Remove secrets before committing."
+        echo "  If this is a false positive, add an exclusion to .gitleaks.toml."
+        exit 1
+    fi
+else
+    echo "Warning: gitleaks not installed. Secret scanning skipped."
+    echo "  Install: https://github.com/gitleaks/gitleaks/releases"
+fi
+
+# Reject files larger than 10MB
+git diff --cached --name-only | while read -r file; do
+    if [ -f "$file" ]; then
+        size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
+        if [ "$size" -gt 10485760 ]; then
+            echo "File $file exceeds 10MB ($size bytes). Use Git LFS or a package manager."
+            exit 1
+        fi
+    fi
+done
+
+# Reject binary executables
+if git diff --cached --name-only | grep -qE '\.(exe|dll|so|dylib)$'; then
+    echo "Binary executables detected in staged files. Use package managers or build artifacts."
+    exit 1
+fi
+
 echo "Pre-commit checks passed."
